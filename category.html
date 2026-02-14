@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangladesh - The Daily News</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body class="text-gray-900">
+
+    <!-- Mobile Container -->
+    <div class="w-full max-w-md md:max-w-screen-xl mx-auto bg-white min-h-screen transition-all duration-300">
+
+        <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
+            <!-- Top Bar: Logo & Date -->
+            <div class="px-4 py-3 flex flex-col border-b border-gray-100">
+                <a href="index.html" class="text-2xl font-bold text-gray-900 leading-tight">The Daily News</a>
+                <p class="text-xs text-gray-500 mt-1">Saturday, February 14, 2026</p>
+            </div>
+
+            <!-- Navbar: Categories & Icons -->
+            <div class="flex items-center justify-between pl-4 pr-2 h-12 bg-white">
+                <!-- Scrollable Categories -->
+                <nav class="flex-1 overflow-x-auto no-scrollbar mask-gradient-right">
+                    <ul class="flex items-center space-x-5 text-sm font-medium text-gray-600 whitespace-nowrap pr-4">
+                        <li><a href="category.html" class="text-blue-600 font-bold">Bangladesh</a></li>
+                        <li><a href="#" class="hover:text-gray-900">International</a></li>
+                        <li><a href="#" class="hover:text-gray-900">Sports</a></li>
+                        <li><a href="#" class="hover:text-gray-900">Opinion</a></li>
+                        <li><a href="#" class="hover:text-gray-900">Business</a></li>
+                        <li><a href="#" class="hover:text-gray-900">Youth</a></li>
+                        <li><a href="#" class="hover:text-gray-900">Entertainment</a></li>
+                        <li><a href="#" class="hover:text-gray-900">Lifestyle</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Fixed Icons (Right Side) -->
+                <div class="flex items-center space-x-1 pl-2 bg-white shadow-[-10px_0_10px_rgba(255,255,255,1)] z-10">
+                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+
+                    <button class="flex items-center space-x-1 p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                        <i class="fa-solid fa-earth-africa"></i>
+                        <span class="text-xs font-bold">Bangla</span>
+                    </button>
+
+                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                        <i class="fa-solid fa-user"></i>
+                    </button>
+
+                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-4 space-y-8">
+
+            <!-- Category Header -->
+            <div class="border-b border-gray-200 pb-2">
+                <h2 class="text-3xl font-bold text-red-600">Bangladesh</h2>
+                <p class="text-sm text-gray-500 mt-1">Latest news and updates from across the country</p>
+            </div>
+
+            <!-- Featured Section (Top 5 Articles) -->
+            <!-- Mobile: First item full width (col-span-2), rest 2 columns. -->
+            <!-- Desktop: First 2 items Top Row (col-span-3), Next 3 items Bottom Row (col-span-2). -->
+            <section class="grid grid-cols-2 md:grid-cols-6 gap-4 md:gap-6">
+
+                <!-- Article 1 (Featured) -->
+                <article class="col-span-2 md:col-span-3 flex flex-col gap-2 group cursor-pointer">
+                    <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1627995874403-cfea3e1b1d7d?q=80&w=1000&auto=format&fit=crop"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            alt="BD Feature">
+                    </div>
+                    <div class="flex flex-col">
+                        <h3 class="text-xl font-bold leading-tight text-gray-900 mb-2">
+                            Dhaka Metro Rail Expansion: A New Era for Commuters
+                        </h3>
+                        <p class="text-sm text-gray-600 line-clamp-2 mb-2">
+                            The massive expansion project aims to connect the northern suburbs with the commercial
+                            district by 2028, easing traffic congestion significantly.
+                        </p>
+                        <span class="text-xs text-gray-400">1 hr ago</span>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="col-span-1 md:col-span-3 flex flex-col gap-2 group cursor-pointer">
+                    <div class="w-full aspect-[4/3] md:aspect-video bg-gray-200 rounded-md overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1596465495574-d47f9f7dc2a7?q=80&w=800&auto=format&fit=crop"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            alt="BD 2">
+                    </div>
+                    <div class="flex flex-col">
+                        <h3 class="text-sm md:text-xl font-bold leading-tight text-gray-900 mb-1 md:mb-2">
+                            Cox's Bazar Tourism Boom
+                        </h3>
+                        <p class="text-xs md:text-sm text-gray-500 line-clamp-2 mb-1">
+                            Hotels report 100% occupancy as domestic tourism sees an unprecedented surge this winter
+                            season.
+                        </p>
+                        <span class="text-xs text-gray-400">3 hrs ago</span>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="col-span-1 md:col-span-2 flex flex-col gap-2 group cursor-pointer">
+                    <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1574602824908-16499846b431?q=80&w=400&auto=format&fit=crop"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            alt="BD 3">
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                            Tigers Win Series Decider
+                        </h4>
+                        <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                            A thrilling finish at Mirpur Stadium secures the ODI series for Bangladesh against the
+                            visiting side.
+                        </p>
+                        <span class="text-xs text-gray-400">5 hrs ago</span>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="col-span-1 md:col-span-2 flex flex-col gap-2 group cursor-pointer">
+                    <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1601625471900-348636b135c9?q=80&w=400&auto=format&fit=crop"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            alt="BD 4">
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                            RMG Sector Exports Rise
+                        </h4>
+                        <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                            Export earnings have hit a new quarterly high despite global economic headwinds.
+                        </p>
+                        <span class="text-xs text-gray-400">8 hrs ago</span>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article class="col-span-1 md:col-span-2 flex flex-col gap-2 group cursor-pointer">
+                    <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1566373739815-52643a290a88?q=80&w=400&auto=format&fit=crop"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            alt="BD 5">
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                            Education Reforms Announced
+                        </h4>
+                        <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                            New curriculum changes aim to modernize the education system for the next generation.
+                        </p>
+                        <span class="text-xs text-gray-400">10 hrs ago</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <hr class="border-gray-100">
+
+            <!-- Latest News (9 Articles) -->
+            <!-- Mobile: 2 Columns. Desktop: 3 Columns. -->
+            <section>
+
+                <!-- Using grid for structural robustness which mimics the minmax/flex behavior requested -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
+
+                    <!-- Article 1 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Tech Startup Scene
+                                Booms in Sylhet</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1591789431871-337554f6c56f?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Rice Production Hits
+                                Record High</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1628155930542-413498993548?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">New Bridge Opens Over
+                                Padma Tributary</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 4 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Travel Guide: Hidden
+                                Gems of Chittagong</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 5 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Weather Alert: Heavy
+                                Rains Expected</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 6 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">National Museum Hosts
+                                Ancient Art Org</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 7 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Financial Sector
+                                Reforms Taking Shape</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 8 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Local Cinema gaining
+                                International Acclaim</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Article 9 -->
+                    <article class="flex flex-col gap-2 group cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1444653614773-995cb1ef902a?q=80&w=400&auto=format&fit=crop"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">New Startup Incubator
+                                Launches in Dhaka</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-8 px-4 border-t border-gray-200 mt-8">
+            <div class="flex flex-col items-center space-y-4">
+                <h2 class="text-xl font-bold font-serif text-gray-800">The Daily News</h2>
+                <div class="flex space-x-6 text-sm text-gray-600 font-medium">
+                    <a href="index.html" class="hover:text-gray-900">About</a>
+                    <a href="index.html" class="hover:text-gray-900">Contact</a>
+                    <a href="index.html" class="hover:text-gray-900">Privacy</a>
+                    <a href="index.html" class="hover:text-gray-900">Terms</a>
+                </div>
+                <p class="text-xs text-gray-400 text-center mt-4">
+                    &copy; 2026 The Daily News. All rights reserved.
+                </p>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
