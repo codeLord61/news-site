@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Daily News</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Merriweather', serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Mobile Container -->
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-lg">
+
+        <!-- Header -->
+        <header class="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3">
+            <div class="flex flex-col">
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">The Daily News</h1>
+                <p class="text-xs text-gray-500 mt-1">Saturday, February 14, 2026</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-4 space-y-8">
+
+            <!-- Hero Section -->
+            <section class="space-y-3">
+                <!-- Image -->
+                <div class="relative w-full h-56 bg-gray-200 rounded-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1000&auto=format&fit=crop"
+                        alt="Hero Image" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                </div>
+
+                <!-- Headline -->
+                <h2 class="text-2xl font-bold leading-tight text-gray-900">
+                    Global Markets Rally as Tech Sector Rebounds
+                </h2>
+
+                <!-- Summary -->
+                <p class="text-sm text-gray-600 leading-relaxed font-sans line-clamp-2">
+                    Major indices hit record highs today as technology stocks led a broad market recovery, defying
+                    analyst expectations of a slowdown.
+                </p>
+
+                <!-- Timestamp -->
+                <p class="text-xs text-gray-400 font-medium">2 hrs ago</p>
+            </section>
+
+            <hr class="border-gray-100">
+
+            <!-- Top Stories (List Layout) -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900">Top Stories</h3>
+                    <a href="#" class="text-xs font-semibold text-blue-600 hover:text-blue-700">View All</a>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Story 1 -->
+                    <article class="flex gap-4 items-start">
+                        <div class="w-24 h-24 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=300&auto=format&fit=crop"
+                                class="w-full h-full object-cover" alt="Story 1">
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between h-24 py-0.5">
+                            <div>
+                                <span
+                                    class="text-[10px] font-bold text-blue-600 uppercase tracking-wide mb-1 block">Politics</span>
+                                <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">
+                                    Senate Passes Historic Infrastructure Bill After Marathon Session
+                                </h4>
+                            </div>
+                            <span class="text-xs text-gray-400">4 hrs ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Story 2 -->
+                    <article class="flex gap-4 items-start">
+                        <div class="w-24 h-24 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=300&auto=format&fit=crop"
+                                class="w-full h-full object-cover" alt="Story 2">
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between h-24 py-0.5">
+                            <div>
+                                <span
+                                    class="text-[10px] font-bold text-green-600 uppercase tracking-wide mb-1 block">Environment</span>
+                                <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">
+                                    New Climate Report Urges Immediate Action on Carbon Emissions
+                                </h4>
+                            </div>
+                            <span class="text-xs text-gray-400">5 hrs ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Story 3 -->
+                    <article class="flex gap-4 items-start">
+                        <div class="w-24 h-24 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=300&auto=format&fit=crop"
+                                class="w-full h-full object-cover" alt="Story 3">
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between h-24 py-0.5">
+                            <div>
+                                <span
+                                    class="text-[10px] font-bold text-purple-600 uppercase tracking-wide mb-1 block">Science</span>
+                                <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">
+                                    Breakthrough in Clean Energy Fusion Reactor Prototype
+                                </h4>
+                            </div>
+                            <span class="text-xs text-gray-400">6 hrs ago</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <hr class="border-gray-100">
+
+            <!-- Featured Category: Technology (2 Column Grid) -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900">Smart Living</h3>
+                    <a href="#" class="text-xs font-semibold text-blue-600 hover:text-blue-700">More</a>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Card 1 -->
+                    <article class="flex flex-col gap-2">
+                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=300&auto=format&fit=crop"
+                                class="w-full h-full object-cover" alt="Tech 1">
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                                The Future of AI in Daily Life
+                            </h4>
+                            <span class="text-xs text-gray-400">12 hrs ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Card 2 -->
+                    <article class="flex flex-col gap-2">
+                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=300&auto=format&fit=crop"
+                                class="w-full h-full object-cover" alt="Tech 2">
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                                Smart Home Gadgets Review
+                            </h4>
+                            <span class="text-xs text-gray-400">1 day ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Card 3 -->
+                    <article class="flex flex-col gap-2">
+                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=300&auto=format&fit=crop"
+                                class="w-full h-full object-cover" alt="Tech 3">
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                                Remote Work Trends 2026
+                            </h4>
+                            <span class="text-xs text-gray-400">1 day ago</span>
+                        </div>
+                    </article>
+
+                    <!-- Card 4 -->
+                    <article class="flex flex-col gap-2">
+                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=300&auto=format&fit=crop"
+                                class="w-full h-full object-cover" alt="Tech 4">
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                                Cybersecurity Tips for All
+                            </h4>
+                            <span class="text-xs text-gray-400">2 days ago</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-100 py-8 px-4 border-t border-gray-200 mt-8">
+            <div class="flex flex-col items-center space-y-4">
+                <h2 class="text-xl font-bold font-serif text-gray-800">The Daily News</h2>
+                <div class="flex space-x-6 text-sm text-gray-600 font-medium">
+                    <a href="#" class="hover:text-gray-900">About</a>
+                    <a href="#" class="hover:text-gray-900">Contact</a>
+                    <a href="#" class="hover:text-gray-900">Privacy</a>
+                    <a href="#" class="hover:text-gray-900">Terms</a>
+                </div>
+                <p class="text-xs text-gray-400 text-center mt-4">
+                    &copy; 2026 The Daily News. All rights reserved.
+                </p>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
