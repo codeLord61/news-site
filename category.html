@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +30,9 @@
                 <!-- Scrollable Categories -->
                 <nav class="flex-1 overflow-x-auto no-scrollbar mask-gradient-right">
                     <ul class="flex items-center space-x-5 text-sm font-medium text-gray-600 whitespace-nowrap pr-4">
-                        <li><a href="category.html" class="inline-block text-blue-600 font-bold  border-b-2 border-blue-600" >Bangladesh</a></li>
+                        <li><a href="category.html"
+                                class="inline-block text-blue-600 font-bold  border-b-2 border-blue-600">Bangladesh</a>
+                        </li>
                         <li><a href="#" class="hover:text-blue-600">International</a></li>
                         <li><a href="#" class="hover:text-blue-600">Sports</a></li>
                         <li><a href="#" class="hover:text-blue-600">Opinion</a></li>
@@ -43,16 +46,18 @@
                 <!-- Fixed Icons (Right Side) -->
                 <div class="flex items-center space-x-1 pl-2 bg-white shadow-[-10px_0_10px_rgba(255,255,255,1)] z-10">
                     <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
-                        <i class="fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline md:text-xs md:font-bold">Search</span>
+                        <i class="fa-solid fa-magnifying-glass"></i> <span
+                            class="hidden md:inline md:text-xs md:font-bold">Search</span>
                     </button>
 
-                    <button class="flex items-center space-x-1 p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
                         <i class="fa-solid fa-earth-africa"></i>
                         <span class="text-xs font-bold">Bangla</span>
                     </button>
 
                     <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
-                        <i class="fa-solid fa-user"></i> <span class="hidden md:inline md:text-xs md:font-bold">Login</span>
+                        <i class="fa-solid fa-user"></i> <span
+                            class="hidden md:inline md:text-xs md:font-bold">Login</span>
                     </button>
 
                     <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
@@ -77,97 +82,106 @@
             <section class="grid grid-cols-2 md:grid-cols-6 gap-4 md:gap-6">
 
                 <!-- Article 1 (Featured) -->
-                <article class="col-span-2 md:col-span-3 flex flex-col gap-2 group cursor-pointer">
-                    <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1627995874403-cfea3e1b1d7d?q=80&w=1000&auto=format&fit=crop"
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            alt="BD Feature">
-                    </div>
-                    <div class="flex flex-col">
-                        <h3 class="text-xl font-bold leading-tight text-gray-900 mb-2">
-                            Dhaka Metro Rail Expansion: A New Era for Commuters
-                        </h3>
-                        <p class="text-sm text-gray-600 line-clamp-2 mb-2">
-                            The massive expansion project aims to connect the northern suburbs with the commercial
-                            district by 2028, easing traffic congestion significantly.
-                        </p>
-                        <span class="text-xs text-gray-400">1 hr ago</span>
-                    </div>
-                </article>
+                <a href="article.html" class="col-span-2 md:col-span-3 group block">
+                    <article class="flex flex-col gap-2 cursor-pointer">
+                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://media.prothomalo.com/prothomalo-english%2F2026-02-15%2F8a5gpfeb%2FTarique-Nahid.webp?rect=28%2C0%2C675%2C450&w=622&auto=format%2Ccompress&fmt=avif"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                alt="BD Feature">
+                        </div>
+                        <div class="flex flex-col">
+                            <h3 class="text-xl font-bold leading-tight text-gray-900 mb-2">
+                                Tarique Rahman meets NCP convener Nahid Islam
+                            </h3>
+                            <p class="text-sm text-gray-600 line-clamp-2 mb-2">
+                                The BNP chairman went to the residence of Nahid Islam in the city's Bailey Road area tonight, according to the BNP media cell.
+                            </p>
+                            <span class="text-xs text-gray-400">1 hr ago</span>
+                        </div>
+                    </article>
+                </a>
 
                 <!-- Article 2 -->
-                <article class="col-span-1 md:col-span-3 flex flex-col gap-2 group cursor-pointer">
-                    <div class="w-full aspect-[4/3] md:aspect-video bg-gray-200 rounded-md overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1596465495574-d47f9f7dc2a7?q=80&w=800&auto=format&fit=crop"
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            alt="BD 2">
-                    </div>
-                    <div class="flex flex-col">
-                        <h3 class="text-sm md:text-xl font-bold leading-tight text-gray-900 mb-1 md:mb-2">
-                            Cox's Bazar Tourism Boom
-                        </h3>
-                        <p class="text-xs md:text-sm text-gray-500 line-clamp-2 mb-1">
-                            Hotels report 100% occupancy as domestic tourism sees an unprecedented surge this winter
-                            season.
-                        </p>
-                        <span class="text-xs text-gray-400">3 hrs ago</span>
-                    </div>
-                </article>
+                <a href="#" class="col-span-1 md:col-span-3 group block">
+                    <article class="flex flex-col gap-2 cursor-pointer">
+                        <div class="w-full aspect-[4/3] md:aspect-video bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://speedholidays.com.bd/wp-content/uploads/2019/11/Coxs-Bazar-3.jpg"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                alt="BD 2">
+                        </div>
+                        <div class="flex flex-col">
+                            <h3 class="text-sm md:text-xl font-bold leading-tight text-gray-900 mb-1 md:mb-2">
+                                Cox's Bazar Tourism Boom
+                            </h3>
+                            <p class="text-xs md:text-sm text-gray-500 line-clamp-2 mb-1">
+                                Hotels report 100% occupancy as domestic tourism sees an unprecedented surge this winter
+                                season.
+                            </p>
+                            <span class="text-xs text-gray-400">3 hrs ago</span>
+                        </div>
+                    </article>
+                </a>
 
                 <!-- Article 3 -->
-                <article class="col-span-1 md:col-span-2 flex flex-col gap-2 group cursor-pointer">
-                    <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1574602824908-16499846b431?q=80&w=400&auto=format&fit=crop"
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            alt="BD 3">
-                    </div>
-                    <div class="flex flex-col">
-                        <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                            Tigers Win Series Decider
-                        </h4>
-                        <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                            A thrilling finish at Mirpur Stadium secures the ODI series for Bangladesh against the
-                            visiting side.
-                        </p>
-                        <span class="text-xs text-gray-400">5 hrs ago</span>
-                    </div>
-                </article>
+                <a href="#" class="col-span-1 md:col-span-2 group block">
+                    <article class="flex flex-col gap-2 cursor-pointer">
+                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://media.prothomalo.com/prothomalo-english%2F2025-10-25%2Fx68ik2nj%2Fprothomalo-bangla2025-10-24y5vj0gxs24102025-cm-1.avif?rect=1%2C0%2C593%2C395&w=400&auto=format%2Ccompress&fmt=avif"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                alt="BD 3">
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                                Badsha Mia: 20 years of tree planting for 'A Handful of Oxygen'
+                            </h4>
+                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                People in Pirganj of Rangpur enjoy the fruits of the trees planted by day labourer Badsha Mia, while travellers find comfort in their shade.
+                            </p>
+                            <span class="text-xs text-gray-400">5 hrs ago</span>
+                        </div>
+                    </article>
+                </a>
 
                 <!-- Article 4 -->
-                <article class="col-span-1 md:col-span-2 flex flex-col gap-2 group cursor-pointer">
-                    <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1601625471900-348636b135c9?q=80&w=400&auto=format&fit=crop"
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            alt="BD 4">
-                    </div>
-                    <div class="flex flex-col">
-                        <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                            RMG Sector Exports Rise
-                        </h4>
-                        <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                            Export earnings have hit a new quarterly high despite global economic headwinds.
-                        </p>
-                        <span class="text-xs text-gray-400">8 hrs ago</span>
-                    </div>
-                </article>
+                <a href="#" class="col-span-1 md:col-span-2 group block">
+                    <article class="flex flex-col gap-2 cursor-pointer">
+                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://media.prothomalo.com/prothomalo-english%2F2026-02-08%2Fq5eaplbh%2Fprothomalo-bangla2026-02-01raxih7vuUntitled-1k.avif?rect=0%2C0%2C776%2C517&w=400&auto=format%2Ccompress&fmt=avif"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                alt="BD 4">
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                                bKash, Nagad and Rocket: Restrictions on sending money lifted
+                            </h4>
+                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                Mobile financial services and internet banking services had been restricted to prevent the misuse of funds during the 13th national parliamentery elections.
+                            </p>
+                            <span class="text-xs text-gray-400">8 hrs ago</span>
+                        </div>
+                    </article>
+                </a>
 
                 <!-- Article 5 -->
-                <article class="col-span-1 md:col-span-2 flex flex-col gap-2 group cursor-pointer">
-                    <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1566373739815-52643a290a88?q=80&w=400&auto=format&fit=crop"
-                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            alt="BD 5">
-                    </div>
-                    <div class="flex flex-col">
-                        <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                            Education Reforms Announced
-                        </h4>
-                        <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                            New curriculum changes aim to modernize the education system for the next generation.
-                        </p>
-                        <span class="text-xs text-gray-400">10 hrs ago</span>
-                    </div>
-                </article>
+                <a href="#" class="col-span-1 md:col-span-2 group block">
+                    <article class="flex flex-col gap-2 cursor-pointer">
+                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                            <img src="https://media.prothomalo.com/prothomalo-english%2F2024-06%2Fd5b14006-9ef4-410a-8167-040a8ab88c75%2Finflation.webp?rect=1%2C0%2C639%2C426&w=370&auto=format%2Ccompress&fmt=avif"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                alt="BD 5">
+                        </div>
+                        <div class="flex flex-col">
+                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
+                                Inflation rises to 8.58pc in Jan, putting further pressure on the middle class
+
+                            </h4>
+                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                Inflation has increased for three consecutive months as in January of this year, the overall inflation rate rose to 8.58 per cent.
+                            </p>
+                            <span class="text-xs text-gray-400">10 hrs ago</span>
+                        </div>
+                    </article>
+                </a>
 
             </section>
 
@@ -181,121 +195,148 @@
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
 
                     <!-- Article 1 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Tech Startup Scene
-                                Booms in Sylhet</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Adipisicing elit. Nulla, voluptate?</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Article 2 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1591789431871-337554f6c56f?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Rice Production Hits
-                                Record High</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1591789431871-337554f6c56f?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Lorem ipsum dolor sit amet</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Article 3 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1628155930542-413498993548?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">New Bridge Opens Over
-                                Padma Tributary</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1628155930542-413498993548?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Alias voluptate dolorem provident mollitia</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">1 day ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Article 4 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Travel Guide: Hidden
-                                Gems of Chittagong</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Sunt consequatur id et architecto veritatis in!</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Article 5 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Weather Alert: Heavy
-                                Rains Expected</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Ab doloremque sint hic architecto!</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Article 6 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">National Museum Hosts
-                                Ancient Art Org</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Quia reprehenderit vel doloribus nostrum fuga ipsum.</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">2 days ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Article 7 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Financial Sector
-                                Reforms Taking Shape</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Adipisicing elit. Deserunt, tempora</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Article 8 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">Local Cinema gaining
-                                International Acclaim</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Lorem ipsum dolor sit amet consectetur</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Article 9 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1444653614773-995cb1ef902a?q=80&w=400&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2">New Startup Incubator
-                                Launches in Dhaka</h4>
-                            <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
-                        </div>
-                    </article>
+                    <a href="#" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1444653614773-995cb1ef902a?q=80&w=400&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing</h4>
+                                <span class="text-xs text-gray-400 mt-1 block">3 days ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                 </div>
             </section>
@@ -307,7 +348,7 @@
             <div class="flex flex-col items-center space-y-4">
                 <h2 class="text-xl font-bold font-serif text-gray-800">The Daily News</h2>
                 <div class="flex space-x-6 text-sm text-gray-600 font-medium">
-                    <a href="index.html" class="hover:text-gray-900">About</a>
+                    <a href="about.html" class="hover:text-gray-900">About</a>
                     <a href="index.html" class="hover:text-gray-900">Contact Us</a>
                 </div>
                 <p class="text-xs text-gray-400 text-center mt-4">

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - The Daily News</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="text-gray-900">
+
+    <!-- Mobile Container -->
+    <div class="w-full max-w-md md:max-w-screen-xl mx-auto bg-white min-h-screen transition-all duration-300">
+
+        <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
+            <!-- Top Bar: Logo & Date -->
+            <div class="px-4 py-7 flex flex-col border-b border-gray-100 md:items-center">
+                <a href="index.html" class="text-2xl font-bold text-gray-900 leading-tight">The Daily News</a>
+                <p class="text-xs text-gray-500 mt-1">Saturday, February 14, 2026</p>
+            </div>
+
+            <!-- Navbar: Categories & Icons -->
+            <div class="flex items-center justify-between pl-4 pr-2 h-12 bg-white">
+                <!-- Scrollable Categories -->
+                <nav class="flex-1 overflow-x-auto no-scrollbar mask-gradient-right">
+                    <ul class="flex items-center space-x-5 text-sm font-medium text-gray-600 whitespace-nowrap pr-4">
+                        <li><a href="category.html" class="hover:text-blue-600">Bangladesh</a></li>
+                        <li><a href="#" class="hover:text-blue-600">International</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Sports</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Opinion</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Business</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Youth</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Entertainment</a></li>
+                        <li><a href="#" class="hover:text-blue-600">Lifestyle</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Fixed Icons (Right Side) -->
+                <div class="flex items-center space-x-1 pl-2 bg-white shadow-[-10px_0_10px_rgba(255,255,255,1)] z-10">
+                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                        <i class="fa-solid fa-magnifying-glass"></i> <span
+                            class="hidden md:inline md:text-xs md:font-bold">Search</span>
+                    </button>
+
+                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                        <i class="fa-solid fa-earth-africa"></i>
+                        <span class="text-xs font-bold">Bangla</span>
+                    </button>
+
+                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                        <i class="fa-solid fa-user"></i> <span
+                            class="hidden md:inline md:text-xs md:font-bold">Login</span>
+                    </button>
+
+                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-4 md:p-8 space-y-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-red-600 text-center mb-8">About Us</h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <!-- English Column -->
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold text-gray-800">Who We Are</h2>
+                    <p class="text-gray-700 leading-relaxed text-justify">
+                        The Daily News is a leading digital newspaper committed to delivering accurate, unbiased, and
+                        timely news to our readers across the globe. Established with a vision to empower citizens with
+                        information, we have grown to become a trusted source for millions who rely on us for their
+                        daily updates.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed text-justify">
+                        Our journey began in 2026, during a time of global uncertainty. Since then, we have tirelessly
+                        worked to bring stories that matter, from critical political developments to inspiring human
+                        interest stories. We believe in the power of ethical journalism to shape a better society.
+                    </p>
+
+                    <h2 class="text-xl font-bold text-gray-800 mt-6">Our Mission</h2>
+                    <p class="text-gray-700 leading-relaxed text-justify">
+                        Our mission is simple yet profound: to serve the truth. We strive to maintain the highest
+                        standards of journalistic integrity, ensuring that every story we publish is verified and
+                        balanced. We are dedicated to holding power to account and giving a voice to the voiceless.
+                    </p>
+                </div>
+
+                <!-- Bangla Column -->
+                <div class="space-y-4 font-bangla">
+                    <h2 class="text-xl font-bold text-gray-800">আমাদের সম্পর্কে</h2>
+                    <p class="text-gray-700 leading-relaxed text-justify">
+                        দ্য ডেইলি নিউজ একটি শীর্ষস্থানীয় ডিজিটাল সংবাদপত্র যা বিশ্বজুড়ে আমাদের পাঠকদের কাছে সঠিক,
+                        নিরপেক্ষ এবং সময়োপযোগী সংবাদ পৌঁছে দিতে প্রতিশ্রুতিবদ্ধ। নাগরিকদের তথ্য দিয়ে ক্ষমতায়ন করার
+                        লক্ষ্য নিয়ে প্রতিষ্ঠিত, আমরা লক্ষ লক্ষ মানুষের কাছে একটি নির্ভরযোগ্য উৎস হয়ে উঠেছি যারা তাদের
+                        দৈনন্দিন আপডেটের জন্য আমাদের উপর নির্ভর করে।
+                    </p>
+                    <p class="text-gray-700 leading-relaxed text-justify">
+                        আমাদের যাত্রা শুরু হয়েছিল ২০২৬ সালে, বিশ্বব্যাপী অনিশ্চয়তার সময়ে। তখন থেকে, আমরা গুরুত্বপূর্ণ
+                        রাজনৈতিক ঘটনা থেকে শুরু করে অনুপ্রেরণাদায়ক মানবিক গল্প—সব ধরনের সংবাদ তুলে ধরতে অক্লান্ত
+                        পরিশ্রম করেছি। আমরা একটি উন্নত সমাজ গঠনে নৈতিক সাংবাদিকতার শক্তিতে বিশ্বাস করি।
+                    </p>
+
+                    <h2 class="text-xl font-bold text-gray-800 mt-6">আমাদের লক্ষ্য</h2>
+                    <p class="text-gray-700 leading-relaxed text-justify">
+                        আমাদের লক্ষ্য সহজ কিন্তু গভীর: সত্যের সেবা করা। আমরা সাংবাদিকতার সততার সর্বোচ্চ মান বজায় রাখার
+                        চেষ্টা করি, নিশ্চিত করি যে আমাদের প্রতিটি প্রকাশিত সংবাদ যাচাইকৃত এবং ভারসাম্যপূর্ণ। আমরা
+                        ক্ষমতার জবাবদিহিতা নিশ্চিত করতে এবং কণ্ঠহীনদের কণ্ঠস্বর হতে নিবেদিত।
+                    </p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-8 px-4 border-t border-gray-200 mt-8">
+            <div class="flex flex-col items-center space-y-4">
+                <h2 class="text-xl font-bold font-serif text-gray-800">The Daily News</h2>
+                <div class="flex space-x-6 text-sm text-gray-600 font-medium">
+                    <a href="about.html" class="hover:text-gray-900 border-b border-gray-900">About</a>
+                    <a href="#" class="hover:text-gray-900">Contact Us</a>
+                </div>
+                <p class="text-xs text-gray-400 text-center mt-4">
+                    &copy; 2026 The Daily News. All rights reserved.
+                </p>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>

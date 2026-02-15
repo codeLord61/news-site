@@ -13,10 +13,11 @@
 
 </head>
 
-<body class="border-2 border-blue-600 text-gray-900">
+<body class="text-gray-900">
 
     <!-- Mobile Container -->
-    <div class="w-full border-2 border-red-600 max-w-md md:max-w-screen-xl md:border-2 md:border-red-600 mx-auto bg-white min-h-screen transition-all duration-300">
+    <div
+        class="w-full max-w-md md:max-w-screen-xl mx-auto bg-white min-h-screen transition-all duration-300">
 
         <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
             <!-- Top Bar: Logo & Date -->
@@ -45,7 +46,8 @@
                 <!-- Order from Left to Right: Search, Language, User, Hamburger -->
                 <div class="flex items-center space-x-1 pl-2 bg-white shadow-[-10px_0_10px_rgba(255,255,255,1)] z-10">
                     <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
-                        <i class="fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline md:text-xs md:font-bold">Search</span>
+                        <i class="fa-solid fa-magnifying-glass"></i> <span
+                            class="hidden md:inline md:text-xs md:font-bold">Search</span>
                     </button>
 
                     <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
@@ -54,7 +56,8 @@
                     </button>
 
                     <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
-                        <i class="fa-solid fa-user"></i><span class="hidden md:inline md:text-xs md:font-bold">Login</span>
+                        <i class="fa-solid fa-user"></i><span
+                            class="hidden md:inline md:text-xs md:font-bold">Login</span>
                     </button>
 
                     <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
@@ -69,26 +72,52 @@
         <main class="p-4 space-y-8">
 
             <!-- Hero Section -->
-            <section class="space-y-3">
-                <!-- Image -->
-                <div class="relative w-full h-56 bg-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1000&auto=format&fit=crop"
-                        alt="Hero Image" class="w-full h-full object-cover">
-                </div>
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Hero Article 1 -->
+                <a href="article.html" class="group block space-y-3">
+                    <!-- Image -->
+                    <div class="relative w-full h-56 bg-gray-200 rounded-lg overflow-hidden">
+                        <img src="https://media.prothomalo.com/prothomalo-english%2F2026-02-15%2Fwgu9qknf%2FTarique-at-Jamaat-ameer-residence.avif?rect=1%2C0%2C621%2C414&w=622&auto=format%2Ccompress&fmt=avif"
+                            alt="Hero Image"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                    </div>
 
-                <!-- Headline -->
-                <h2 class="text-2xl font-bold leading-tight text-gray-900">
-                    Global Markets Rally as Tech Sector Rebounds
-                </h2>
+                    <!-- Headline -->
+                    <h2 class="text-2xl font-bold leading-tight text-gray-900 group-hover:text-blue-600">
+                        Tarique Rahman at Jamaat Ameer's residence
+                    </h2>
 
-                <!-- Summary -->
-                <p class="text-sm text-gray-600 leading-relaxed font-sans line-clamp-2">
-                    Major indices hit record highs today as technology stocks led a broad market recovery, defying
-                    analyst expectations of a slowdown.
-                </p>
+                    <!-- Summary -->
+                    <p class="text-sm text-gray-600 leading-relaxed font-sans line-clamp-2">
+                        BNP chairman Tarique Rahman has reached the residence of Shafiqur Rahman, the Ameer of Jamaat-e-Islami.
+                    </p>
 
-                <!-- Timestamp -->
-                <p class="text-xs text-gray-400 font-medium">2 hrs ago</p>
+                    <!-- Timestamp -->
+                    <p class="text-xs text-gray-400 font-medium">2 hrs ago</p>
+                </a>
+
+                <!-- Hero Article 2 -->
+                <a href="article.html" class="group block space-y-3">
+                    <!-- Image -->
+                    <div class="relative w-full h-56 bg-gray-200 rounded-lg overflow-hidden">
+                        <img src="https://media.prothomalo.com/prothomalo-english%2F2025-12-22%2Fk8hajh2v%2Fprothomalo-bangla2025-10-30udyf63ohAsifNazrul01.avif?rect=0%2C0%2C542%2C361&w=622&auto=format%2Ccompress&fmt=avif"
+                            alt="Hero Image 2"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                    </div>
+
+                    <!-- Headline -->
+                    <h2 class="text-2xl font-bold leading-tight text-gray-900 group-hover:text-blue-600">
+                        Foreign ministers of SAARC countries invited to oath-taking ceremony: Law Adviser
+                    </h2>
+
+                    <!-- Summary -->
+                    <p class="text-sm text-gray-600 leading-relaxed font-sans line-clamp-2">
+                        The oath-taking ceremony for the winning Members of Parliament will be held next Tuesday at 10:00 am.
+                    </p>
+
+                    <!-- Timestamp -->
+                    <p class="text-xs text-gray-400 font-medium">1 hr ago</p>
+                </a>
             </section>
 
             <hr class="border-gray-100">
@@ -102,73 +131,88 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Story 1 -->
-                    <article class="flex gap-4 items-start md:flex-col md:gap-3 group cursor-pointer">
-                        <div class="w-24 h-24 md:w-full md:h-48 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Story 1">
-                        </div>
-                        <div class="flex-1 flex flex-col justify-between h-24 md:h-auto py-0.5">
-                            <div>
-                                <span
-                                    class="text-[10px] font-bold text-blue-600 uppercase tracking-wide mb-1 block">Politics</span>
-                                <h4 class="text-sm md:text-base font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                    Senate Passes Historic Infrastructure Bill After Marathon Session
-                                </h4>
-                                <p class="text-xs text-gray-500 line-clamp-2 hidden md:block">
-                                    The comprehensive bill targets bridges, roads, and broadband expansion, marking a
-                                    significant bipartisan achievement in the current legislative session.
-                                </p>
+                    <a href="article.html" class="block group">
+                        <article class="flex gap-4 items-start md:flex-col md:gap-3 cursor-pointer">
+                            <div
+                                class="w-24 h-24 md:w-full md:h-48 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Story 1">
                             </div>
-                            <span class="text-xs text-gray-400 mt-2">4 hrs ago</span>
-                        </div>
-                    </article>
+                            <div class="flex-1 flex flex-col justify-between h-24 md:h-auto py-0.5">
+                                <div>
+                                    <span
+                                        class="text-[10px] font-bold text-blue-600 uppercase tracking-wide mb-1 block">Politics</span>
+                                    <h4
+                                        class="text-sm md:text-base font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                        Senate Passes Historic Infrastructure Bill After Marathon Session
+                                    </h4>
+                                    <p class="text-xs text-gray-500 line-clamp-2 hidden md:block">
+                                        The comprehensive bill targets bridges, roads, and broadband expansion, marking
+                                        a
+                                        significant bipartisan achievement in the current legislative session.
+                                    </p>
+                                </div>
+                                <span class="text-xs text-gray-400 mt-2">4 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Story 2 -->
-                    <article class="flex gap-4 items-start md:flex-col md:gap-3 group cursor-pointer">
-                        <div class="w-24 h-24 md:w-full md:h-48 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Story 2">
-                        </div>
-                        <div class="flex-1 flex flex-col justify-between h-24 md:h-auto py-0.5">
-                            <div>
-                                <span
-                                    class="text-[10px] font-bold text-green-600 uppercase tracking-wide mb-1 block">Environment</span>
-                                <h4 class="text-sm md:text-base font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                    New Climate Report Urges Immediate Action on Carbon Emissions
-                                </h4>
-                                <p class="text-xs text-gray-500 line-clamp-2 hidden md:block">
-                                    Scientists warn that global temperatures are rising faster than predicted, urging
-                                    nations to implement drastic carbon reduction policies immediately.
-                                </p>
+                    <a href="article.html" class="block group">
+                        <article class="flex gap-4 items-start md:flex-col md:gap-3 cursor-pointer">
+                            <div
+                                class="w-24 h-24 md:w-full md:h-48 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Story 2">
                             </div>
-                            <span class="text-xs text-gray-400 mt-2">5 hrs ago</span>
-                        </div>
-                    </article>
+                            <div class="flex-1 flex flex-col justify-between h-24 md:h-auto py-0.5">
+                                <div>
+                                    <span
+                                        class="text-[10px] font-bold text-green-600 uppercase tracking-wide mb-1 block">Environment</span>
+                                    <h4
+                                        class="text-sm md:text-base font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                        New Climate Report Urges Immediate Action on Carbon Emissions
+                                    </h4>
+                                    <p class="text-xs text-gray-500 line-clamp-2 hidden md:block">
+                                        Scientists warn that global temperatures are rising faster than predicted,
+                                        urging
+                                        nations to implement drastic carbon reduction policies immediately.
+                                    </p>
+                                </div>
+                                <span class="text-xs text-gray-400 mt-2">5 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Story 3 -->
-                    <article class="flex gap-4 items-start md:flex-col md:gap-3 group cursor-pointer">
-                        <div class="w-24 h-24 md:w-full md:h-48 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Story 3">
-                        </div>
-                        <div class="flex-1 flex flex-col justify-between h-24 md:h-auto py-0.5">
-                            <div>
-                                <span
-                                    class="text-[10px] font-bold text-purple-600 uppercase tracking-wide mb-1 block">Science</span>
-                                <h4 class="text-sm md:text-base font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                    Breakthrough in Clean Energy Fusion Reactor Prototype
-                                </h4>
-                                <p class="text-xs text-gray-500 line-clamp-2 hidden md:block">
-                                    Researchers have successfully sustained a fusion reaction for record time, bringing
-                                    the dream of limitless clean energy one step closer to reality.
-                                </p>
+                    <a href="article.html" class="block group">
+                        <article class="flex gap-4 items-start md:flex-col md:gap-3 cursor-pointer">
+                            <div
+                                class="w-24 h-24 md:w-full md:h-48 flex-shrink-0 bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Story 3">
                             </div>
-                            <span class="text-xs text-gray-400 mt-2">6 hrs ago</span>
-                        </div>
-                    </article>
+                            <div class="flex-1 flex flex-col justify-between h-24 md:h-auto py-0.5">
+                                <div>
+                                    <span
+                                        class="text-[10px] font-bold text-purple-600 uppercase tracking-wide mb-1 block">Science</span>
+                                    <h4
+                                        class="text-sm md:text-base font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                        Breakthrough in Clean Energy Fusion Reactor Prototype
+                                    </h4>
+                                    <p class="text-xs text-gray-500 line-clamp-2 hidden md:block">
+                                        Researchers have successfully sustained a fusion reaction for record time,
+                                        bringing
+                                        the dream of limitless clean energy one step closer to reality.
+                                    </p>
+                                </div>
+                                <span class="text-xs text-gray-400 mt-2">6 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
                 </div>
             </section>
 
@@ -181,82 +225,92 @@
                     <a href="category.html" class="text-xs font-semibold text-blue-600 hover:text-blue-700">See All</a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                     <!-- Card 1 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1627995874403-cfea3e1b1d7d?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="BD 1">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                Dhaka Metro Rail Extension Project Gets Green Light
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                The government has approved the new phase of the metro rail, aiming to connect northern
-                                suburbs with the city center by 2028.
-                            </p>
-                            <span class="text-xs text-gray-400">1 hr ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html">
+                        <article class="flex flex-col gap-2 group cursor-pointer">
 
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://media.prothomalo.com/prothomalo-english%2F2026-02-15%2F8a5gpfeb%2FTarique-Nahid.webp?rect=28%2C0%2C675%2C450&w=622&auto=format%2Ccompress&fmt=avif"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="BD 1">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    Tarique Rahman meets NCP convener Nahid Islam
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    The BNP chairman went to the residence of Nahid Islam in the city's Bailey Road area tonight, according to the BNP media cell.
+                                </p>
+                                <span class="text-xs text-gray-400">1 hr ago</span>
+                            </div>
+
+                        </article>
+                    </a>
                     <!-- Card 2 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1596465495574-d47f9f7dc2a7?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="BD 2">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                Cox's Bazar Sees Record Tourist Numbers This Season
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                Hotels are fully booked as tourists flock to the world's longest sea beach for the
-                                winter holidays, boosting the local economy.
-                            </p>
-                            <span class="text-xs text-gray-400">3 hrs ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://speedholidays.com.bd/wp-content/uploads/2019/11/Coxs-Bazar-3.jpg"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="BD 2">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    Cox's Bazar Sees Record Tourist Numbers This Season
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    Hotels are fully booked as tourists flock to the world's longest sea beach for the
+                                    winter holidays, boosting the local economy.
+                                </p>
+                                <span class="text-xs text-gray-400">3 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Card 3 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1574602824908-16499846b431?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="BD 3">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                Tigers Secure Series Win in Thrilling Final Match
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                The Bangladesh cricket team defeated the visiting side by 3 wickets in a nail-biting
-                                finish at Mirpur, sealing the ODI series.
-                            </p>
-                            <span class="text-xs text-gray-400">5 hrs ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://media.prothomalo.com/prothomalo-english%2F2025-10-25%2Fx68ik2nj%2Fprothomalo-bangla2025-10-24y5vj0gxs24102025-cm-1.avif?rect=1%2C0%2C593%2C395&w=400&auto=format%2Ccompress&fmt=avif"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="BD 3">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    Badsha Mia: 20 years of tree planting for 'A Handful of Oxygen'
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    People in Pirganj of Rangpur enjoy the fruits of the trees planted by day labourer Badsha Mia, while travellers find comfort in their shade.
+                                </p>
+                                <span class="text-xs text-gray-400">5 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Card 4 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1601625471900-348636b135c9?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="BD 4">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                RMG Exports Hit New High in Last Quarter
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                Despite global economic challenges, Bangladesh's ready-made garment sector recorded a
-                                15% increase in export earnings.
-                            </p>
-                            <span class="text-xs text-gray-400">8 hrs ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://media.prothomalo.com/prothomalo-english%2F2026-02-08%2Fq5eaplbh%2Fprothomalo-bangla2026-02-01raxih7vuUntitled-1k.avif?rect=0%2C0%2C776%2C517&w=400&auto=format%2Ccompress&fmt=avif"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="BD 4">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    bKash, Nagad and Rocket: Restrictions on sending money lifted
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    Mobile financial services and internet banking services had been restricted to prevent the misuse of funds during the 13th national parliamentery elections.
+                                </p>
+                                <span class="text-xs text-gray-400">8 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
                 </div>
             </section>
 
@@ -269,82 +323,96 @@
                     <a href="#" class="text-xs font-semibold text-blue-600 hover:text-blue-700">See All</a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                     <!-- Card 1 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1524850011238-e3d235c7d4c9?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Int 1">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                UN Summit Focuses on Global Peace Building
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                World leaders gathered in New York to discuss strategies for resolving conflicts and
-                                fostering long-term stability in volatile regions.
-                            </p>
-                            <span class="text-xs text-gray-400">2 hrs ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1524850011238-e3d235c7d4c9?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Int 1">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    UN Summit Focuses on Global Peace Building
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    World leaders gathered in New York to discuss strategies for resolving conflicts and
+                                    fostering long-term stability in volatile regions.
+                                </p>
+                                <span class="text-xs text-gray-400">2 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Card 2 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Int 2">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                New Mars Rover Sends Back Stunning Panorama
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                The latest rover has captured high-resolution images of the Martian surface, revealing
-                                potential signs of ancient riverbeds.
-                            </p>
-                            <span class="text-xs text-gray-400">4 hrs ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Int 2">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    New Mars Rover Sends Back Stunning Panorama
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    The latest rover has captured high-resolution images of the Martian surface,
+                                    revealing
+                                    potential signs of ancient riverbeds.
+                                </p>
+                                <span class="text-xs text-gray-400">4 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Card 3 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Int 3">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                Global Economic Outlook Improves for 2026
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                Economists predict a steady recovery in global markets as inflation stabilizes and
-                                supply chains return to normal.
-                            </p>
-                            <span class="text-xs text-gray-400">7 hrs ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Int 3">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    Global Economic Outlook Improves for 2026
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    Economists predict a steady recovery in global markets as inflation stabilizes and
+                                    supply chains return to normal.
+                                </p>
+                                <span class="text-xs text-gray-400">7 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Card 4 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Int 4">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                EU Proposes Stricter Regulations for Tech Giants
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                New legislation aims to curb monopoly power and ensure data privacy rights for citizens
-                                across the European Union.
-                            </p>
-                            <span class="text-xs text-gray-400">9 hrs ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Int 4">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    EU Proposes Stricter Regulations for Tech Giants
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    New legislation aims to curb monopoly power and ensure data privacy rights for
+                                    citizens
+                                    across the European Union.
+                                </p>
+                                <span class="text-xs text-gray-400">9 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
                 </div>
             </section>
 
@@ -355,82 +423,97 @@
                     <a href="#" class="text-xs font-semibold text-blue-600 hover:text-blue-700">More</a>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-x-5 gap-y-10">
                     <!-- Card 1 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Tech 1">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                The Future of AI in Daily Life
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                From smart assistants to autonomous vehicles, artificial intelligence is reshaping how
-                                we live and work.
-                            </p>
-                            <span class="text-xs text-gray-400">12 hrs ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Tech 1">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    The Future of AI in Daily Life
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    From smart assistants to autonomous vehicles, artificial intelligence is reshaping
+                                    how
+                                    we live and work.
+                                </p>
+                                <span class="text-xs text-gray-400">12 hrs ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Card 2 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Tech 2">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                Smart Home Gadgets Review
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                We tested the latest smart home devices to find out which ones truly add value to your
-                                connected household.
-                            </p>
-                            <span class="text-xs text-gray-400">1 day ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Tech 2">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    Smart Home Gadgets Review
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    We tested the latest smart home devices to find out which ones truly add value to
+                                    your
+                                    connected household.
+                                </p>
+                                <span class="text-xs text-gray-400">1 day ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Card 3 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Tech 3">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                Remote Work Trends 2026
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                As remote work becomes the norm, companies are adopting new strategies to maintain team
-                                cohesion and productivity.
-                            </p>
-                            <span class="text-xs text-gray-400">1 day ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Tech 3">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    Remote Work Trends 2026
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    As remote work becomes the norm, companies are adopting new strategies to maintain
+                                    team
+                                    cohesion and productivity.
+                                </p>
+                                <span class="text-xs text-gray-400">1 day ago</span>
+                            </div>
+                        </article>
+                    </a>
 
                     <!-- Card 4 -->
-                    <article class="flex flex-col gap-2 group cursor-pointer">
-                        <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=600&auto=format&fit=crop"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                alt="Tech 4">
-                        </div>
-                        <div class="flex flex-col">
-                            <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1">
-                                Cybersecurity Tips for All
-                            </h4>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-1">
-                                Essential tips to protect your personal data and digital identity in an increasingly
-                                connected world.
-                            </p>
-                            <span class="text-xs text-gray-400">2 days ago</span>
-                        </div>
-                    </article>
+                    <a href="article.html" class="block group">
+                        <article class="flex flex-col gap-2 cursor-pointer">
+                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=600&auto=format&fit=crop"
+                                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    alt="Tech 4">
+                            </div>
+                            <div class="flex flex-col">
+                                <h4
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    Cybersecurity Tips for All
+                                </h4>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-1">
+                                    Essential tips to protect your personal data and digital identity in an increasingly
+                                    connected world.
+                                </p>
+                                <span class="text-xs text-gray-400">2 days ago</span>
+                            </div>
+                        </article>
+                    </a>
                 </div>
             </section>
 
@@ -441,7 +524,7 @@
             <div class="flex flex-col items-center space-y-4">
                 <h2 class="text-xl font-bold font-serif text-gray-800">The Daily News</h2>
                 <div class="flex space-x-6 text-sm text-gray-600 font-medium">
-                    <a href="#" class="hover:text-gray-900">About</a>
+                    <a href="about.html" class="hover:text-gray-900">About</a>
                     <a href="#" class="hover:text-gray-900">Contact Us</a>
                 </div>
                 <p class="text-xs text-gray-400 text-center mt-4">
