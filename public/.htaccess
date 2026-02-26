@@ -1,0 +1,39 @@
+# IfModule says if I dont have enabled mod_rewrite module in apache config then dont run this block code
+# if we have the mod_rewrite enabled run this if code block (if module mod_rewrite exists run this)
+# ----------------------------------------------------------------------
+# 1. SECURITY & ACCESS CONTROL
+# ----------------------------------------------------------------------
+
+# Disable Directory Browsing
+Options All -Indexes
+
+# Deny Access to Hidden Files and Directories (.git, .htaccess, etc.)
+RewriteCond %{SCRIPT_FILENAME} -d [OR]
+RewriteCond %{SCRIPT_FILENAME} -f
+RewriteRule "(^|/)\." - [F]
+
+# ----------------------------------------------------------------------
+# 2. URL LOGIC & ROUTING
+# ----------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteBase /project/news/public/
+
+    # Remove Trailing Slash (except for actual directories)
+    # Redirects /news/ to /news
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [R=301,L]
+
+    # Alias "Clean" URLs (Hide .php extensions)
+    # Allows /about instead of /about.php
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteRule ^([^.]+)$ $1.php [NC,L]
+
+    # Front Controller: Send non-existent files/folders to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [L]
+</IfModule>
