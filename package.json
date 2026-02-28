@@ -1,0 +1,19 @@
+{
+  "name": "news-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css --minify",
+    "watch": "npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "tailwindcss": "^4.2.1"
+  }
+}

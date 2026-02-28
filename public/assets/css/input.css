@@ -1,0 +1,36 @@
+/* Tailwind CSS v4 Input File
+   Run: npm run build  (generates minified styles.css)
+   Run: npm run watch  (rebuilds on file change while developing)
+   Output: public/assets/css/styles.css
+*/
+@import "tailwindcss";
+
+/* ============================================================
+   CUSTOM THEME TOKENS (replaces tailwind.config.js in v4)
+   ============================================================ */
+@theme {
+    /* Custom Bangla font family — used in about.html via font-bangla */
+    --font-bangla: "Noto Sans Bengali", "SolaimanLipi", sans-serif;
+}
+
+/* ============================================================
+   CUSTOM UTILITIES
+   ============================================================ */
+@layer utilities {
+
+    /* Hide scrollbar but keep scroll functionality */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Right-side fade mask for the scrollable navbar */
+    .mask-gradient-right {
+        -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+        mask-image: linear-gradient(to right, black 80%, transparent 100%);
+    }
+}

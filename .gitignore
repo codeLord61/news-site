@@ -1,0 +1,12 @@
+# Node
+node_modules/
+
+# Tailwind compiled output (regenerate with: npm run build)
+public/assets/css/styles.css
+
+# Environment / secrets
+.env
+
+# OS
+.DS_Store
+Thumbs.db

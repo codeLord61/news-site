@@ -7,11 +7,6 @@
 # Disable Directory Browsing
 Options All -Indexes
 
-# Deny Access to Hidden Files and Directories (.git, .htaccess, etc.)
-RewriteCond %{SCRIPT_FILENAME} -d [OR]
-RewriteCond %{SCRIPT_FILENAME} -f
-RewriteRule "(^|/)\." - [F]
-
 # ----------------------------------------------------------------------
 # 2. URL LOGIC & ROUTING
 # ----------------------------------------------------------------------
@@ -19,7 +14,12 @@ RewriteRule "(^|/)\." - [F]
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteBase /project/news/public/
+    RewriteBase /news-site/public/
+
+    # Deny Access to Hidden Files and Directories (.git, .htaccess, etc.)
+    RewriteCond %{SCRIPT_FILENAME} -d [OR]
+    RewriteCond %{SCRIPT_FILENAME} -f
+    RewriteRule "(^|/)\." - [F]
 
     # Remove Trailing Slash (except for actual directories)
     # Redirects /news/ to /news
