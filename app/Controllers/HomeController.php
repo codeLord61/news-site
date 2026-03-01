@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Controllers;
+namespace app\controllers;
 
-use App\Core\Controller;
+use app\core\controller;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // Simulating API/Database response
         $articles = [
             'hero' => [
                 [
@@ -147,13 +146,16 @@ class HomeController extends Controller
             ]
         ];
 
-        // Define data to pass to the view
         $data = [
             'title' => 'The Daily News - Home',
             'articles' => $articles
         ];
 
-        // Renders app/Views/home.php inside the main.php layout
+        // Renders app/views/home.php inside the main.php layout
         $this->view('home', $data);
+    }
+
+    public function about(){
+        
     }
 }

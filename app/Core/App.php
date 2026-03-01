@@ -1,16 +1,23 @@
 <?php
+namespace app\core;
 
-namespace App\Core;
+use app\controllers\HomeController;
 
 class App
 {
+    public static string $basePath;
     public static Router $router;
+
+    public function __construct($basePath)
+    {
+        self::$basePath = $basePath;
+    }
 
     public static function run()
     {
         self::$router = new Router();
-
-        // Define routes
+        // self::$basePath = dirname(__DIR__);
+        // routes
         self::loadRoutes();
 
         // Resolve
@@ -19,21 +26,31 @@ class App
 
     private static function loadRoutes()
     {
-        // This is a simple central place to load routes. 
-        // Can be moved to routes/web.php later.
 
-        self::$router->get('/', [\App\Controllers\HomeController::class , 'index']);
+        self::$router->get('/', [HomeController::class, 'index']);
+        self::$router->get('/about', [HomeController::class, 'about']);
     }
 
     public static function view($view, $data = [])
     {
         $controller = new Controller();
-        // Expose protected view method. Alternatively handled via traits / direct requiring
-        // A hacky quick way mapping string route to view
+
         extract($data);
         ob_start();
-        require __DIR__ . "/../Views/{$view}.php";
+        require __DIR__ . "/../views/{$view}.php";
         $content = ob_get_clean();
-        require __DIR__ . "/../Views/layouts/main.php";
+        require __DIR__ . "/../views/layouts/main.php";
+    }
+    public static function assetPath($path)
+    {
+        $scriptName        = $_SERVER['SCRIPT_NAME'];
+        $lastSlashPosition = strrpos($scriptName, '/');
+
+        if ($lastSlashPosition !== false) {
+            $scriptNameSliced = substr($scriptName, 0, $lastSlashPosition);
+        }
+        
+        $final= $scriptNameSliced . "/assets/". $path;
+        return $final;
     }
 }

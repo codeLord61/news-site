@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core;
+namespace app\core;
 
 class Router
 {
@@ -19,42 +19,52 @@ class Router
     public function resolve()
     {
         $method = $_SERVER['REQUEST_METHOD'];
-        $path = $_SERVER['REQUEST_URI'] ?? '/';
+        $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 
-        // Remove query strings
-        $position = strpos($path, '?');
-        if ($position !== false) {
-            $path = substr($path, 0, $position);
-        }
+    // 1. Get the script name (e.g., /project/news/public/index.php)
+    $scriptName = $_SERVER['SCRIPT_NAME'];
 
-        // Adjust path based on your RewriteBase in .htaccess
-        $basePath = '/news-site/public';
-        if (strpos($path, $basePath) === 0) {
-            $path = substr($path, strlen($basePath));
-        }
+    // 2. Derive the base directory by removing the filename
+    // Result: /project/news/public
+    $baseDir = str_replace('\\', '/', dirname($scriptName));
 
-        if ($path === '') {
-            $path = '/';
-        }
+    // 3. Remove Query Strings (?id=123)
+    $path = parse_url($requestUri, PHP_URL_PATH);
 
-        $callback = $this->routes[$method][$path] ?? false;
+    // 4. Universal Cleanup: Remove the base directory from the start of the path
+    if ($baseDir !== '/' && strpos($path, $baseDir) === 0) {
+        $path = substr($path, strlen($baseDir));
+    }
 
-        if ($callback === false) {
-            http_response_code(404);
-            echo "404 Not Found";
-            exit;
-        }
+    // 5. Final Sanitization
+    // Remove "index.php" if it was explicitly typed in the URL
+    $path = str_replace('/index.php', '', $path);
+    
+    // Ensure it starts with / and isn't empty
+    $path = '/' . ltrim($path, '/');
 
-        if (is_string($callback)) {
-            // Can render view directly if callback is a string
-            return App::view($callback);
-        }
+    // DEBUG (Remove these once working)
+    // var_dump("Final Route Path: " . $path); 
 
-        if (is_array($callback)) {
-            $controller = new $callback[0]();
-            $callback[0] = $controller;
-        }
+    $callback = $this->routes[$method][$path] ?? false;
 
-        return call_user_func($callback);
+    if ($callback === false) {
+        http_response_code(404);
+        echo "404 Not Found";
+        exit;
+    }
+
+    // Handle string callbacks (views)
+    if (is_string($callback)) {
+        return App::view($callback);
+    }
+
+    // Handle array callbacks ([Controller, Method])
+    if (is_array($callback)) {
+        $controller = new $callback[0]();
+        $callback[0] = $controller;
+    }
+
+    return call_user_func($callback);
     }
 }

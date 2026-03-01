@@ -10,3 +10,5 @@ public/assets/css/styles.css
 # OS
 .DS_Store
 Thumbs.db
+
+/vendor/

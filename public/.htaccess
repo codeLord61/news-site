@@ -14,8 +14,6 @@ Options All -Indexes
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteBase /news-site/public/
-
     # Deny Access to Hidden Files and Directories (.git, .htaccess, etc.)
     RewriteCond %{SCRIPT_FILENAME} -d [OR]
     RewriteCond %{SCRIPT_FILENAME} -f

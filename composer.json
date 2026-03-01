@@ -1,0 +1,10 @@
+{
+    "name": "user/news",
+    "autoload": {
+        "psr-4": {
+            "User\\News\\": "src/",
+            "app\\": "app/"
+        }
+    },
+    "require": {}
+}
