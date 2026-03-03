@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – YourProduct</title>
+<link rel="stylesheet" href="./../public/assets/css/styles.css">
+  <!-- <script src="https://cdn.tailwindcss.com"></script> preview only -->
+</head>
+<body class="bg-neutral-100 min-h-screen">
+
+  <div class="flex h-screen">
+
+    <!-- Sidebar -->
+    <aside class="hidden md:block w-64 bg-neutral-900 text-neutral-200 flex-shrink-0 border-r border-neutral-800">
+      <div class="p-6 text-2xl font-bold text-primary-400">YourProduct</div>
+      <nav class="mt-6 px-3 space-y-1">
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-800 text-white">
+          <span>🏠</span> Dashboard
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-neutral-800 transition">
+          <span>📊</span> Analytics
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-neutral-800 transition">
+          <span>👥</span> Users
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-neutral-800 transition">
+          <span>⚙️</span> Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+      <!-- Topbar -->
+      <header class="bg-white border-b border-neutral-200 px-6 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-semibold text-neutral-900">Dashboard</h1>
+        <div class="flex items-center gap-4">
+          <button class="text-neutral-600 hover:text-primary-600">Welcome, Mahin</button>
+          <div class="w-10 h-10 rounded-full bg-primary-600 text-white flex items-center justify-center font-medium">M</div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="flex-1 overflow-y-auto p-6">
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm">
+            <p class="text-sm text-neutral-500 uppercase tracking-wide">Total Revenue</p>
+            <p class="text-3xl font-bold text-neutral-900 mt-2">$48,320</p>
+            <p class="text-sm text-success-600 mt-1">+12.5% from last month</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm">
+            <p class="text-sm text-neutral-500 uppercase tracking-wide">Active Users</p>
+            <p class="text-3xl font-bold text-neutral-900 mt-2">2,481</p>
+            <p class="text-sm text-info-600 mt-1">↑ 8.2% growth</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm">
+            <p class="text-sm text-neutral-500 uppercase tracking-wide">Conversion Rate</p>
+            <p class="text-3xl font-bold text-neutral-900 mt-2">4.8%</p>
+            <p class="text-sm text-warning-600 mt-1">Needs attention</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm">
+            <p class="text-sm text-neutral-500 uppercase tracking-wide">Open Issues</p>
+            <p class="text-3xl font-bold text-neutral-900 mt-2">17</p>
+            <p class="text-sm text-error-600 mt-1">↓ 3 since yesterday</p>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="mt-10 bg-white rounded-xl border border-neutral-200 shadow-sm overflow-hidden">
+          <div class="px-6 py-5 border-b border-neutral-200">
+            <h2 class="text-lg font-semibold text-neutral-900">Recent Activity</h2>
+          </div>
+          <div class="divide-y divide-neutral-100">
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div>
+                <p class="font-medium text-neutral-900">New user registration</p>
+                <p class="text-sm text-neutral-500">Sarah J. signed up • 2 min ago</p>
+              </div>
+              <span class="text-success-600 text-sm font-medium">+1 User</span>
+            </div>
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div>
+                <p class="font-medium text-neutral-900">Payment received</p>
+                <p class="text-sm text-neutral-500">$99 • Pro Plan • 18 min ago</p>
+              </div>
+              <span class="text-success-600 text-sm font-medium">Success</span>
+            </div>
+            <!-- Add 3–4 more rows as needed -->
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+</body>
+</html>

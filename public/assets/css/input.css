@@ -5,12 +5,83 @@
 */
 @import "tailwindcss";
 
-/* ============================================================
-   CUSTOM THEME TOKENS (replaces tailwind.config.js in v4)
-   ============================================================ */
+
 @theme {
-    /* Custom Bangla font family — used in about.html via font-bangla */
+    /* Bangla font*/
     --font-bangla: "Noto Sans Bengali", "SolaimanLipi", sans-serif;
+
+    /* Colors */
+    --color-neutral-50: #FAFAFA;
+    --color-neutral-100: #f5f5f5;
+    --color-neutral-200: #e5e5e5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-400: #a3a3a3;
+    --color-neutral-500: #737373;
+    --color-neutral-600: #525252;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+    --color-neutral-950: #0A0A0A;
+
+    --color-primary-50: #E5F7F4;
+    --color-primary-100: #CCF0E9;
+    --color-primary-200: #99E2D4;
+    --color-primary-300: #66D3BF;
+    --color-primary-400: #32C5AA;
+    --color-primary-500: #00B795;
+    --color-primary-600: #00A486;
+    --color-primary-700: #008068;
+    --color-primary-800: #005B4A;
+    --color-primary-900: #00362C;
+    --color-primary-950: #00120E;
+
+    --color-success-50: #00120E;
+    --color-success-100: #DCFCE7;
+    --color-success-200: #BBF7D0;
+    --color-success-300: #86EFAC;
+    --color-success-400: #4ADE80;
+    --color-success-500: #22C55E;
+    --color-success-600: #16A34A;
+    --color-success-700: #15803D;
+    --color-success-800: #166534;
+    --color-success-900: #14532D;
+    --color-success-950: #052E16;
+
+    --color-info-50:  #EFF6FF;
+    --color-info-100: #DBEAFE;
+    --color-info-200: #BFDBFE;
+    --color-info-300: #93C5FD;
+    --color-info-400: #60A5FA;
+    --color-info-500: #3B82F6;
+    --color-info-600: #2563EB;
+    --color-info-700: #1D4ED8;
+    --color-info-800: #1E40AF;
+    --color-info-900: #1E3A8A;
+    --color-info-950: #172554;
+
+    --color-warning-50:  #FEFCE8;
+    --color-warning-100: #FEF9C3;
+    --color-warning-200: #FEF08A;
+    --color-warning-300: #FDE047;
+    --color-warning-400: #FACC15;
+    --color-warning-500: #EAB308;
+    --color-warning-600: #CA8A04;
+    --color-warning-700: #A16207;
+    --color-warning-800: #854D0E;
+    --color-warning-900: #713F12;
+    --color-warning-950: #422006;
+
+    --color-error-50:  #FEF2F2;
+    --color-error-100: #FEE2E2;
+    --color-error-200: #FECACA;
+    --color-error-300: #FCA5A5;
+    --color-error-400: #F87171;
+    --color-error-500: #EF4444;
+    --color-error-600: #DC2626;
+    --color-error-700: #B91C1C;
+    --color-error-800: #991B1B;
+    --color-error-900: #7F1D1D;
+    --color-error-950: #450A0A;
 }
 
 /* ============================================================
