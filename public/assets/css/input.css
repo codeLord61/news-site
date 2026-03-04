@@ -82,6 +82,9 @@
     --color-error-800: #991B1B;
     --color-error-900: #7F1D1D;
     --color-error-950: #450A0A;
+
+    /* Login page image */
+    --image-login: url('../images/istockphoto-1219980553-612x612.jpg');
 }
 
 /* ============================================================
