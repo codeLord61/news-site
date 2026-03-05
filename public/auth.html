@@ -26,7 +26,7 @@
                 <div class="w-full max-w-md">
 
                     <!-- Signup form -->
-                    <form id="signupForm" action="" class="space-y-6 auth-form ">
+                    <form id="signupForm" action="register.php" class="space-y-6 auth-form ">
                         <div class="text-center">
                             <!-- Title -->
                             <h1 class="md:text-4xl text-3xl font-bold text-primary-600">
@@ -42,7 +42,8 @@
                                 class="border border-neutral-300 w-full px-4 py-3 rounded-lg  focus:ring-2 focus:ring-primary-200 outline-none transition"
                                 placeholder="Your name.."
                                 required
-                                id="fullname">
+                                id="fullname"
+                                name="fullname">
                             </div>
                             <div>
                                 <label for="email" class="block text-sm font-medium text-neutral-700 mb-1.5">Email</label>
@@ -51,7 +52,7 @@
                                 placeholder="johndoe@gmail.com"
                                 required
                                 id="email"
-                                >
+                                name="email">
                             </div>
                             <div class="relative">
                                 <!-- "block text-sm font-medium text-neutral-700 mb-1.5" -->
@@ -61,10 +62,11 @@
                                 class="border border-neutral-300 w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary-200 outline-none transition pr-11"
                                 placeholder="••••••••"
                                 required
+                                name="password"
                                 >
                                 <button 
                                 type="button"
-                                class="absolute right-4 top-10 text-neutral-500 hover:text-primary-600"
+                                class="absolute right-4 top-10 text-neutral-500 hover:text-primary-600 cursor-pointer"
                                 onclick="togglePassword('signupPassword', 'signupEye')"
                                 ><i id="signupEye" class="fa-solid fa-eye"></i>
                                 </button>
@@ -73,27 +75,25 @@
 
                         <!-- Signup button -->
                         <button
-                        type="submit"
-            
-                        class="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 font-bold transition"
+                        type="submit"  
+                        class="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 font-bold transition cursor-pointer"
+                        name="submit"
                         >
                         Sign Up
                         </button>
 
                         <!-- Switch to login -->
-                        <!-- text-center text-sm text-neutral-600 mt-6 -->
-                        <!-- text-primary-600 hover:text-primary-700 font-medium -->
                         <p class="text-sm text-center text-neutral-600 mt-6">
                             Already have an account ?
                             <button type="button"
-                            class="text-primary-600 font-medium hover:text-primary-700"
+                            class="text-primary-600 font-medium hover:text-primary-700 cursor-pointer"
                             onclick="switchForm('login')"
                             >Log in</button>
                         </p>
                     </form>
 
                     <!-- Login form -->
-                    <form id="loginForm" action="" class="space-y-6 auth-form hidden">
+                    <form id="loginForm" method="post" action="login.php" class="space-y-6 auth-form hidden">
                         <div class="text-center mb-8">
                             <!-- Title -->
                             <h1 class="md:text-4xl text-3xl font-bold text-primary-600">
@@ -111,42 +111,43 @@
                                 placeholder="johndoe@gmail.com"
                                 required
                                 id="email"
+                                name="email"
                                 >
                             </div>
                             <div class="relative">
                                 <!-- "block text-sm font-medium text-neutral-700 mb-1.5" -->
                                 <label for="loginPassword" class="block text-sm font-medium text-neutral-700 mb-1.5">Password</label>
                                 <input type="password"
-                                id="signupPassword"
+                                id="loginPassword"
                                 class="border border-neutral-300 w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary-200 outline-none transition pr-11"
                                 placeholder="••••••••"
                                 required
+                                name="password"
                                 >
                                 <button 
                                 type="button"
-                                class="absolute right-4 top-10 text-neutral-500 hover:text-primary-600"
+                                class="absolute right-4 top-10 text-neutral-500 hover:text-primary-600 cursor-pointer"
                                 onclick="togglePassword('loginPassword', 'loginEye')"
                                 ><i id="loginEye" class="fa-solid fa-eye"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Signup button -->
+                        <!-- Login button -->
                         <button
                         type="submit"
             
-                        class="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 font-bold transition"
+                        class="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 font-bold transition cursor-pointer"
+                        name="submit"
                         >
                         Log In
                         </button>
 
-                        <!-- Switch to login -->
-                        <!-- text-center text-sm text-neutral-600 mt-6 -->
-                        <!-- text-primary-600 hover:text-primary-700 font-medium -->
+                        <!-- Switch to Signup -->
                         <p class="text-sm text-center text-neutral-600 mt-6">
                             No account yet?
-                            <button type="button"
-                            class="text-primary-600 font-medium hover:text-primary-700"
+                            <button type="submit"
+                            class="text-primary-600 font-medium hover:text-primary-700 cursor-pointer"
                             onclick="switchForm('signup')"
                             >Sign up</button>
                         </p>
@@ -154,21 +155,7 @@
                 </div>
             </div>
         </div>
-    <script>
-        function switchForm(target) {
-            // Get all elements with class .auth-form (basically signup and form)
-            // Add hidden class to both of them
-            document.querySelectorAll('.auth-form').forEach(f => {
-                f.classList.add('hidden');
-            })
-            
-            // Remove hidden class from target form to Display that form
-            document.getElementById(target + 'Form').classList.remove('hidden');
-
-        }
-
-
-    </script>
+    <script src="assets/js/auth.js"></script>
 </body>
 
 </html>
