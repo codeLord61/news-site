@@ -14,6 +14,9 @@ Options All -Indexes
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Ensure Authorization header is passed to PHP
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # Deny Access to Hidden Files and Directories (.git, .htaccess, etc.)
     RewriteCond %{SCRIPT_FILENAME} -d [OR]
     RewriteCond %{SCRIPT_FILENAME} -f

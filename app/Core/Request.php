@@ -33,6 +33,18 @@ class Request
     public function getBody()
     {
         $body = [];
+
+        // Check if the request is JSON
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+        if (strpos($contentType, 'application/json') !== false) {
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+            if (is_array($data)) {
+                $body = $data;
+            }
+            return $body;
+        }
+
         if ($this->getMethod() === 'get') {
             foreach ($_GET as $key => $value) {
                 $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -44,5 +56,36 @@ class Request
             }
         }
         return $body;
+    }
+
+    public function getHeader($name)
+    {
+        // For compatibility with nginx or other web servers
+        // $headers = function_exists('apache_request_headers') ? apache_request_headers() : [];
+        $headers = apache_request_headers();
+        if (!$headers) {
+            foreach ($_SERVER as $key => $value) {
+                if (str_starts_with($key, 'HTTP_')) {
+                    $headerName = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+                    $headers[$headerName] = $value;
+                }
+            }
+        }
+        $name = strtolower($name);
+        foreach ($headers as $key => $value) {
+            if (strtolower($key) === $name) {
+                return $value;
+            }
+        }
+        return null;
+    }
+
+    public function getBearerToken()
+    {
+        $header = $this->getHeader('Authorization');
+        if ($header && preg_match('/Bearer\s(\S+)/', $header, $matches)) {
+            return $matches[1];
+        }
+        return null;
     }
 }

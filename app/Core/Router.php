@@ -42,8 +42,14 @@ class Router
         if (is_array($callback)) {
             // Instantiate the controller
             $controllerName = $callback[0];
+            /** @var Controller $controller */
             $controller = new $controllerName();
+            $controller->action = $callback[1];
             $callback[0] = $controller;
+
+            foreach ($controller->getMiddlewares() as $middleware) {
+                $middleware->execute($this->request, $this->response, $controller->action);
+            }
         }
 
         return call_user_func($callback, $this->request, $this->response);

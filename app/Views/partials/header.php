@@ -34,10 +34,43 @@
                         <span class="text-xs font-bold">Bangla</span>
                     </button>
 
-                    <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+                    <a href="/news-site/public/auth" id="headerLoginBtn" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 block">
                         <i class="fa-solid fa-user"></i><span
                             class="hidden md:inline md:text-xs md:font-bold">Login</span>
+                    </a>
+
+                    <button id="headerLogoutBtn" style="display: none;" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 block">
+                        <i class="fa-solid fa-sign-out-alt"></i><span
+                            class="hidden md:inline md:text-xs md:font-bold">Logout</span>
                     </button>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            const loginBtn = document.getElementById('headerLoginBtn');
+                            const logoutBtn = document.getElementById('headerLogoutBtn');
+                            const token = localStorage.getItem('auth_token');
+
+                            if (token) {
+                                loginBtn.style.display = 'none';
+                                logoutBtn.style.display = 'block';
+                            }
+
+                            logoutBtn.addEventListener('click', async () => {
+                                try {
+                                    await fetch("/news-site/public/api/v1/logout", {
+                                        method: "POST",
+                                        headers: {
+                                            "Authorization": "Bearer " + token
+                                        }
+                                    });
+                                } catch (e) {
+                                    console.error("Logout failed network", e);
+                                }
+                                localStorage.removeItem('auth_token');
+                                location.reload();
+                            });
+                        });
+                    </script>
 
                     <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
                         <i class="fa-solid fa-bars"></i>
