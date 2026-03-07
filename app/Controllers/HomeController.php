@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\core\controller;
+use app\core\Controller;
 
 class HomeController extends Controller
 {
@@ -146,16 +146,9 @@ class HomeController extends Controller
             ]
         ];
 
-        $data = [
+        return $this->render('home', [
             'title' => 'The Daily News - Home',
             'articles' => $articles
-        ];
-
-        // Renders app/views/home.php inside the main.php layout
-        $this->view('home', $data);
-    }
-
-    public function about(){
-        
+        ]);
     }
 }

@@ -1,56 +1,82 @@
 <?php
+
 namespace app\core;
 
-use app\controllers\HomeController;
+use Dotenv\Dotenv;
+use Exception;
 
 class App
 {
-    public static string $basePath;
-    public static Router $router;
+    public static App $app;
+    public Router $router;
+    public Request $request;
+    public Response $response;
 
-    public function __construct($basePath)
+    public static string $ROOT_DIR;
+
+    public function __construct($rootPath)
     {
-        self::$basePath = $basePath;
+        self::$ROOT_DIR = $rootPath;
+        self::$app = $this;
+
+        // 1. Load Environment Variables (.env)
+        if (file_exists(dirname(__DIR__, 2) . '/.env')) {
+            $dotenv = Dotenv::createImmutable(dirname(__DIR__, 2));
+            $dotenv->load();
+        }
+
+        // 2. Initialize Core Components
+        $this->request = new Request();
+        $this->response = new Response();
+        $this->router = new Router($this->request, $this->response);
+
+        // 3. Register Routes (We will build this file soon)
+        if (file_exists(dirname(__DIR__, 2) . '/routes/web.php')) {
+            require_once dirname(__DIR__, 2) . '/routes/web.php';
+        }
+        if (file_exists(dirname(__DIR__, 2) . '/routes/api.php')) {
+            require_once dirname(__DIR__, 2) . '/routes/api.php';
+        }
     }
 
-    public static function run()
+    /**
+     * The heart of the application. 
+     * It resolves the route and sends the output to the browser.
+     */
+    public function run(): void
     {
-        self::$router = new Router();
-        // self::$basePath = dirname(__DIR__);
-        // routes
-        self::loadRoutes();
+        try {
+            // Tell the router to look at the current URI and find a match
+            echo $this->router->resolve();
+        }
+        catch (Exception $e) {
+            // Global Error Handling
+            $this->response->setStatusCode((int)$e->getCode() ?: 500);
 
-        // Resolve
-        echo self::$router->resolve();
+            // Output a basic error message if _error view is missing
+            if (file_exists(self::$ROOT_DIR . '/app/Views/_error.php')) {
+                echo(new View())->renderView('_error', ['exception' => $e]);
+            }
+            else {
+                echo "<h1>An error occurred</h1>";
+                echo "<p>" . $e->getMessage() . "</p>";
+            }
+        }
     }
 
-    private static function loadRoutes()
-    {
-
-        self::$router->get('/', [HomeController::class, 'index']);
-        self::$router->get('/about', [HomeController::class, 'about']);
-    }
-
-    public static function view($view, $data = [])
-    {
-        $controller = new Controller();
-
-        extract($data);
-        ob_start();
-        require __DIR__ . "/../views/{$view}.php";
-        $content = ob_get_clean();
-        require __DIR__ . "/../views/layouts/main.php";
-    }
     public static function assetPath($path)
     {
-        $scriptName        = $_SERVER['SCRIPT_NAME'];
+        $scriptName = $_SERVER['SCRIPT_NAME'];
         $lastSlashPosition = strrpos($scriptName, '/');
 
         if ($lastSlashPosition !== false) {
             $scriptNameSliced = substr($scriptName, 0, $lastSlashPosition);
         }
-        
-        $final= $scriptNameSliced . "/assets/". $path;
+        else {
+            $scriptNameSliced = '';
+        }
+
+        $final = $scriptNameSliced . "/assets/" . $path;
         return $final;
     }
 }
