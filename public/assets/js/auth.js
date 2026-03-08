@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         // The URL depends on how your local environment is set up.
         // It should match the API route mapped in routes/api.php
-        const response = await fetch("/news-site/public/api/v1/login", {
+        const response = await fetch("/project/news/public/api/v1/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
           alert(result.message || "Login successful!");
 
           // Redirect back to homepage
-          window.location.href = "/news-site/public/";
+          window.location.href = "/project/news/public/";
         } else {
           alert("Login failed: " + (result.error || "Unknown error"));
         }
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = Object.fromEntries(formData.entries());
 
       try {
-        const response = await fetch("/news-site/public/api/v1/register", {
+        const response = await fetch("/project/news/public/api/v1/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

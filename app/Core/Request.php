@@ -8,7 +8,7 @@ class Request
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $scriptUrl = $_SERVER['SCRIPT_NAME'];
-
+        
         // Handle paths when app is nested in a directory like /news-site/public/
         if (strpos($path, dirname($scriptUrl)) === 0) {
             $path = substr($path, strlen(dirname($scriptUrl)));

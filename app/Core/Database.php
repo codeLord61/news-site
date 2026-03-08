@@ -37,25 +37,37 @@ class Database
 
         $newMigrations = [];
         $files = scandir(App::$ROOT_DIR . '/database/migrations');
+        // [., .., '001_create_roles_table.php', '002_create_users_table.php']
         $toApplyMigrations = array_diff($files, $appliedMigrations);
+        // echo "\$toApplyMigrations: ". PHP_EOL;
+        // var_dump($toApplyMigrations);
 
         foreach ($toApplyMigrations as $migration) {
             if ($migration === '.' || $migration === '..') {
                 continue;
             }
-
+            // $migration = "001_create_roles_table.php"
             require_once App::$ROOT_DIR . '/database/migrations/' . $migration;
+            
+            // "001_create_roles_table"
             $className = pathinfo($migration, PATHINFO_FILENAME);
 
-            // Convert something like 001_create_roles_table to CreateRolesTable
+            // --Convert something like 001_create_roles_table to CreateRolesTable--
+            // [001, create, roles, table]
             $classNameParts = explode('_', $className);
+            
+            // [create, roles, table]
             array_shift($classNameParts); // remove 001
+            
+            // "CreateRolesTable"
             $classNameStr = implode('', array_map('ucfirst', $classNameParts));
 
             $instance = new $classNameStr();
             $this->log("Applying migration $migration");
             $instance->up($this->pdo);
             $this->log("Applied migration $migration");
+
+            // newMigrations = ["001_create_roles_table.php", "002_create_users_table.php" , ...] After end of for loop
             $newMigrations[] = $migration;
         }
 
@@ -85,7 +97,8 @@ class Database
     }
 
     protected function saveMigrations(array $migrations)
-    {
+    {   
+        // "('001_create_roles_table.php'),('002_create_users_table.php'),('003_create_personal_access_tokens_table.php')"
         $str = implode(",", array_map(fn($m) => "('$m')", $migrations));
         $statement = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES 
             $str
@@ -94,7 +107,8 @@ class Database
     }
 
     protected function log($message)
-    {
+    {   
+        // [2026-03-08 15:11:51] - Applying migration 001_create_roles_table.php
         echo '[' . date('Y-m-d H:i:s') . '] - ' . $message . PHP_EOL;
     }
 }

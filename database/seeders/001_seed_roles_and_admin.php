@@ -5,11 +5,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use app\core\App;
 use app\core\Database;
 
-// Boot application to access environment
 $app = new App(dirname(__DIR__, 2));
 $db = new Database();
 
-// 1. Seed Roles
+// Seed Roles
 $roles = [
     ['Admin', 'Full system access'],
     ['Editor', 'Content moderation, scheduling news and approve/reject news'],
@@ -23,7 +22,7 @@ foreach ($roles as $role) {
     $stmt->execute([$role[0], $role[1]]);
 }
 
-// 2. Seed Admin User
+//  Seed Admin User
 $stmt = $db->pdo->prepare("SELECT id FROM roles WHERE name = 'Admin'");
 $stmt->execute();
 $adminRole = $stmt->fetchColumn();
