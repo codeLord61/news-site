@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 25, 2026 at 08:45 PM
--- Server version: 8.4.3
--- PHP Version: 8.5.1
+-- Generation Time: Mar 10, 2026 at 10:28 AM
+-- Server version: 8.0.44
+-- PHP Version: 8.3.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `packly_news`
+-- Database: `packly_news_master`
 --
 
 -- --------------------------------------------------------
@@ -89,7 +89,8 @@ CREATE TABLE `categories` (
   `id` int NOT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `slug` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `parent_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -201,9 +202,9 @@ CREATE TABLE `users_follow_categories` (
 ALTER TABLE `articles`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `slug` (`slug`),
-  ADD FULLTEXT KEY `ft_articles_search` (`title`,`content`),
   ADD KEY `fk_articles_reporter` (`reporter_id`),
   ADD KEY `fk_articles_editor` (`managed_by`);
+ALTER TABLE `articles` ADD FULLTEXT KEY `ft_articles_search` (`title`,`content`);
 
 --
 -- Indexes for table `articles_categories`
