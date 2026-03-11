@@ -4,11 +4,37 @@ namespace app\core;
 
 class Request
 {
+    protected array $routeParams = [];
+
+    public function setRouteParams(array $params): void
+    {
+        $this->routeParams = $params;
+    }
+
+    public function getRouteParam(string $name, $default = null)
+    {
+        return $this->routeParams[$name] ?? $default;
+    }
+
+    public function getRouteParams(): array
+    {
+        return $this->routeParams;
+    }
+
+    public function getQueryParams(): array
+    {
+        $params = [];
+        foreach ($_GET as $key => $value) {
+            $params[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        return $params;
+    }
+
     public function getPath()
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $scriptUrl = $_SERVER['SCRIPT_NAME'];
-        
+
         // Handle paths when app is nested in a directory like /news-site/public/
         if (strpos($path, dirname($scriptUrl)) === 0) {
             $path = substr($path, strlen(dirname($scriptUrl)));

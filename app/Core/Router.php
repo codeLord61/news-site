@@ -28,7 +28,31 @@ class Router
     {
         $path = $this->request->getPath();
         $method = $this->request->getMethod();
+
+        // 1) Try exact (static) match first
         $callback = $this->routes[$method][$path] ?? false;
+
+        // 2) If no static match, try dynamic routes with {param} placeholders
+        if ($callback === false && isset($this->routes[$method])) {
+            foreach ($this->routes[$method] as $route => $cb) {
+                // Only test routes that contain a placeholder
+                if (strpos($route, '{') === false) {
+                    continue;
+                }
+
+                // Convert /api/v1/articles/{slug} → regex
+                $pattern = preg_replace('/\{([a-zA-Z_]+)\}/', '(?P<$1>[a-zA-Z0-9_-]+)', $route);
+                $pattern = '#^' . $pattern . '$#';
+
+                if (preg_match($pattern, $path, $matches)) {
+                    // Store matched params on the request
+                    $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+                    $this->request->setRouteParams($params);
+                    $callback = $cb;
+                    break;
+                }
+            }
+        }
 
         if ($callback === false) {
             $this->response->setStatusCode(404);
