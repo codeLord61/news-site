@@ -3,7 +3,33 @@
 namespace app\core;
 
 class Request
-{
+{   
+    protected array $routeParams = [];
+
+    public function setRouteParams(array $params): void
+    {
+        $this->routeParams = $params;
+    }
+
+    public function getRouteParam(string $name, $default = null)
+    {
+        return $this->routeParams[$name] ?? $default;
+    }
+
+    public function getRouteParams(): array
+    {
+        return $this->routeParams;
+    }
+
+    public function getQueryParams(): array
+    {
+        $params = [];
+        foreach ($_GET as $key => $value) {
+            $params[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        return $params;
+    }
+    
     public function getPath()
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
