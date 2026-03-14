@@ -165,6 +165,84 @@ class Article extends Model
     }
 
     /**
+     * Get the latest N published articles (regardless of category).
+     * Used for the hero section on the homepage.
+     */
+    public function getLatest(int $limit): array
+    {
+        $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.published_at, a.view_count,
+                       u.name AS reporter_name, u.username AS reporter_username,
+                       (SELECT m.file_url FROM medias m
+                        INNER JOIN articles_medias am ON m.id = am.media_id
+                        WHERE am.article_id = a.id
+                        ORDER BY m.id ASC LIMIT 1) AS thumbnail
+                FROM articles a
+                LEFT JOIN users u ON a.reporter_id = u.id
+                WHERE a.status = 'published' AND a.deleted_at IS NULL
+                ORDER BY a.published_at DESC
+                LIMIT ?";
+
+        $stmt = $this->db()->prepare($sql);
+        $stmt->bindValue(1, $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $articles = [];
+        foreach ($rows as $row) {
+            $row['categories'] = $this->getCategoriesForArticle($row['id']);
+            $row['reporter'] = [
+                'name' => $row['reporter_name'],
+                'username' => $row['reporter_username'],
+            ];
+            unset($row['reporter_name'], $row['reporter_username']);
+            $articles[] = $row;
+        }
+
+        return $articles;
+    }
+
+    /**
+     * Get published articles for a specific category.
+     * Used for category sections on the homepage.
+     */
+    public function getPublishedByCategory(int $categoryId, int $limit): array
+    {
+        $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.published_at, a.view_count,
+                       u.name AS reporter_name, u.username AS reporter_username,
+                       (SELECT m.file_url FROM medias m
+                        INNER JOIN articles_medias am ON m.id = am.media_id
+                        WHERE am.article_id = a.id
+                        ORDER BY m.id ASC LIMIT 1) AS thumbnail
+                FROM articles a
+                INNER JOIN articles_categories ac ON a.id = ac.article_id
+                LEFT JOIN users u ON a.reporter_id = u.id
+                WHERE ac.category_id = ?
+                  AND a.status = 'published'
+                  AND a.deleted_at IS NULL
+                ORDER BY a.published_at DESC
+                LIMIT ?";
+
+        $stmt = $this->db()->prepare($sql);
+        $stmt->bindValue(1, $categoryId, \PDO::PARAM_INT);
+        $stmt->bindValue(2, $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $articles = [];
+        foreach ($rows as $row) {
+            $row['categories'] = $this->getCategoriesForArticle($row['id']);
+            $row['reporter'] = [
+                'name' => $row['reporter_name'],
+                'username' => $row['reporter_username'],
+            ];
+            unset($row['reporter_name'], $row['reporter_username']);
+            $articles[] = $row;
+        }
+
+        return $articles;
+    }
+
+    /**
      * Get categories associated with an article.
      */
     public function getCategoriesForArticle(int $articleId): array
