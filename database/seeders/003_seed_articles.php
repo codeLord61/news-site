@@ -8,7 +8,7 @@ use app\core\Database;
 $app = new App(dirname(__DIR__, 2));
 $db = new Database();
 
-// Seed Tags
+// ----- Seed Tags -----
 $tags = [
     ['name' => 'Breaking News', 'slug' => 'breaking-news'],
     ['name' => 'Analysis', 'slug' => 'analysis'],
@@ -25,10 +25,10 @@ $tagStmt = $db->pdo->prepare("INSERT IGNORE INTO tags (name, slug) VALUES (?, ?)
 foreach ($tags as $tag) {
     $tagStmt->execute([$tag['name'], $tag['slug']]);
 }
-echo "Tags seeded! (". count($tags). " tags)\n";
+echo "Tags seeded! (" . count($tags) . " tags)\n";
 
-// Get admin id
-$stmt = $db->pdo->prepare("SELECT id FROM users WHERE username='admin'");
+// ----- Get reporter user (admin for now) -----
+$stmt = $db->pdo->prepare("SELECT id FROM users LIMIT 1");
 $stmt->execute();
 $reporterId = $stmt->fetchColumn();
 
@@ -37,7 +37,7 @@ if (!$reporterId) {
     exit(1);
 }
 
-//  Get category IDs
+// ----- Fetch category IDs -----
 $catStmt = $db->pdo->prepare("SELECT id, slug FROM categories");
 $catStmt->execute();
 $categoryMap = [];
@@ -67,6 +67,7 @@ $articles = [
         'view_count' => 4520,
         'categories' => ['bangladesh', 'business'],
         'tags' => ['breaking-news', 'economy'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Tech Giants Report Record Quarterly Earnings',
@@ -78,6 +79,7 @@ $articles = [
         'view_count' => 3870,
         'categories' => ['technology', 'business'],
         'tags' => ['analysis', 'economy'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'National Football Team Secures Historic World Cup Qualification',
@@ -89,6 +91,7 @@ $articles = [
         'view_count' => 8920,
         'categories' => ['sports', 'football'],
         'tags' => ['breaking-news'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Breakthrough AI Model Can Predict Natural Disasters 72 Hours Early',
@@ -100,6 +103,7 @@ $articles = [
         'view_count' => 6340,
         'categories' => ['technology', 'international'],
         'tags' => ['analysis', 'breaking-news'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Global Climate Summit Reaches Historic Carbon Reduction Agreement',
@@ -111,6 +115,7 @@ $articles = [
         'view_count' => 5180,
         'categories' => ['international'],
         'tags' => ['breaking-news', 'climate'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Central Bank Holds Interest Rates Steady Amid Inflation Concerns',
@@ -122,6 +127,7 @@ $articles = [
         'view_count' => 2890,
         'categories' => ['business', 'bangladesh'],
         'tags' => ['analysis', 'economy'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'New Study Links Sleep Quality to Long-Term Heart Health',
@@ -133,6 +139,7 @@ $articles = [
         'view_count' => 3210,
         'categories' => ['lifestyle', 'international'],
         'tags' => ['analysis'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Award-Winning Director Announces New Film Based on True Events',
@@ -144,6 +151,7 @@ $articles = [
         'view_count' => 4100,
         'categories' => ['entertainment'],
         'tags' => ['investigation'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1524850011238-e3d235c7d4c9?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Youth Entrepreneurs Leading the Next Wave of Bangladeshi Startups',
@@ -155,6 +163,7 @@ $articles = [
         'view_count' => 2450,
         'categories' => ['youth', 'technology', 'bangladesh'],
         'tags' => ['startup', 'economy'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Opposition Party Demands Parliamentary Inquiry into Budget Spending',
@@ -166,6 +175,7 @@ $articles = [
         'view_count' => 3680,
         'categories' => ['bangladesh', 'opinion'],
         'tags' => ['investigation', 'breaking-news'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Cricket World Cup Semi-Final Preview: Key Matchups to Watch',
@@ -177,6 +187,7 @@ $articles = [
         'view_count' => 7500,
         'categories' => ['sports', 'cricket'],
         'tags' => ['analysis'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'SpaceX Successfully Launches Largest Satellite Constellation Ever',
@@ -188,6 +199,7 @@ $articles = [
         'view_count' => 5640,
         'categories' => ['technology', 'international'],
         'tags' => ['breaking-news'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Local Startup Raises $20 Million to Revolutionize Food Delivery',
@@ -199,6 +211,7 @@ $articles = [
         'view_count' => 1950,
         'categories' => ['business', 'technology'],
         'tags' => ['startup'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'New Gadget Lineup Features Revolutionary Battery Technology',
@@ -210,6 +223,7 @@ $articles = [
         'view_count' => 4800,
         'categories' => ['technology', 'gadgets'],
         'tags' => ['breaking-news', 'analysis'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Iran Nuclear Talks Enter Critical Phase as Deadline Looms',
@@ -221,6 +235,7 @@ $articles = [
         'view_count' => 2780,
         'categories' => ['international'],
         'tags' => ['iran', 'war', 'breaking-news'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Upcoming Elections: A Deep Dive into Key Policy Differences',
@@ -232,6 +247,7 @@ $articles = [
         'view_count' => 6100,
         'categories' => ['bangladesh', 'opinion'],
         'tags' => ['elections', 'analysis'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'Massive Coral Reef Recovery Observed in Protected Marine Zones',
@@ -243,6 +259,7 @@ $articles = [
         'view_count' => 3400,
         'categories' => ['international', 'lifestyle'],
         'tags' => ['climate'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1582967788606-a171c1080cb0?q=80&w=600&auto=format&fit=crop',
     ],
     [
         'title' => 'War in Eastern Europe Escalates as New Offensive Begins',
@@ -254,6 +271,7 @@ $articles = [
         'view_count' => 7200,
         'categories' => ['international'],
         'tags' => ['war', 'breaking-news'],
+        'thumbnail' => 'https://images.unsplash.com/photo-1567521464027-f127ff144326?q=80&w=600&auto=format&fit=crop',
     ],
     // A draft article (not published — should NOT appear in public API)
     [
@@ -266,6 +284,7 @@ $articles = [
         'view_count' => 0,
         'categories' => ['business', 'bangladesh'],
         'tags' => ['economy'],
+        'thumbnail' => null,
     ],
     // A submitted article (not published)
     [
@@ -278,6 +297,7 @@ $articles = [
         'view_count' => 0,
         'categories' => ['bangladesh', 'lifestyle'],
         'tags' => ['investigation'],
+        'thumbnail' => null,
     ],
 ];
 
@@ -289,6 +309,8 @@ $articleStmt = $db->pdo->prepare(
 
 $pivotCatStmt = $db->pdo->prepare("INSERT IGNORE INTO articles_categories (article_id, category_id) VALUES (?, ?)");
 $pivotTagStmt = $db->pdo->prepare("INSERT IGNORE INTO articles_tags (article_id, tag_id) VALUES (?, ?)");
+$mediaStmt = $db->pdo->prepare("INSERT INTO medias (file_url, media_type, alt_text, uploaded_by, created_at) VALUES (?, 'image', ?, ?, NOW())");
+$pivotMediaStmt = $db->pdo->prepare("INSERT IGNORE INTO articles_medias (article_id, media_id) VALUES (?, ?)");
 
 $inserted = 0;
 foreach ($articles as $article) {
@@ -324,8 +346,20 @@ foreach ($articles as $article) {
                 $pivotTagStmt->execute([$articleId, $tagMap[$tagSlug]]);
             }
         }
+        // Link media (thumbnail)
+        if (!empty($article['thumbnail'])) {
+            $mediaStmt->execute([
+                $article['thumbnail'],
+                $article['title'],
+                $reporterId,
+            ]);
+            $mediaId = $db->pdo->lastInsertId();
+            if ($mediaId) {
+                $pivotMediaStmt->execute([$articleId, $mediaId]);
+            }
+        }
         $inserted++;
     }
 }
 
-echo "Articles seeded! ($inserted articles with categories and tags linked)\n";
+echo "Articles seeded! ($inserted articles with categories, tags, and media linked)\n";
