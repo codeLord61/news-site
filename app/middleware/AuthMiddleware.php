@@ -5,7 +5,7 @@ namespace app\middleware;
 use app\core\Middleware;
 use app\core\Request;
 use app\core\Response;
-use app\core\App;
+use app\models\Token;
 
 class AuthMiddleware extends Middleware
 {
@@ -23,10 +23,8 @@ class AuthMiddleware extends Middleware
                 $response->json(['error' => 'Unauthorized: No token provided. Please include Authorization: Bearer <token>'], 401);
             }
 
-            $db = App::$app->db;
-            $stmt = $db->pdo->prepare("SELECT user_id FROM personal_access_tokens WHERE token = ? AND (expires_at IS NULL OR expires_at > NOW())");
-            $stmt->execute([$token]);
-            $tokenData = $stmt->fetch();
+            $tokenModel = new Token();
+            $tokenData = $tokenModel->findValid($token);
 
             if (!$tokenData) {
                 $response->json(['error' => 'Unauthorized: Invalid or expired token'], 401);

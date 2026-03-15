@@ -28,20 +28,20 @@ class Router
     {
         $path = $this->request->getPath();
         $method = $this->request->getMethod();
+
+        // 1) Try exact (static) match first
         $callback = $this->routes[$method][$path] ?? false;
 
-        // no callback function found then checking if there's query params
+        // 2) If no static match, try dynamic routes with {param} placeholders
         if ($callback === false && isset($this->routes[$method])) {
             foreach ($this->routes[$method] as $route => $cb) {
-                
-                // we skip api routes like /api/v1/articles/, only looking for /{slug} routes
+                // Only test routes that contain a placeholder
                 if (strpos($route, '{') === false) {
                     continue;
                 }
 
-                // Convert /api/v1/articles/{slug} to regex, becomes (?P<slug>[a-zA-Z0-9_-]+)
+                // Convert /api/v1/articles/{slug} → regex
                 $pattern = preg_replace('/\{([a-zA-Z_]+)\}/', '(?P<$1>[a-zA-Z0-9_-]+)', $route);
-                // #^/api/v1/articles/(?P<slug>[a-zA-Z0-9_-]+)$#
                 $pattern = '#^' . $pattern . '$#';
 
                 if (preg_match($pattern, $path, $matches)) {

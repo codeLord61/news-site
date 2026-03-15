@@ -3,7 +3,7 @@
 namespace app\core;
 
 class Request
-{   
+{
     protected array $routeParams = [];
 
     public function setRouteParams(array $params): void
@@ -29,12 +29,12 @@ class Request
         }
         return $params;
     }
-    
+
     public function getPath()
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $scriptUrl = $_SERVER['SCRIPT_NAME'];
-        
+
         // Handle paths when app is nested in a directory like /news-site/public/
         if (strpos($path, dirname($scriptUrl)) === 0) {
             $path = substr($path, strlen(dirname($scriptUrl)));

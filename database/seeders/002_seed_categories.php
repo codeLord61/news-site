@@ -22,7 +22,7 @@ $categories = [
 ];
 
 $stmt = $db->pdo->prepare("INSERT IGNORE INTO categories (name, slug, description) VALUES (?, ?, ?)");
-foreach ($categories as $cat) {
+foreach($categories as $cat) {
     $stmt->execute([$cat['name'], $cat['slug'], $cat['description']]);
 }
 
@@ -37,11 +37,11 @@ $techId = $parentStmt->fetchColumn();
 
 $childCategories = [];
 if ($sportsId) {
-    $childCategories[] = ['name' => 'Football', 'slug' => 'football', 'description' => 'Football news and match highlights', 'parent_id' => $sportsId];
-    $childCategories[] = ['name' => 'Cricket', 'slug' => 'cricket', 'description' => 'Cricket scores, analysis, and news', 'parent_id' => $sportsId];
+    $childCategories[] = ['name' => 'Football', 'slug' => 'football', 'description' => 'Football news', 'parent_id' => $sportsId];
+    $childCategories[] = ['name' => 'Cricket', 'slug' => 'cricket', 'description' => 'Cricket news', 'parent_id' => $sportsId];
 }
 if ($techId) {
-    $childCategories[] = ['name' => 'Gadgets', 'slug' => 'gadgets', 'description' => 'Gadget reviews and launches', 'parent_id' => $techId];
+    $childCategories[] = ['name' => 'Gadgets', 'slug' => 'gadgets', 'description' => 'Gadget reviews', 'parent_id' => $techId];
     
 }
 
@@ -50,4 +50,4 @@ foreach ($childCategories as $child) {
     $childStmt->execute([$child['name'], $child['slug'], $child['description'], $child['parent_id']]);
 }
 
-echo "Categories seeded successfully! (" . (count($categories) + count($childCategories)) . " categories)\n";
+echo "Categories seeded successfully! (". (count($categories)+ count($childCategories)). " categories)\n";

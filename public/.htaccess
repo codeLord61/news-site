@@ -29,6 +29,7 @@ Options All -Indexes
     RewriteRule ^ %1 [R=301,L]
 
     # Front Controller: Send non-existent files/folders to index.php
+    # (Must come BEFORE the .php alias rule so API routes hit the router)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [L]
@@ -37,5 +38,4 @@ Options All -Indexes
     # Allows /about instead of /about.php
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteRule ^([^.]+)$ $1.php [NC,L]
-
 </IfModule>

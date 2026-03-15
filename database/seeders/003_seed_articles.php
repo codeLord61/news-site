@@ -1,15 +1,14 @@
 <?php
 
-require_once __DIR__.'/../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use app\core\App;
 use app\core\Database;
 
-
 $app = new App(dirname(__DIR__, 2));
 $db = new Database();
 
-// Seed tags
+// Seed Tags
 $tags = [
     ['name' => 'Breaking News', 'slug' => 'breaking-news'],
     ['name' => 'Analysis', 'slug' => 'analysis'],
@@ -26,10 +25,10 @@ $tagStmt = $db->pdo->prepare("INSERT IGNORE INTO tags (name, slug) VALUES (?, ?)
 foreach ($tags as $tag) {
     $tagStmt->execute([$tag['name'], $tag['slug']]);
 }
-echo "Tags seeded! (" . count($tags). "tags )\n";
+echo "Tags seeded! (". count($tags). " tags)\n";
 
-// get admin id
-$stmt = $db->pdo->prepare("SELECT id FROM users LIMIT 1");
+// Get admin id
+$stmt = $db->pdo->prepare("SELECT id FROM users WHERE username='admin'");
 $stmt->execute();
 $reporterId = $stmt->fetchColumn();
 
@@ -38,25 +37,25 @@ if (!$reporterId) {
     exit(1);
 }
 
-// get category ids
+//  Get category IDs
 $catStmt = $db->pdo->prepare("SELECT id, slug FROM categories");
 $catStmt->execute();
 $categoryMap = [];
 while ($row = $catStmt->fetch(PDO::FETCH_ASSOC)) {
-    // bangladesh => 1, sports => 3
     $categoryMap[$row['slug']] = $row['id'];
 }
 
-// get tag ids
+// ----- Fetch tag IDs -----
 $tagFetchStmt = $db->pdo->prepare("SELECT id, slug FROM tags");
 $tagFetchStmt->execute();
 $tagMap = [];
-while($row = $tagFetchStmt->fetch(PDO::FETCH_ASSOC)){
-    // 'Iran' => 7, 'War' => 2
+while ($row = $tagFetchStmt->fetch(PDO::FETCH_ASSOC)) {
     $tagMap[$row['slug']] = $row['id'];
 }
 
-// Article data
+// ----- Articles Data -----
+// Available categories: bangladesh, international, sports, opinion, business, youth, technology, entertainment, lifestyle, football, cricket, gadgets
+// Available tags: breaking-news, analysis, investigation, climate, economy, startup, elections, iran, war
 $articles = [
     [
         'title' => 'Government Unveils New Infrastructure Plan Worth $50 Billion',
@@ -282,10 +281,10 @@ $articles = [
     ],
 ];
 
-// Insert articles
+// ----- Insert articles -----
 $articleStmt = $db->pdo->prepare(
-    "INSERT IGNORE INTO articles (title, slug, excerpt, content, status, reporter_id, published_at, view_count, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())"
+    "INSERT IGNORE INTO articles (title, slug, excerpt, content, status, reporter_id, published_at, view_count, created_at) 
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())"
 );
 
 $pivotCatStmt = $db->pdo->prepare("INSERT IGNORE INTO articles_categories (article_id, category_id) VALUES (?, ?)");
@@ -305,8 +304,8 @@ foreach ($articles as $article) {
     ]);
 
     $articleId = $db->pdo->lastInsertId();
-    if (!$articleId){
-        // If first article entry already exists then articleId will be empty, then fetching by slug
+    if (!$articleId) {
+        // Article might already exist (IGNORE), try fetching by slug
         $fetchStmt = $db->pdo->prepare("SELECT id FROM articles WHERE slug = ?");
         $fetchStmt->execute([$article['slug']]);
         $articleId = $fetchStmt->fetchColumn();

@@ -2,17 +2,23 @@
 
 namespace app\controllers;
 
-use app\core\App;
 use app\core\Controller;
 use app\core\Request;
 use app\core\Response;
 use app\services\TokenService;
 use app\middleware\AuthMiddleware;
+use app\models\User;
+use app\models\Token;
 
 class AuthController extends Controller
 {
+    private User $user;
+    private Token $token;
+
     public function __construct()
     {
+        $this->user = new User();
+        $this->token = new Token();
         $this->registerMiddleware(new AuthMiddleware(['logout']));
     }
 
@@ -31,27 +37,21 @@ class AuthController extends Controller
             $response->json(['error' => 'Missing required fields: fullname, email, password'], 400);
         }
 
-        $db = App::$app->db;
-
-        $stmt = $db->pdo->prepare("SELECT id FROM roles WHERE name = 'Reader'");
-        $stmt->execute();
-        $roleId = $stmt->fetchColumn();
+        $roleId = $this->user->getRoleIdByName('Reader');
 
         if (!$roleId) {
             $response->json(['error' => 'Default role not found. Ensure migrations/seeders have run.'], 500);
         }
 
-        $stmt = $db->pdo->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->execute([$body['email']]);
-        if ($stmt->fetch()) {
+        $existingUser = $this->user->findByEmail($body['email']);
+        if ($existingUser) {
             $response->json(['error' => 'Email already exists'], 400);
         }
 
         $username = explode('@', $body['email'])[0] . random_int(1000, 9999);
         $passwordHash = password_hash($body['password'], PASSWORD_DEFAULT);
 
-        $stmt = $db->pdo->prepare("INSERT INTO users (username, email, name, password, role_id) VALUES (?, ?, ?, ?, ?)");
-        if ($stmt->execute([$username, $body['email'], $body['fullname'], $passwordHash, $roleId])) {
+        if ($this->user->create($username, $body['email'], $body['fullname'], $passwordHash, $roleId)) {
             $response->json(['success' => true, 'message' => 'Registration successful! You may now log in.']);
         }
 
@@ -65,21 +65,17 @@ class AuthController extends Controller
             $response->json(['error' => 'Missing required fields: email, password'], 400);
         }
 
-        $db = App::$app->db;
-        $stmt = $db->pdo->prepare("SELECT id, password FROM users WHERE email = ?");
-        $stmt->execute([$body['email']]);
-        $user = $stmt->fetch();
+        $user = $this->user->findByEmail($body['email']);
 
         if ($user && password_verify($body['password'], $user['password'])) {
-            $token = TokenService::generateToken();
+            $tokenStr = TokenService::generateToken();
             $expiresAt = date('Y-m-d H:i:s', strtotime('+30 days'));
 
-            $stmt = $db->pdo->prepare("INSERT INTO personal_access_tokens (user_id, token, expires_at) VALUES (?, ?, ?)");
-            $stmt->execute([$user['id'], $token, $expiresAt]);
+            $this->token->create($user['id'], $tokenStr, $expiresAt);
 
             $response->json([
                 'success' => true,
-                'token' => $token,
+                'token' => $tokenStr,
                 'message' => 'Login successful'
             ]);
         }
@@ -89,11 +85,9 @@ class AuthController extends Controller
 
     public function logout(Request $request, Response $response)
     {
-        $token = $request->getBearerToken();
-        if ($token) {
-            $db = App::$app->db;
-            $stmt = $db->pdo->prepare("DELETE FROM personal_access_tokens WHERE token = ?");
-            $stmt->execute([$token]);
+        $bearerToken = $request->getBearerToken();
+        if ($bearerToken) {
+            $this->token->deleteByToken($bearerToken);
         }
         $response->json(['success' => true, 'message' => 'Logged out successfully']);
     }
