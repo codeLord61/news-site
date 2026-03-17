@@ -131,7 +131,15 @@ class Article extends Model
     {
         $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.content, a.status,
                        a.published_at, a.view_count, a.share_count,
-                       u.name AS reporter_name, u.username AS reporter_username
+                       u.name AS reporter_name, u.username AS reporter_username,
+                       (SELECT m.file_url FROM medias m
+                        INNER JOIN articles_medias am ON m.id = am.media_id
+                        WHERE am.article_id = a.id
+                        ORDER BY m.id ASC LIMIT 1) AS thumbnail,
+                       (SELECT m.alt_text FROM medias m
+                        INNER JOIN articles_medias am ON m.id = am.media_id
+                        WHERE am.article_id = a.id
+                        ORDER BY m.id ASC LIMIT 1) AS alt_text
                 FROM articles a
                 LEFT JOIN users u ON a.reporter_id = u.id
                 WHERE a.slug = ? AND a.status = 'published' AND a.deleted_at IS NULL";
@@ -175,7 +183,11 @@ class Article extends Model
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
                         WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS thumbnail
+                        ORDER BY m.id ASC LIMIT 1) AS thumbnail,
+                       (SELECT m.alt_text FROM medias m
+                        INNER JOIN articles_medias am ON m.id = am.media_id
+                        WHERE am.article_id = a.id
+                        ORDER BY m.id ASC LIMIT 1) AS alt_text
                 FROM articles a
                 LEFT JOIN users u ON a.reporter_id = u.id
                 WHERE a.status = 'published' AND a.deleted_at IS NULL
@@ -212,7 +224,11 @@ class Article extends Model
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
                         WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS thumbnail
+                        ORDER BY m.id ASC LIMIT 1) AS thumbnail,
+                       (SELECT m.alt_text FROM medias m
+                        INNER JOIN articles_medias am ON m.id = am.media_id
+                        WHERE am.article_id = a.id
+                        ORDER BY m.id ASC LIMIT 1) AS alt_text
                 FROM articles a
                 INNER JOIN articles_categories ac ON a.id = ac.article_id
                 LEFT JOIN users u ON a.reporter_id = u.id
@@ -225,6 +241,52 @@ class Article extends Model
         $stmt = $this->db()->prepare($sql);
         $stmt->bindValue(1, $categoryId, \PDO::PARAM_INT);
         $stmt->bindValue(2, $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $articles = [];
+        foreach ($rows as $row) {
+            $row['categories'] = $this->getCategoriesForArticle($row['id']);
+            $row['reporter'] = [
+                'name' => $row['reporter_name'],
+                'username' => $row['reporter_username'],
+            ];
+            unset($row['reporter_name'], $row['reporter_username']);
+            $articles[] = $row;
+        }
+
+        return $articles;
+    }
+
+    /**
+     * Get paginated published articles for a specific category.
+     * Used for the dynamic category page.
+     */
+    public function getPaginatedByCategory(int $categoryId, int $limit, int $offset): array
+    {
+        $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.published_at, a.view_count,
+                       u.name AS reporter_name, u.username AS reporter_username,
+                       (SELECT m.file_url FROM medias m
+                        INNER JOIN articles_medias am ON m.id = am.media_id
+                        WHERE am.article_id = a.id
+                        ORDER BY m.id ASC LIMIT 1) AS thumbnail,
+                       (SELECT m.alt_text FROM medias m
+                        INNER JOIN articles_medias am ON m.id = am.media_id
+                        WHERE am.article_id = a.id
+                        ORDER BY m.id ASC LIMIT 1) AS alt_text
+                FROM articles a
+                INNER JOIN articles_categories ac ON a.id = ac.article_id
+                LEFT JOIN users u ON a.reporter_id = u.id
+                WHERE ac.category_id = ?
+                  AND a.status = 'published'
+                  AND a.deleted_at IS NULL
+                ORDER BY a.published_at DESC
+                LIMIT ? OFFSET ?";
+
+        $stmt = $this->db()->prepare($sql);
+        $stmt->bindValue(1, $categoryId, \PDO::PARAM_INT);
+        $stmt->bindValue(2, $limit, \PDO::PARAM_INT);
+        $stmt->bindValue(3, $offset, \PDO::PARAM_INT);
         $stmt->execute();
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 

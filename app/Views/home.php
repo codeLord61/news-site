@@ -13,7 +13,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
                     <div class="relative w-full h-56 bg-gray-200 rounded-lg overflow-hidden">
                         <?php if (!empty($article['thumbnail'])): ?>
                         <img src="<?= htmlspecialchars($article['thumbnail']) ?>"
-                            alt="<?= htmlspecialchars($article['title']) ?>"
+                            alt="<?= htmlspecialchars($article['alt_text'] ?? $article['title']) ?>"
                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                         <?php else: ?>
                         <div class="w-full h-full flex items-center justify-center text-gray-400">
@@ -65,7 +65,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
                                 <?php if (!empty($article['thumbnail'])): ?>
                                 <img src="<?= htmlspecialchars($article['thumbnail']) ?>"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                    alt="<?= htmlspecialchars($article['title']) ?>">
+                                    alt="<?= htmlspecialchars($article['alt_text'] ?? $article['title']) ?>">
                                 <?php else: ?>
                                 <div class="w-full h-full flex items-center justify-center text-gray-400">
                                     <i class="fa-solid fa-image text-3xl"></i>
