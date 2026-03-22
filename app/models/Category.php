@@ -100,4 +100,17 @@ class Category extends Model
         $stmt->execute([$categoryId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Get all parent categories (where parent_id is NULL).
+     */
+    public function getParents(): array
+    {
+        $sql = "SELECT id, name, slug 
+                FROM categories 
+                WHERE parent_id IS NULL 
+                ORDER BY name ASC";
+        $stmt = $this->db()->query($sql);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

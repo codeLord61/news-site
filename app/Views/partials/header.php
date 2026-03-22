@@ -16,14 +16,10 @@ use app\core\App;
         <!-- Scrollable Categories -->
         <nav class="flex-1 overflow-x-auto no-scrollbar mask-gradient-right">
             <ul class="flex items-center space-x-5 text-sm font-medium text-gray-600 whitespace-nowrap pr-4">
-                <li><a href="<?= url('/category.html') ?>" class="hover:text-blue-600">Bangladesh</a></li>
-                <li><a href="#" class="hover:text-blue-600">International</a></li>
-                <li><a href="#" class="hover:text-blue-600">Sports</a></li>
-                <li><a href="#" class="hover:text-blue-600">Opinion</a></li>
-                <li><a href="#" class="hover:text-blue-600">Business</a></li>
-                <li><a href="#" class="hover:text-blue-600">Youth</a></li>
-                <li><a href="#" class="hover:text-blue-600">Entertainment</a></li>
-                <li><a href="#" class="hover:text-blue-600">Lifestyle</a></li>
+                <?php foreach (get_header_categories() as $category): ?>
+                <li><a href="<?= url('/categories/' . $category['slug']) ?>"
+                        class="hover:text-blue-600"><?= htmlspecialchars($category['name']) ?></a></li>
+                <?php endforeach; ?>
             </ul>
         </nav>
 

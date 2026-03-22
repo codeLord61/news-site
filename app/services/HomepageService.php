@@ -49,6 +49,11 @@ class HomepageService
                 continue;
             }
 
+            // Skip child categories (only show parents on home page)
+            if ($cat['parent_id'] !== null) {
+                continue;
+            }
+
             if ($cat['slug'] === HomepageConfig::SECOND_CATEGORY_SLUG) {
                 $secondCategory = $cat;
             } else {

@@ -13,3 +13,14 @@ function url(string $path = ''): string
     $path = '/' . ltrim($path, '/');
     return $baseUrl . $path;
 }
+
+/**
+ * Get parent categories for the header navigation.
+ * 
+ * @return array
+ */
+function get_header_categories(): array
+{
+    $categoryModel = new \app\models\Category();
+    return $categoryModel->getParents();
+}
