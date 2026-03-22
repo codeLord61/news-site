@@ -25,7 +25,7 @@ if (!empty($article['updated_at'])) {
     <!-- Metadata -->
     <div class="flex flex-col md:flex-row md:items-center text-sm text-gray-500 gap-2 md:gap-4 border-b border-gray-100 pb-6">
         <div class="flex items-center gap-2">
-            <span class="font-bold text-blue-600 uppercase"><?= htmlspecialchars($primaryCategory) ?></span>
+            <span class="font-bold text-primary-600 uppercase"><?= htmlspecialchars($primaryCategory) ?></span>
             <span class="text-gray-300">|</span>
             <span class="font-medium text-gray-700">By <?= htmlspecialchars($article['reporter']['name'] ?? 'Staff Correspondent') ?></span>
         </div>
@@ -40,7 +40,7 @@ if (!empty($article['updated_at'])) {
 
     <!-- Featured Image -->
     <figure class="w-full">
-        <div class="relative aspect-video md:aspect-[21/9] bg-gray-100 rounded-xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="relative aspect-video md:aspect-21/9 bg-gray-100 rounded-xl overflow-hidden shadow-sm border border-gray-100">
             <?php if (!empty($article['thumbnail'])): ?>
             <img src="<?= htmlspecialchars($article['thumbnail']) ?>"
                 alt="<?= htmlspecialchars($article['alt_text'] ?? $article['title']) ?>"
@@ -70,7 +70,7 @@ if (!empty($article['updated_at'])) {
 <!-- Comments Section (Static Placeholder) -->
 <section class="max-w-2xl mx-auto">
     <div class="flex items-center justify-between mb-6">
-        <h3 class="text-lg font-bold text-gray-900 border-l-4 border-red-600 pl-3">
+        <h3 class="text-lg font-bold text-gray-900 border-l-4 border-primary-600 pl-3">
             Total comments (0)
         </h3>
     </div>
@@ -78,7 +78,7 @@ if (!empty($article['updated_at'])) {
     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
         <div class="flex gap-4">
             <!-- User Avatar -->
-            <div class="flex-shrink-0">
+            <div class="shrink-0">
                 <div class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden border border-gray-300">
                     <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop"
                         alt="User Avatar" class="w-full h-full object-cover opacity-60">
@@ -92,7 +92,7 @@ if (!empty($article['updated_at'])) {
                     rows="3" placeholder="Sign In to comment" disabled></textarea>
                 <div class="flex justify-end mt-2">
                     <button
-                        class="px-4 py-1.5 bg-blue-600 text-white text-xs font-bold rounded opacity-50 cursor-not-allowed"
+                        class="px-4 py-1.5 bg-primary-600 text-white text-xs font-bold rounded opacity-50 cursor-not-allowed"
                         disabled>
                         Post Comment
                     </button>

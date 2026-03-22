@@ -18,7 +18,7 @@ use app\core\App;
             <ul class="flex items-center space-x-5 text-sm font-medium text-gray-600 whitespace-nowrap pr-4">
                 <?php foreach (get_header_categories() as $category): ?>
                 <li><a href="<?= url('/categories/' . $category['slug']) ?>"
-                        class="hover:text-blue-600"><?= htmlspecialchars($category['name']) ?></a></li>
+                        class="hover:text-primary-600"><?= htmlspecialchars($category['name']) ?></a></li>
                 <?php endforeach; ?>
             </ul>
         </nav>

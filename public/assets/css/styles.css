@@ -305,7 +305,10 @@
     --color-dark-backdrop: var(--color-gray-950);
     --font-bangla: "Noto Sans Bengali", "SolaimanLipi", sans-serif;
     --color-primary-50: #E5F7F4;
+    --color-primary-100: #CCF0E9;
     --color-primary-200: #99E2D4;
+    --color-primary-300: #66D3BF;
+    --color-primary-400: #32C5AA;
     --color-primary-500: #00B795;
     --color-primary-600: #00A486;
     --color-primary-700: #008068;
@@ -2071,6 +2074,9 @@
   .border-neutral-300 {
     border-color: var(--color-neutral-300);
   }
+  .border-primary-600 {
+    border-color: var(--color-primary-600);
+  }
   .border-red-300 {
     border-color: var(--color-red-300);
   }
@@ -2933,6 +2939,62 @@
       }
     }
   }
+  .group-hover\:text-primary-100 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-primary-100);
+      }
+    }
+  }
+  .group-hover\:text-primary-200 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-primary-200);
+      }
+    }
+  }
+  .group-hover\:text-primary-300 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-primary-300);
+      }
+    }
+  }
+  .group-hover\:text-primary-400 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-primary-400);
+      }
+    }
+  }
+  .group-hover\:text-primary-500 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-primary-500);
+      }
+    }
+  }
+  .group-hover\:text-primary-600 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-primary-600);
+      }
+    }
+  }
+  .group-hover\:text-primary-700 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-primary-700);
+      }
+    }
+  }
+  .group-hover\:text-red-500 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-red-500);
+      }
+    }
+  }
   .group-focus\:ring-4 {
     &:is(:where(.group):focus *) {
       --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
@@ -2990,13 +3052,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: #E5F7F4;
-      }
-    }
-  }
-  .hover\:bg-blue-700 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-blue-700);
       }
     }
   }
@@ -3398,7 +3453,7 @@
       display: table-cell;
     }
   }
-  .md\:aspect-\[21\/9\] {
+  .md\:aspect-21\/9 {
     @media (width >= 48rem) {
       aspect-ratio: 21/9;
     }

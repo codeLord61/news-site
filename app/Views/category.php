@@ -7,7 +7,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
 
 <!-- Category Header -->
 <div class="border-b border-gray-200 pb-2">
-    <h2 class="text-3xl font-bold text-red-600"><?= htmlspecialchars($category['name']) ?></h2>
+    <h2 class="text-3xl font-bold text-primary-600"><?= htmlspecialchars($category['name']) ?></h2>
     <?php if (!empty($category['description'])): ?>
     <p class="text-sm text-gray-500 mt-1"><?= htmlspecialchars($category['description']) ?></p>
     <?php endif; ?>
@@ -49,7 +49,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
                 <?php endif; ?>
             </div>
             <div class="flex flex-col">
-                <h3 class="<?= $titleClass ?> font-bold leading-tight text-gray-900 mb-1 group-hover:text-blue-600">
+                <h3 class="<?= $titleClass ?> font-bold leading-tight text-gray-900 mb-1 group-hover:text-primary-500">
                     <?= htmlspecialchars($article['title']) ?>
                 </h3>
                 <p class="<?= $excerptClass ?> text-gray-600 line-clamp-2 mb-1">
@@ -84,7 +84,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
                     <?php endif; ?>
                 </div>
                 <div>
-                    <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-blue-600">
+                    <h4 class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-primary-500">
                         <?= htmlspecialchars($article['title']) ?>
                     </h4>
                     <span class="text-xs text-gray-400 mt-1 block"><?= timeAgo($article['published_at']) ?></span>
@@ -102,7 +102,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
         <?php endif; ?>
         <span class="px-4 py-2 text-sm text-gray-500">Page <?= $pagination['current_page'] ?> of <?= $pagination['total_pages'] ?></span>
         <?php if ($pagination['has_next']): ?>
-            <a href="?page=<?= $pagination['current_page'] + 1 ?>" class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700">Next</a>
+            <a href="?page=<?= $pagination['current_page'] + 1 ?>" class="px-4 py-2 bg-primary-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-700">Next</a>
         <?php endif; ?>
     </div>
     <?php endif; ?>

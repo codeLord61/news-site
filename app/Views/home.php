@@ -24,7 +24,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
                     </div>
 
                     <!-- Headline -->
-                    <h2 class="text-2xl font-bold leading-tight text-gray-900 group-hover:text-blue-600">
+                    <h2 class="text-2xl font-bold leading-tight text-gray-900 group-hover:text-primary-500">
                         <?= htmlspecialchars($article['title']) ?>
                     </h2>
 
@@ -55,7 +55,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
             <section>
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-bold text-gray-900 border-l-4 border-<?= $borderColor ?> pl-2"><?= htmlspecialchars($category['name']) ?></h3>
-                    <a href="<?= $baseUrl ?>/categories/<?= htmlspecialchars($category['slug']) ?>" class="text-xs font-semibold text-blue-600 hover:text-blue-700">See All</a>
+                    <a href="<?= $baseUrl ?>/categories/<?= htmlspecialchars($category['slug']) ?>" class="text-xs font-semibold text-primary-600 hover:text-primary-700">See All</a>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-x-5 gap-y-10">
@@ -75,7 +75,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
                             </div>
                             <div class="flex flex-col">
                                 <h4
-                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600">
+                                    class="text-sm font-bold leading-snug text-gray-900 line-clamp-2 mb-1 group-hover:text-primary-500">
                                     <?= htmlspecialchars($article['title']) ?>
                                 </h4>
                                 <p class="text-xs text-gray-500 line-clamp-2 mb-1">
