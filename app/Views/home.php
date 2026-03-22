@@ -6,6 +6,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
 ?>
 
             <!-- Hero Section -->
+
             <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <?php foreach ($hero as $article): ?>
                 <a href="<?= $baseUrl ?>/articles/<?= htmlspecialchars($article['slug']) ?>" class="group block space-y-3">

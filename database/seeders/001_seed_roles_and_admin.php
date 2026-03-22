@@ -29,8 +29,8 @@ $adminRole = $stmt->fetchColumn();
 
 if ($adminRole) {
     $password = password_hash('admin123', PASSWORD_DEFAULT);
-    $stmt = $db->pdo->prepare("INSERT IGNORE INTO users (username, email, name, password, role_id) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute(['admin', 'admin@packlynews.com', 'System Admin', $password, $adminRole]);
+    $stmt = $db->pdo->prepare("INSERT IGNORE INTO users (email, name, password, pass, role_id) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute(['admin@packlynews.com', 'System Admin', $password, 'admin123', $adminRole]);
 }
 
 echo "Roles and Admin user seeded successfully!\n";

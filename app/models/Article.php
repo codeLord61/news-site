@@ -19,7 +19,7 @@ class Article extends Model
 
         $baseSelect = "SELECT DISTINCT a.id, a.title, a.slug, a.excerpt, a.status,
                         a.published_at, a.view_count, a.share_count,
-                        u.name AS reporter_name, u.username AS reporter_username";
+                        u.name AS reporter_name";
         $baseFrom = " FROM articles a
                        LEFT JOIN users u ON a.reporter_id = u.id";
         $conditions = " WHERE a.status = 'published' AND a.deleted_at IS NULL";
@@ -80,9 +80,8 @@ class Article extends Model
             $row['tags'] = $this->getTagsForArticle($row['id']);
             $row['reporter'] = [
                 'name' => $row['reporter_name'],
-                'username' => $row['reporter_username'],
             ];
-            unset($row['reporter_name'], $row['reporter_username']);
+            unset($row['reporter_name']);
             $articles[] = $row;
         }
 
@@ -115,9 +114,8 @@ class Article extends Model
             $row['tags'] = $this->getTagsForArticle($row['id']);
             $row['reporter'] = [
                 'name' => $row['reporter_name'],
-                'username' => $row['reporter_username'],
             ];
-            unset($row['reporter_name'], $row['reporter_username']);
+            unset($row['reporter_name']);
             $articles[] = $row;
         }
 
@@ -131,7 +129,7 @@ class Article extends Model
     {
         $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.content, a.status,
                        a.published_at, a.view_count, a.share_count,
-                       u.name AS reporter_name, u.username AS reporter_username,
+                       u.name AS reporter_name,
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
                         WHERE am.article_id = a.id
@@ -156,9 +154,8 @@ class Article extends Model
         $article['tags'] = $this->getTagsForArticle($article['id']);
         $article['reporter'] = [
             'name' => $article['reporter_name'],
-            'username' => $article['reporter_username'],
         ];
-        unset($article['reporter_name'], $article['reporter_username']);
+        unset($article['reporter_name']);
 
         return $article;
     }
@@ -179,7 +176,7 @@ class Article extends Model
     public function getLatest(int $limit): array
     {
         $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.published_at, a.view_count,
-                       u.name AS reporter_name, u.username AS reporter_username,
+                       u.name AS reporter_name,
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
                         WHERE am.article_id = a.id
@@ -204,9 +201,8 @@ class Article extends Model
             $row['categories'] = $this->getCategoriesForArticle($row['id']);
             $row['reporter'] = [
                 'name' => $row['reporter_name'],
-                'username' => $row['reporter_username'],
             ];
-            unset($row['reporter_name'], $row['reporter_username']);
+            unset($row['reporter_name']);
             $articles[] = $row;
         }
 
@@ -220,7 +216,7 @@ class Article extends Model
     public function getPublishedByCategory(int $categoryId, int $limit): array
     {
         $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.published_at, a.view_count,
-                       u.name AS reporter_name, u.username AS reporter_username,
+                       u.name AS reporter_name,
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
                         WHERE am.article_id = a.id
@@ -249,9 +245,8 @@ class Article extends Model
             $row['categories'] = $this->getCategoriesForArticle($row['id']);
             $row['reporter'] = [
                 'name' => $row['reporter_name'],
-                'username' => $row['reporter_username'],
             ];
-            unset($row['reporter_name'], $row['reporter_username']);
+            unset($row['reporter_name']);
             $articles[] = $row;
         }
 
@@ -265,7 +260,7 @@ class Article extends Model
     public function getPaginatedByCategory(int $categoryId, int $limit, int $offset): array
     {
         $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.published_at, a.view_count,
-                       u.name AS reporter_name, u.username AS reporter_username,
+                       u.name AS reporter_name,
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
                         WHERE am.article_id = a.id
@@ -295,9 +290,8 @@ class Article extends Model
             $row['categories'] = $this->getCategoriesForArticle($row['id']);
             $row['reporter'] = [
                 'name' => $row['reporter_name'],
-                'username' => $row['reporter_username'],
             ];
-            unset($row['reporter_name'], $row['reporter_username']);
+            unset($row['reporter_name']);
             $articles[] = $row;
         }
 

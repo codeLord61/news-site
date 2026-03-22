@@ -39,9 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = Object.fromEntries(formData.entries());
 
       try {
-        // The URL depends on how your local environment is set up.
-        // It should match the API route mapped in routes/api.php
-        const response = await fetch("/project/news/public/api/v1/login", {
+        // Use relative path for API endpoint
+        const response = await fetch((window.appBaseUrl || "") + "/api/v1/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -52,14 +51,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await response.json();
 
         if (response.ok && result.success) {
-          // Store the token in localStorage
+          // Store the token and role in localStorage
           localStorage.setItem("auth_token", result.token);
+          if (result.role) {
+            localStorage.setItem("user_role", result.role);
+          }
 
           // Show success visually before redirecting
           alert(result.message || "Login successful!");
 
-          // Redirect back to homepage
-          window.location.href = "/project/news/public/";
+          // Redirect to dashboard or home
+          window.location.href = (window.appBaseUrl || "") + "/dashboard";
         } else {
           alert("Login failed: " + (result.error || "Unknown error"));
         }
@@ -80,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = Object.fromEntries(formData.entries());
 
       try {
-        const response = await fetch("/project/news/public/api/v1/register", {
+        const response = await fetch((window.appBaseUrl || "") + "/api/v1/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

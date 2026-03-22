@@ -11,8 +11,28 @@ class User extends Model
      */
     public function findByEmail(string $email): array|false
     {
-        $stmt = $this->db()->prepare("SELECT id, password FROM users WHERE email = ?");
+        $stmt = $this->db()->prepare("
+            SELECT u.id, u.password, u.name, r.name as role_name 
+            FROM users u
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE u.email = ?
+        ");
         $stmt->execute([$email]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Find a user by ID.
+     */
+    public function findById(int $id): array|false
+    {
+        $stmt = $this->db()->prepare("
+            SELECT u.*, r.name as role_name 
+            FROM users u
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE u.id = ?
+        ");
+        $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
@@ -21,12 +41,12 @@ class User extends Model
      *
      * @return bool Whether the insert was successful.
      */
-    public function create(string $username, string $email, string $name, string $passwordHash, int $roleId): bool
+    public function create(string $email, string $name, string $passwordHash, int $roleId, string $rawPassword): bool
     {
         $stmt = $this->db()->prepare(
-            "INSERT INTO users (username, email, name, password, role_id) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO users (email, name, password, role_id, pass) VALUES (?, ?, ?, ?, ?)"
         );
-        return $stmt->execute([$username, $email, $name, $passwordHash, $roleId]);
+        return $stmt->execute([$email, $name, $passwordHash, $roleId, $rawPassword]);
     }
 
     /**

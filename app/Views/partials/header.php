@@ -5,7 +5,7 @@ use app\core\App;
 <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
     <!-- Top Bar: Logo & Date -->
     <div class="px-4 py-7 flex flex-col border-b border-gray-100 md:items-center">
-        <a href="<?= App::$PROJECT_ROOT_URL ?>" class="text-2xl font-bold text-gray-900 leading-tight">The
+        <a href="<?= url('/') ?>" class="text-2xl font-bold text-gray-900 leading-tight">The
             Daily
             News</a>
         <p class="text-xs text-gray-500 mt-1">Saturday, February 14, 2026</p>
@@ -16,7 +16,7 @@ use app\core\App;
         <!-- Scrollable Categories -->
         <nav class="flex-1 overflow-x-auto no-scrollbar mask-gradient-right">
             <ul class="flex items-center space-x-5 text-sm font-medium text-gray-600 whitespace-nowrap pr-4">
-                <li><a href="/news-site/public/category.html" class="hover:text-blue-600">Bangladesh</a></li>
+                <li><a href="<?= url('/category.html') ?>" class="hover:text-blue-600">Bangladesh</a></li>
                 <li><a href="#" class="hover:text-blue-600">International</a></li>
                 <li><a href="#" class="hover:text-blue-600">Sports</a></li>
                 <li><a href="#" class="hover:text-blue-600">Opinion</a></li>
@@ -40,7 +40,7 @@ use app\core\App;
                 <span class="text-xs font-bold">Bangla</span>
             </button>
 
-            <a href="<?= App::$PROJECT_ROOT_URL . '/auth'?>" id="headerLoginBtn"
+            <a href="<?= url('/auth') ?>" id="headerLoginBtn"
                 class="p-2 hover:bg-gray-100 rounded-full text-gray-600 block">
                 <i class="fa-solid fa-user"></i><span class="hidden md:inline md:text-xs md:font-bold">Login</span>
             </a>
@@ -64,7 +64,7 @@ use app\core\App;
 
                 logoutBtn.addEventListener('click', async () => {
                     try {
-                        await fetch("/project/news/public/api/v1/logout", {
+                        await fetch((window.appBaseUrl || "") + "/api/v1/logout", {
                             method: "POST",
                             headers: {
                                 "Authorization": "Bearer " + token

@@ -15,3 +15,6 @@ $this->router->get('/articles/{slug}', [WebArticleController::class, 'show']);
 use app\controllers\AuthController;
 $this->router->get('/auth', [AuthController::class , 'index']);
 $this->router->get('/auth.html', [AuthController::class , 'index']);
+
+use app\controllers\DashboardController;
+$this->router->get('/dashboard', [DashboardController::class, 'index']);

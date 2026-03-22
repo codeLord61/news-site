@@ -60,7 +60,7 @@ class Category extends Model
     public function getArticles(int $categoryId, int $limit, int $offset): array
     {
         $sql = "SELECT a.id, a.title, a.slug, a.excerpt, a.published_at, a.view_count,
-                       u.name AS reporter_name, u.username AS reporter_username
+                       u.name AS reporter_name
                 FROM articles a
                 INNER JOIN articles_categories ac ON a.id = ac.article_id
                 LEFT JOIN users u ON a.reporter_id = u.id
@@ -81,9 +81,8 @@ class Category extends Model
         foreach ($rows as $row) {
             $row['reporter'] = [
                 'name' => $row['reporter_name'],
-                'username' => $row['reporter_username'],
             ];
-            unset($row['reporter_name'], $row['reporter_username']);
+            unset($row['reporter_name']);
             $articles[] = $row;
         }
 

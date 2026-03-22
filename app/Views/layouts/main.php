@@ -29,9 +29,10 @@ use app\core\App;
         </main>
 
         <?php require __DIR__ . '/../partials/footer.php'; ?>
-
     </div>
 
+    <script src="<?= App::assetPath('js/flowbite.min.js'); ?>"></script>
 </body>
+
 
 </html>

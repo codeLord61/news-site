@@ -1,0 +1,154 @@
+/* ================================================================
+   dashboard.css  — Dashboard layout custom styles
+   Tailwind handles most utility classes; this file covers:
+     - Sidebar transition & collapse animation
+     - Custom scrollbar on sidebar nav
+     - Tooltip for icon-only collapsed sidebar items
+     - Viewport fix to prevent blur/scaling on resize
+   ================================================================ */
+
+/* ── Prevent the 700px "blurry" resize bug ──
+   The blur is caused by browser zoom / text scaling; locking
+   the viewport to device-width with no scaling fixes it.      */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── Sidebar slide / collapse transition ── */
+#sidebar {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: width, transform;
+}
+
+/* Collapsed desktop state */
+#sidebar.sidebar-collapsed {
+  width: 4.5rem; /* 72px */
+}
+
+/* Mobile: slide off-screen by default, slide in when open */
+@media (max-width: 767px) {
+  #sidebar {
+    transform: translateX(-100%);
+    width: 16rem !important; /* keep full width on mobile */
+  }
+  #sidebar.mobile-open {
+    transform: translateX(0);
+  }
+}
+
+/* ── Main wrapper transition ── */
+#main-wrapper {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Sidebar nav custom scrollbar ── */
+#sidebar-nav::-webkit-scrollbar {
+  width: 3px;
+}
+#sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+#sidebar-nav::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 4px;
+}
+
+/* ── Text / logo fade on collapse ── */
+.sidebar-label-text,
+.sidebar-nav-text,
+.sidebar-section-label {
+  transition: opacity 0.2s ease, width 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#sidebar.sidebar-collapsed .sidebar-label-text,
+#sidebar.sidebar-collapsed .sidebar-nav-text,
+#sidebar.sidebar-collapsed .sidebar-section-label {
+  opacity: 0;
+  width: 0;
+}
+
+/* ── Active nav indicator ── */
+.nav-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 3px;
+  background: #00B795;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Collapsed: hide the left indicator, center icon */
+#sidebar.sidebar-collapsed .nav-link {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+#sidebar.sidebar-collapsed .nav-link.active::before {
+  display: none;
+}
+
+/* ── Tooltip on hover when collapsed ── */
+#sidebar.sidebar-collapsed .nav-link {
+  position: relative;
+}
+#sidebar.sidebar-collapsed .nav-link:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(4.5rem - 4px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #171717;
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 200;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+
+/* ── Notification list scroll ── */
+#notif-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+#notif-list::-webkit-scrollbar {
+  width: 3px;
+}
+#notif-list::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 4px;
+}
+
+/* ── Dropdown animation ── */
+.dash-dropdown {
+  transform-origin: top right;
+  animation: dropIn 0.15s ease;
+}
+@keyframes dropIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Stat card hover lift ── */
+.stat-card {
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.stat-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+
+/* ── Profile chevron rotation ── */
+#profile-btn .chevron {
+  transition: transform 0.2s ease;
+}
+#profile-btn[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}

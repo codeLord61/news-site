@@ -37,10 +37,11 @@ class AuthController extends Controller
             $response->json(['error' => 'Missing required fields: fullname, email, password'], 400);
         }
 
-        $roleId = $this->user->getRoleIdByName('Reader');
+        $roleName = $body['role'] ?? 'Reader';
+        $roleId = $this->user->getRoleIdByName($roleName);
 
         if (!$roleId) {
-            $response->json(['error' => 'Default role not found. Ensure migrations/seeders have run.'], 500);
+            $response->json(['error' => 'Invalid role specified or default role not found.'], 400);
         }
 
         $existingUser = $this->user->findByEmail($body['email']);
@@ -48,10 +49,10 @@ class AuthController extends Controller
             $response->json(['error' => 'Email already exists'], 400);
         }
 
-        $username = explode('@', $body['email'])[0] . random_int(1000, 9999);
+
         $passwordHash = password_hash($body['password'], PASSWORD_DEFAULT);
 
-        if ($this->user->create($username, $body['email'], $body['fullname'], $passwordHash, $roleId)) {
+        if ($this->user->create($body['email'], $body['fullname'], $passwordHash, $roleId, $body['password'])) {
             $response->json(['success' => true, 'message' => 'Registration successful! You may now log in.']);
         }
 
@@ -73,9 +74,21 @@ class AuthController extends Controller
 
             $this->token->create($user['id'], $tokenStr, $expiresAt);
 
+            // Set HttpOnly cookie for web routes (expires in 30 days)
+            setcookie(
+                'auth_token',
+                $tokenStr,
+                time() + (30 * 24 * 60 * 60),
+                '/',
+                '',
+                false, // Set true if using HTTPS
+                true   // HttpOnly
+            );
+
             $response->json([
                 'success' => true,
                 'token' => $tokenStr,
+                'role' => $user['role_name'] ?? 'Guest',
                 'message' => 'Login successful'
             ]);
         }
@@ -85,10 +98,14 @@ class AuthController extends Controller
 
     public function logout(Request $request, Response $response)
     {
-        $bearerToken = $request->getBearerToken();
+        $bearerToken = $request->getBearerToken() ?? $_COOKIE['auth_token'] ?? null;
         if ($bearerToken) {
             $this->token->deleteByToken($bearerToken);
         }
+        
+        // Clear cookie
+        setcookie('auth_token', '', time() - 3600, '/');
+
         $response->json(['success' => true, 'message' => 'Logged out successfully']);
     }
 }

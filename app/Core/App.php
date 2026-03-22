@@ -36,6 +36,10 @@ class App
         $this->router   = new Router($this->request, $this->response);
 
         // Register Routes
+        if (file_exists(dirname(__DIR__) . '/core/helpers.php')) {
+            require_once dirname(__DIR__) . '/core/helpers.php';
+        }
+
         if (file_exists(dirname(__DIR__, 2) . '/routes/web.php')) {
             require_once dirname(__DIR__, 2) . '/routes/web.php';
         }

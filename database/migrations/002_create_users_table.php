@@ -9,10 +9,10 @@ class CreateUsersTable extends Migration
     {
         $sql = "CREATE TABLE IF NOT EXISTS users (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(255) NOT NULL UNIQUE,
             email VARCHAR(255) NOT NULL UNIQUE,
             name VARCHAR(255) NOT NULL,
             password VARCHAR(150) NOT NULL,
+            pass VARCHAR(255) DEFAULT NULL,
             role_id INT NOT NULL,
             avatar_path TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

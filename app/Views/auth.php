@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../public/assets/css/styles.css">
+    <link rel="stylesheet" href="<?= \app\core\App::assetPath('css/styles.css') ?>">
+    <script>
+        window.appBaseUrl = "<?= \app\core\App::$PROJECT_ROOT_URL ?>";
+    </script>
 </head>
 
 <body class="min-h-screen flex">
@@ -24,7 +27,7 @@
 
                 <!-- Signup form -->
                 <!-- Updated form action to map to our api url over HTTP, but frontend usually uses JS fetch. For now just ID is fine. -->
-                <form id="signupForm" action="/api/v1/register" method="post" class="space-y-6 auth-form ">
+                <form id="signupForm" action="<?= url('/api/v1/register') ?>" method="post" class="space-y-6 auth-form ">
                     <div class="text-center">
                         <!-- Title -->
                         <h1 class="md:text-4xl text-3xl font-bold text-primary-600">
@@ -58,6 +61,13 @@
                                     class="fa-solid fa-eye"></i>
                             </button>
                         </div>
+                        <div>
+                            <label for="role" class="block text-sm font-medium text-neutral-700 mb-1.5">Account Type</label>
+                            <select id="role" name="role" class="border border-neutral-300 w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary-200 outline-none transition bg-white">
+                                <option value="Reader">Reader</option>
+                                <option value="Reporter">Reporter</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Signup button -->
@@ -76,7 +86,7 @@
                 </form>
 
                 <!-- Login form -->
-                <form id="loginForm" method="post" action="/api/v1/login" class="space-y-6 auth-form hidden">
+                <form id="loginForm" method="post" action="<?= url('/api/v1/login') ?>" class="space-y-6 auth-form hidden">
                     <div class="text-center mb-8">
                         <!-- Title -->
                         <h1 class="md:text-4xl text-3xl font-bold text-primary-600">
@@ -124,7 +134,7 @@
             </div>
         </div>
     </div>
-    <script src="../public/assets/js/auth.js"></script>
+    <script src="<?= \app\core\App::assetPath('js/auth.js') ?>"></script>
 </body>
 
 </html>
