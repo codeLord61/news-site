@@ -14,6 +14,9 @@ use app\core\App;
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="<?= App::assetPath('css/styles.css'); ?>">
     <!-- <link rel="stylesheet" href="/assets/css/styles.css"> -->
+    <script>
+        window.appBaseUrl = "<?= App::$PROJECT_ROOT_URL ?>";
+    </script>
 </head>
 
 <body class="text-gray-900">

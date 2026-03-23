@@ -25,7 +25,7 @@ class WebAuthMiddleware extends Middleware
             $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();
             
             if (!$tokenStr) {
-                // Redirect to auth page
+                // If no token, redirect to auth page
                 header("Location: " . url('/auth'));
                 exit;
             }
@@ -34,8 +34,7 @@ class WebAuthMiddleware extends Middleware
             $tokenData = $tokenModel->findValid($tokenStr);
 
             if (!$tokenData) {
-                // Invalid or expired token, redirect
-                // Optionally clear the bad cookie
+                // Invalid or expired token: clear the bad cookie and redirect
                 setcookie('auth_token', '', time() - 3600, '/');
                 header("Location: " . url('/auth'));
                 exit;

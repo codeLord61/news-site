@@ -43,8 +43,6 @@
       hamburgerBtn.setAttribute('aria-expanded', open.toString());
     } else {
       const collapsed = sidebar.classList.toggle('sidebar-collapsed');
-      mainWrapper.classList.toggle('ml-16', collapsed);   // 64px icon-only
-      mainWrapper.classList.toggle('ml-64', !collapsed);  // 256px full
 
       hamburgerIcon.className = collapsed
         ? 'fa-solid fa-bars-staggered'
@@ -65,8 +63,6 @@
   (function restoreSidebar() {
     if (!isMobile() && localStorage.getItem('sidebarCollapsed') === '1') {
       sidebar.classList.add('sidebar-collapsed');
-      mainWrapper.classList.remove('ml-64');
-      mainWrapper.classList.add('ml-16');
       if (hamburgerIcon) hamburgerIcon.className = 'fa-solid fa-bars-staggered';
       if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
     }
@@ -125,19 +121,28 @@
     });
   });
 
-  // Global logout handler for portability
-  window.handleLogout = async function() {
-    if (!confirm('Are you sure you want to sign out?')) return;
-    
-    // Clear auth data
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_role');
-    
-    // Optional: Call logout API if needed
-    // await fetch((window.appBaseUrl || "") + "/api/v1/logout", { method: "POST" });
-    
-    // Redirect to login/auth page
-    window.location.href = (window.appBaseUrl || "") + "/auth";
-  };
+    // Global logout handler for portability
+    window.handleLogout = async function() {
+      if (!confirm('Are you sure you want to sign out?')) return;
+      
+      try {
+        // Call logout API to clear server-side session/cookie
+        await fetch((window.appBaseUrl || "") + "/api/v1/logout", { 
+          method: "POST",
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+      } catch (err) {
+        console.error("Logout API failed, proceeding with local clear:", err);
+      }
+
+      // Clear local auth data as well
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_role');
+
+      // Redirect to login/auth page
+      window.location.href = (window.appBaseUrl || "") + "/auth";
+    };
 
 })();

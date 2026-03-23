@@ -46,13 +46,13 @@ use app\core\App;
 <body class="bg-neutral-100 text-neutral-800 h-full overflow-x-hidden">
 
 <!-- Mobile sidebar overlay -->
-<div id="sidebar-overlay" class="hidden fixed inset-0 z-35 bg-black/40 backdrop-blur-sm" style="z-index:35;"></div>
+<div id="sidebar-overlay" class="hidden fixed inset-0 z-35 bg-black/40" style="z-index:35;"></div>
 
 <!-- Sidebar partial -->
 <?php include __DIR__ . '/../partials/_sidebar.php'; ?>
 
 <!-- Main wrapper: offset by sidebar width -->
-<div id="main-wrapper" class="ml-64 flex flex-col min-h-screen">
+<div id="main-wrapper" class="flex flex-col min-h-screen">
 
   <!-- Topbar partial -->
   <?php include __DIR__ . '/../partials/_topbar.php'; ?>

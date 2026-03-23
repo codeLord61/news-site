@@ -25,29 +25,16 @@ class DashboardController extends Controller
 
     public function index(Request $request, Response $response)
     {
-        // Inside AuthMiddleware, if the token is invalid or missing, it currently returns a 401 JSON.
-        // For web routes, we want it to redirect. We will create a WebAuthMiddleware shortly to handle the redirect.
-        
-        // Get the token from cookie or header
+        // Get the token from cookie or header (Middleware already validated its existence/validity)
         $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();
-        
-        if (!$tokenStr) {
-            // Fallback (though middleware should catch this first)
-            header("Location: " . url('/auth'));
-            exit;
-        }
-
-        // Validate token and fetch user ID
         $tokenData = $this->token->findValid($tokenStr);
-        if (!$tokenData) {
-            header("Location: " . url('/auth'));
-            exit;
-        }
 
         // Fetch user info including role
         $userInfo = $this->user->findById($tokenData['user_id']);
         
         if (!$userInfo) {
+            // This case is rare if token is valid, but good to have
+            setcookie('auth_token', '', time() - 3600, '/');
             header("Location: " . url('/auth'));
             exit;
         }

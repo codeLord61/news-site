@@ -59,17 +59,29 @@ use app\core\App;
                 }
 
                 logoutBtn.addEventListener('click', async () => {
+                    const token = localStorage.getItem('auth_token');
                     try {
-                        await fetch((window.appBaseUrl || "") + "/api/v1/logout", {
+                        // Use the token fetched at click time to avoid any state issues
+                        const response = await fetch((window.appBaseUrl || "") + "/api/v1/logout", {
                             method: "POST",
                             headers: {
-                                "Authorization": "Bearer " + token
-                            }
+                                "Authorization": "Bearer " + token,
+                                "Accept": "application/json"
+                            },
+                            credentials: "include"
                         });
+                        
+                        // We check for response status but proceed anyway to ensure local cleanup
+                        if (!response.ok) {
+                            console.error("Logout API returned error:", response.status);
+                        }
                     } catch (e) {
-                        console.error("Logout failed network", e);
+                        console.error("Logout network failed:", e);
                     }
+                    // Clear all potential auth keys
                     localStorage.removeItem('auth_token');
+                    localStorage.removeItem('user_role');
+
                     location.reload();
                 });
             });

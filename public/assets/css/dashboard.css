@@ -27,6 +27,21 @@ html {
   width: 4.5rem; /* 72px */
 }
 
+/* ── Main wrapper layout ── */
+#main-wrapper {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Desktop: margin depends on sidebar state */
+@media (min-width: 768px) {
+  #main-wrapper {
+    margin-left: 16rem; /* Full width sidebar */
+  }
+  #sidebar.sidebar-collapsed + #main-wrapper {
+    margin-left: 4.5rem; /* Collapsed sidebar */
+  }
+}
+
 /* Mobile: slide off-screen by default, slide in when open */
 @media (max-width: 767px) {
   #sidebar {
@@ -35,6 +50,10 @@ html {
   }
   #sidebar.mobile-open {
     transform: translateX(0);
+  }
+  
+  #main-wrapper {
+    margin-left: 0 !important; /* ALWAYS 0 on mobile */
   }
 }
 
@@ -63,11 +82,15 @@ html {
   white-space: nowrap;
   overflow: hidden;
 }
-#sidebar.sidebar-collapsed .sidebar-label-text,
-#sidebar.sidebar-collapsed .sidebar-nav-text,
-#sidebar.sidebar-collapsed .sidebar-section-label {
-  opacity: 0;
-  width: 0;
+/* Collapsed Labels: Desktop ONLY */
+@media (min-width: 768px) {
+  #sidebar.sidebar-collapsed .sidebar-label-text,
+  #sidebar.sidebar-collapsed .sidebar-nav-text,
+  #sidebar.sidebar-collapsed .sidebar-section-label {
+    opacity: 0;
+    width: 0;
+    pointer-events: none;
+  }
 }
 
 /* ── Active nav indicator ── */
@@ -82,35 +105,37 @@ html {
   border-radius: 0 3px 3px 0;
 }
 
-/* Collapsed: hide the left indicator, center icon */
-#sidebar.sidebar-collapsed .nav-link {
-  justify-content: center;
-  padding-left: 0;
-  padding-right: 0;
-}
-#sidebar.sidebar-collapsed .nav-link.active::before {
-  display: none;
-}
+/* Collapsed: hide the left indicator, center icon (Desktop ONLY) */
+@media (min-width: 768px) {
+  #sidebar.sidebar-collapsed .nav-link {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  #sidebar.sidebar-collapsed .nav-link.active::before {
+    display: none;
+  }
 
-/* ── Tooltip on hover when collapsed ── */
-#sidebar.sidebar-collapsed .nav-link {
-  position: relative;
-}
-#sidebar.sidebar-collapsed .nav-link:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  left: calc(4.5rem - 4px);
-  top: 50%;
-  transform: translateY(-50%);
-  background: #171717;
-  color: #fff;
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-  z-index: 200;
-  pointer-events: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  /* ── Tooltip on hover when collapsed ── */
+  #sidebar.sidebar-collapsed .nav-link {
+    position: relative;
+  }
+  #sidebar.sidebar-collapsed .nav-link:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(4.5rem - 4px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: #171717;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 200;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  }
 }
 
 /* ── Notification list scroll ── */

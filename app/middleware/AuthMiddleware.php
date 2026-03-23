@@ -18,9 +18,11 @@ class AuthMiddleware extends Middleware
     public function execute(Request $request, Response $response, string $action)
     {
         if (empty($this->actions) || in_array($action, $this->actions)) {
-            $token = $request->getBearerToken();
+            $token = $request->getBearerToken() ?? $_COOKIE['auth_token'] ?? null;
+            
             if (!$token) {
-                $response->json(['error' => 'Unauthorized: No token provided. Please include Authorization: Bearer <token>'], 401);
+                $response->json(['error' => 'Unauthorized: No token provided.'], 401);
+                exit; // Should already be called in $response->json() but being safe.
             }
 
             $tokenModel = new Token();
@@ -28,9 +30,8 @@ class AuthMiddleware extends Middleware
 
             if (!$tokenData) {
                 $response->json(['error' => 'Unauthorized: Invalid or expired token'], 401);
+                exit;
             }
-
-        // Further logic could attach user object to App if needed
         }
     }
 }

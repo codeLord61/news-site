@@ -19,11 +19,19 @@ class AuthController extends Controller
     {
         $this->user = new User();
         $this->token = new Token();
-        $this->registerMiddleware(new AuthMiddleware(['logout']));
+        // Middleware was only applied to logout, but we want logout to always be reachable 
+        // to ensure cookies are cleared even if the token is expired.
     }
 
     public function index()
     {
+        // If already logged in, redirect to dashboard
+        $tokenStr = $_COOKIE['auth_token'] ?? null;
+        if ($tokenStr && $this->token->findValid($tokenStr)) {
+            header("Location: " . url('/dashboard'));
+            exit;
+        }
+
         $this->setLayout('auth');
         echo $this->render('auth', [
             'title' => 'The Daily News - Sign In'
@@ -103,8 +111,16 @@ class AuthController extends Controller
             $this->token->deleteByToken($bearerToken);
         }
         
-        // Clear cookie
-        setcookie('auth_token', '', time() - 3600, '/');
+        // Clear cookie with same flags as set in login()
+        setcookie(
+            'auth_token', 
+            '', 
+            time() - 3600, 
+            '/', 
+            '', 
+            false, 
+            true
+        );
 
         $response->json(['success' => true, 'message' => 'Logged out successfully']);
     }
