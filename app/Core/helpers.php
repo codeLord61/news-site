@@ -15,6 +15,20 @@ function url(string $path = ''): string
 }
 
 /**
+ * Resolves a media URL, checking if it's already an absolute external link.
+ * 
+ * @param string $path
+ * @return string
+ */
+function resolve_media_url(string $path): string
+{
+    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+        return $path;
+    }
+    return url($path);
+}
+
+/**
  * Get parent categories for the header navigation.
  * 
  * @return array

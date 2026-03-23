@@ -44,7 +44,7 @@
                         <!-- Info -->
                         <div>
                             <p id="overlayUserName" class="text-gray-900 font-bold text-lg">Username</p>
-                            <a href="<?= url('/account') ?>" class="text-sm text-primary-600 hover:text-primary-800 font-medium">My Account</a>
+                            <a href="<?= url('/my-account') ?>" class="text-sm text-primary-600 hover:text-primary-800 font-medium">My Account</a>
                         </div>
                     </div>
                     

@@ -5,15 +5,23 @@
  */
 
 $article = $article ?? [];
+$reviewMode = (($reviewMode ?? 'pending') === 'approved') ? 'approved' : 'pending';
+$backPath = (string)($backPath ?? '/editor/pending-submissions');
+$primaryAction = (string)($primaryAction ?? ($reviewMode === 'approved' ? 'publish' : 'approve'));
+$backLabel = $reviewMode === 'approved' ? 'Back to Approved Articles' : 'Back to Pending Submissions';
+$primaryLabel = $primaryAction === 'publish' ? 'Publish' : 'Approve';
+$statusBadgeClass = $reviewMode === 'approved'
+    ? 'bg-emerald-100 text-emerald-700'
+    : 'bg-yellow-100 text-yellow-700';
 ?>
 
 <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
     <a
-        href="<?= url('/editor/pending-submissions') ?>"
+        href="<?= url($backPath) ?>"
         class="inline-flex items-center gap-2 text-sm font-medium text-body hover:text-heading"
     >
         <i class="fa-solid fa-arrow-left"></i>
-        Back to Pending Submissions
+        <?= htmlspecialchars($backLabel) ?>
     </a>
 
     <div class="flex items-center gap-2">
@@ -27,11 +35,12 @@ $article = $article ?? [];
         </button>
         <button
             type="button"
-            id="reviewApproveBtn"
+            id="reviewPrimaryBtn"
+            data-action="<?= htmlspecialchars($primaryAction) ?>"
             data-article-id="<?= (int)($article['id'] ?? 0) ?>"
             class="inline-flex items-center justify-center rounded-base text-xs font-medium px-4 py-2 text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-200"
         >
-            Approve
+            <?= htmlspecialchars($primaryLabel) ?>
         </button>
     </div>
 </div>
@@ -39,7 +48,7 @@ $article = $article ?? [];
 <article class="bg-neutral-primary-soft border border-default rounded-base shadow-xs">
     <header class="px-6 py-5 border-b border-default">
         <div class="flex items-center gap-2 mb-3">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-yellow-100 text-yellow-700">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold <?= htmlspecialchars($statusBadgeClass) ?>">
                 <?= ucfirst(htmlspecialchars((string)($article['status'] ?? 'pending'))) ?>
             </span>
             <span class="text-xs text-body">Reporter: <?= htmlspecialchars((string)($article['reporter_name'] ?? '-')) ?></span>
@@ -53,6 +62,10 @@ $article = $article ?? [];
             <span><strong>Slug:</strong> <span class="font-mono"><?= htmlspecialchars((string)($article['slug'] ?? '-')) ?></span></span>
             <span><strong>Created:</strong> <?= !empty($article['created_at']) ? date('M d, Y H:i', strtotime((string)$article['created_at'])) : '-' ?></span>
             <span><strong>Updated:</strong> <?= !empty($article['updated_at']) ? date('M d, Y H:i', strtotime((string)$article['updated_at'])) : '-' ?></span>
+            <span><strong>Category:</strong> <?= htmlspecialchars((string)($article['category_name'] ?? '-')) ?></span>
+            <?php if ($reviewMode === 'approved'): ?>
+                <span><strong>Approved At:</strong> <?= !empty($article['approved_at']) ? date('M d, Y H:i', strtotime((string)$article['approved_at'])) : '-' ?></span>
+            <?php endif; ?>
         </div>
     </header>
 
@@ -79,9 +92,10 @@ $article = $article ?? [];
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const approveBtn = document.getElementById('reviewApproveBtn');
+    const primaryBtn = document.getElementById('reviewPrimaryBtn');
     const rejectBtn = document.getElementById('reviewRejectBtn');
-    const articleId = approveBtn?.getAttribute('data-article-id') || rejectBtn?.getAttribute('data-article-id');
+    const articleId = primaryBtn?.getAttribute('data-article-id') || rejectBtn?.getAttribute('data-article-id');
+    const reviewMode = '<?= $reviewMode ?>';
 
     const submitDecision = async (action) => {
         if (!articleId) {
@@ -89,16 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const actionLabel = action === 'approve' ? 'approve' : 'reject';
-        if (!window.confirm(`Are you sure you want to ${actionLabel} this submission?`)) {
+        const actionLabel = action === 'publish'
+            ? 'publish'
+            : (action === 'approve' ? 'approve' : 'reject');
+        if (!window.confirm(`Are you sure you want to ${actionLabel} this article?`)) {
             return;
         }
 
-        const endpoint = action === 'approve'
-            ? '<?= url('/editor/pending-submissions/approve') ?>'
-            : '<?= url('/editor/pending-submissions/reject') ?>';
+        let endpoint = '';
+        if (action === 'approve') {
+            endpoint = '<?= url('/editor/pending-submissions/approve') ?>';
+        } else if (action === 'publish') {
+            endpoint = '<?= url('/editor/approved-articles/publish') ?>';
+        } else {
+            endpoint = reviewMode === 'approved'
+                ? '<?= url('/editor/approved-articles/reject') ?>'
+                : '<?= url('/editor/pending-submissions/reject') ?>';
+        }
 
-        [approveBtn, rejectBtn].forEach((btn) => {
+        [primaryBtn, rejectBtn].forEach((btn) => {
             if (btn) {
                 btn.disabled = true;
                 btn.classList.add('opacity-70', 'cursor-not-allowed');
@@ -117,13 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json().catch(() => ({}));
             if (!response.ok || !data.success) {
-                throw new Error(data.error || 'Failed to update submission.');
+                throw new Error(data.error || 'Failed to update article.');
             }
 
-            window.location.href = '<?= url('/editor/pending-submissions') ?>';
+            window.location.href = '<?= url($backPath) ?>';
         } catch (error) {
-            alert(error instanceof Error ? error.message : 'Failed to update submission.');
-            [approveBtn, rejectBtn].forEach((btn) => {
+            alert(error instanceof Error ? error.message : 'Failed to update article.');
+            [primaryBtn, rejectBtn].forEach((btn) => {
                 if (btn) {
                     btn.disabled = false;
                     btn.classList.remove('opacity-70', 'cursor-not-allowed');
@@ -132,8 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    if (approveBtn) {
-        approveBtn.addEventListener('click', () => submitDecision('approve'));
+    if (primaryBtn) {
+        const action = primaryBtn.getAttribute('data-action') || 'approve';
+        primaryBtn.addEventListener('click', () => submitDecision(action));
     }
 
     if (rejectBtn) {

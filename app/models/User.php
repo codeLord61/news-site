@@ -81,4 +81,13 @@ class User extends Model
         $stmt = $this->db()->prepare("UPDATE users SET role_id = ? WHERE id = ?");
         return $stmt->execute([$roleId, $userId]);
     }
+
+    /**
+     * Update a user's profile (name and avatar).
+     */
+    public function updateProfile(int $userId, string $name, ?string $avatarPath): bool
+    {
+        $stmt = $this->db()->prepare("UPDATE users SET name = ?, avatar_path = ? WHERE id = ?");
+        return $stmt->execute([$name, $avatarPath, $userId]);
+    }
 }

@@ -463,6 +463,69 @@ class Article extends Model
     }
 
     /**
+     * List approved articles assigned to a specific editor.
+     */
+    public function getApprovedForEditor(int $editorId): array
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.status, a.created_at, a.updated_at, a.approved_at,
+                    u.name AS reporter_name,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             LEFT JOIN users u ON u.id = a.reporter_id
+             WHERE a.status = 'approved'
+               AND a.managed_by = ?
+               AND a.deleted_at IS NULL
+             ORDER BY a.approved_at DESC, a.updated_at DESC, a.created_at DESC"
+        );
+
+        $stmt->execute([$editorId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get a single approved article assigned to an editor.
+     */
+    public function getApprovedArticleForEditor(int $articleId, int $editorId): array|false
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.content, a.status, a.created_at, a.updated_at, a.approved_at,
+                    u.name AS reporter_name,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             LEFT JOIN users u ON u.id = a.reporter_id
+             WHERE a.id = ?
+               AND a.managed_by = ?
+               AND a.status = 'approved'
+               AND a.deleted_at IS NULL
+             LIMIT 1"
+        );
+
+        $stmt->execute([$articleId, $editorId]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Get an article payload used to prefill the reporter editor form.
      */
     public function getReporterArticleForForm(int $articleId, int $reporterId): array|false
@@ -610,6 +673,46 @@ class Article extends Model
              WHERE id = ?
                AND managed_by = ?
                AND status = 'pending'
+               AND deleted_at IS NULL"
+        );
+
+        $stmt->execute([$articleId, $editorId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Publish an approved article currently assigned to an editor.
+     */
+    public function publishApprovedByEditor(int $articleId, int $editorId): bool
+    {
+        $stmt = $this->db()->prepare(
+            "UPDATE articles
+             SET status = 'published',
+                 published_at = NOW(),
+                 updated_at = NOW()
+             WHERE id = ?
+               AND managed_by = ?
+               AND status = 'approved'
+               AND deleted_at IS NULL"
+        );
+
+        $stmt->execute([$articleId, $editorId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Reject an approved article currently assigned to an editor.
+     */
+    public function rejectApprovedByEditor(int $articleId, int $editorId): bool
+    {
+        $stmt = $this->db()->prepare(
+            "UPDATE articles
+             SET status = 'rejected',
+                 approved_at = NULL,
+                 updated_at = NOW()
+             WHERE id = ?
+               AND managed_by = ?
+               AND status = 'approved'
                AND deleted_at IS NULL"
         );
 

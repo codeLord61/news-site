@@ -135,6 +135,17 @@ class DashboardController extends Controller
             return;
         }
 
+        if ($currentPath === '/editor/approved-articles') {
+            $this->ensureWebRole($normalizedRole, 'editor');
+
+            echo $this->render('dashboard/editor_approved_articles', array_merge($baseViewData, [
+                'pageTitle'    => 'Approved Articles',
+                'pageSubtitle' => 'Approved articles you can publish or move back to rejected.',
+                'articles'     => $this->article->getApprovedForEditor((int)$userInfo['id']),
+            ]));
+            return;
+        }
+
         echo $this->render('dashboard/index', array_merge($baseViewData, [
             'pageTitle'    => 'Dashboard',
             'pageSubtitle' => "Welcome back, $userName! Here's what's happening.",
@@ -202,6 +213,44 @@ class DashboardController extends Controller
             'userRole'      => $normalizedRole,
             'currentPath'   => $request->getPath(),
             'article'       => $article,
+            'reviewMode'    => 'pending',
+            'backPath'      => '/editor/pending-submissions',
+            'primaryAction' => 'approve',
+        ]);
+    }
+
+    public function reviewApprovedSubmission(Request $request, Response $response): void
+    {
+        $userInfo = $this->resolveWebUser($request);
+        $normalizedRole = strtolower((string)($userInfo['role_name'] ?? ''));
+        $this->ensureWebRole($normalizedRole, 'editor');
+
+        $articleId = (int)$request->getRouteParam('id', 0);
+        if ($articleId <= 0) {
+            header("Location: " . url('/editor/approved-articles'));
+            exit;
+        }
+
+        $article = $this->article->getApprovedArticleForEditor($articleId, (int)$userInfo['id']);
+        if (!$article) {
+            header("Location: " . url('/editor/approved-articles'));
+            exit;
+        }
+
+        $this->setLayout('dashboard');
+
+        echo $this->render('dashboard/editor_review_submission', [
+            'pageTitle'     => 'Review Approved Article',
+            'pageSubtitle'  => 'Perform a final check before publishing or rejecting.',
+            'userName'      => $userInfo['name'],
+            'userInitials'  => $this->buildInitials($userInfo['name']),
+            'userEmail'     => $userInfo['email'],
+            'userRole'      => $normalizedRole,
+            'currentPath'   => $request->getPath(),
+            'article'       => $article,
+            'reviewMode'    => 'approved',
+            'backPath'      => '/editor/approved-articles',
+            'primaryAction' => 'publish',
         ]);
     }
 
@@ -283,6 +332,60 @@ class DashboardController extends Controller
         $response->json([
             'success' => true,
             'message' => 'Submission rejected successfully.',
+        ]);
+    }
+
+    public function publishApprovedSubmission(Request $request, Response $response): void
+    {
+        if ($request->getMethod() !== 'post') {
+            $response->json(['error' => 'Method not allowed.'], 405);
+        }
+
+        $userInfo = $this->resolveApiUser($request, $response);
+        $this->ensureApiRole($userInfo, 'editor', $response);
+
+        $articleId = $this->extractArticleId($request->getBody());
+        if ($articleId <= 0) {
+            $response->json(['error' => 'A valid article_id is required.'], 422);
+        }
+
+        $published = $this->article->publishApprovedByEditor($articleId, (int)$userInfo['id']);
+        if (!$published) {
+            $response->json([
+                'error' => 'Unable to publish. The article may not be approved for you anymore.',
+            ], 409);
+        }
+
+        $response->json([
+            'success' => true,
+            'message' => 'Article published successfully.',
+        ]);
+    }
+
+    public function rejectApprovedSubmission(Request $request, Response $response): void
+    {
+        if ($request->getMethod() !== 'post') {
+            $response->json(['error' => 'Method not allowed.'], 405);
+        }
+
+        $userInfo = $this->resolveApiUser($request, $response);
+        $this->ensureApiRole($userInfo, 'editor', $response);
+
+        $articleId = $this->extractArticleId($request->getBody());
+        if ($articleId <= 0) {
+            $response->json(['error' => 'A valid article_id is required.'], 422);
+        }
+
+        $rejected = $this->article->rejectApprovedByEditor($articleId, (int)$userInfo['id']);
+        if (!$rejected) {
+            $response->json([
+                'error' => 'Unable to reject. The article may not be approved for you anymore.',
+            ], 409);
+        }
+
+        $response->json([
+            'success' => true,
+            'message' => 'Approved article rejected successfully.',
         ]);
     }
 

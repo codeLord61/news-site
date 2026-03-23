@@ -67,38 +67,97 @@ if (!empty($article['updated_at'])) {
 
 <hr class="my-8 border-gray-200">
 
-<!-- Comments Section (Static Placeholder) -->
-<section class="max-w-2xl mx-auto">
+<?php
+$commentsCount = count($comments ?? []);
+?>
+<!-- Comments Section -->
+<section class="max-w-2xl mx-auto mb-16">
     <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-bold text-gray-900 border-l-4 border-primary-600 pl-3">
-            Total comments (0)
+            Total comments (<?= $commentsCount ?>)
         </h3>
     </div>
 
-    <div class="bg-gray-50 p-4 border border-gray-200">
+    <!-- Comment Form -->
+    <div class="bg-gray-50 p-4 border border-gray-200 mb-8">
         <div class="flex gap-4">
-            <!-- User Avatar -->
-            <div class="shrink-0">
-                <div class="w-10 h-10 bg-gray-300 overflow-hidden border border-gray-300">
-                    <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop"
-                        alt="User Avatar" class="w-full h-full object-cover opacity-60">
+            <?php if (!empty($currentUser)): ?>
+                <!-- Logged In User Avatar -->
+                <div class="shrink-0">
+                    <div class="w-10 h-10 bg-primary-100 text-primary-600 flex items-center justify-center font-bold overflow-hidden border border-gray-300">
+                        <?php if (!empty($currentUser['avatar_path'])): ?>
+                            <img src="<?= htmlspecialchars(resolve_media_url($currentUser['avatar_path'])) ?>" alt="User Avatar" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <i class="fa-solid fa-user"></i>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Comment Input Area -->
-            <div class="flex-1">
-                <textarea
-                    class="w-full bg-white border border-gray-300 p-3 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-400 resize-none cursor-not-allowed"
-                    rows="3" placeholder="Sign In to comment" disabled></textarea>
-                <div class="flex justify-end mt-2">
-                    <button
-                        class="px-4 py-1.5 bg-primary-600 text-white text-xs font-bold opacity-50 cursor-not-allowed"
-                        disabled>
-                        Post Comment
-                    </button>
+                <!-- Comment Input Area Active -->
+                <div class="flex-1">
+                    <form action="<?= url('/comments/store') ?>" method="POST">
+                        <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                        <input type="hidden" name="article_slug" value="<?= htmlspecialchars($article['slug']) ?>">
+                        <textarea
+                            name="content"
+                            class="w-full bg-white border border-gray-300 p-3 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary-400 resize-y"
+                            rows="3" placeholder="Write a comment..." required></textarea>
+                        <div class="flex justify-end mt-2">
+                            <button
+                                type="submit"
+                                class="px-4 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold transition-colors">
+                                Post Comment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            <?php else: ?>
+                <!-- Guest Avatar -->
+                <div class="shrink-0">
+                    <div class="w-10 h-10 bg-gray-200 text-gray-400 flex items-center justify-center font-bold overflow-hidden border border-gray-300">
+                        <i class="fa-solid fa-user text-xl"></i>
+                    </div>
+                </div>
+
+                <!-- Comment Input Area Disabled -->
+                <div class="flex-1">
+                    <textarea
+                        class="w-full bg-white border border-gray-300 p-3 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-400 resize-none cursor-not-allowed"
+                        rows="3" placeholder="Sign In to comment" disabled></textarea>
+                    <div class="flex justify-end mt-2">
+                        <button class="px-4 py-1.5 bg-primary-600 text-white text-xs font-bold opacity-50 cursor-not-allowed" disabled>
+                            Post Comment
+                        </button>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Comments List -->
+    <div class="space-y-6">
+        <?php foreach (($comments ?? []) as $comment): ?>
+            <div class="flex gap-4">
+                <div class="shrink-0">
+                    <div class="w-10 h-10 bg-primary-50 text-primary-600 flex items-center justify-center font-bold overflow-hidden border border-gray-200 rounded-full">
+                        <?php if (!empty($comment['user_avatar'])): ?>
+                            <img src="<?= htmlspecialchars(resolve_media_url($comment['user_avatar'])) ?>" alt="User Avatar" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <i class="fa-solid fa-user"></i>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="flex-1 bg-white border border-gray-100 p-4 shadow-sm">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-gray-900 text-sm"><?= htmlspecialchars($comment['user_name']) ?></h4>
+                        <span class="text-xs text-gray-500"><?= date('M j, Y g:i A', strtotime($comment['created_at'])) ?></span>
+                    </div>
+                    <p class="text-gray-700 text-sm">
+                        <?= nl2br(htmlspecialchars($comment['content'])) ?>
+                    </p>
                 </div>
             </div>
-        </div>
+        <?php endforeach; ?>
     </div>
 
 </section>
