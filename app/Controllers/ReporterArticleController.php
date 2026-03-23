@@ -81,6 +81,12 @@ class ReporterArticleController extends Controller
             $mediaIds = $this->parseMediaIds($body['media_ids'], $errors);
         }
 
+        $thumbnailMediaId = $this->parseOptionalPositiveInt($body, 'thumbnail_media_id', $errors);
+        if ($thumbnailMediaId !== null) {
+            $mediaIds[] = $thumbnailMediaId;
+            $mediaIdsProvided = true;
+        }
+
         if ($title === '') {
             $errors['title'] = 'Title is required.';
         } elseif ($this->strLength($title) > 255) {
@@ -172,6 +178,10 @@ class ReporterArticleController extends Controller
         }
 
         $saved = $this->article->findByIdForReporter((int)$savedArticleId, $reporterId);
+        $isUpdate = $articleId !== null;
+        $message = $intent === 'submit'
+            ? ($isUpdate ? 'Article updated and submitted for review.' : 'Article saved and submitted for review.')
+            : ($isUpdate ? 'Article updated successfully.' : 'Draft saved successfully.');
 
         $response->json([
             'success' => true,
@@ -181,9 +191,37 @@ class ReporterArticleController extends Controller
                 'status' => $saved['status'] ?? $status,
                 'updated_at' => $saved['updated_at'] ?? date('Y-m-d H:i:s'),
             ],
-            'message' => $intent === 'submit'
-                ? 'Article saved and submitted for review.'
-                : 'Draft saved successfully.',
+            'message' => $message,
+        ]);
+    }
+
+    /**
+     * POST /api/v1/reporter/articles/delete
+     * Soft-delete a reporter-owned article.
+     */
+    public function delete(Request $request, Response $response): void
+    {
+        if ($request->getMethod() !== 'post') {
+            $response->json(['error' => 'Method not allowed.'], 405);
+        }
+
+        $reporter = $this->resolveReporter($request, $response);
+        $body = $request->getBody();
+        $errors = [];
+
+        $articleId = $this->parseOptionalPositiveInt($body, 'article_id', $errors);
+        if ($articleId === null || !empty($errors)) {
+            $response->json(['error' => 'A valid article_id is required.'], 422);
+        }
+
+        $deleted = $this->article->deleteReporterArticle($articleId, (int)$reporter['id']);
+        if (!$deleted) {
+            $response->json(['error' => 'Article not found for this reporter.'], 404);
+        }
+
+        $response->json([
+            'success' => true,
+            'message' => 'Article deleted successfully.',
         ]);
     }
 
@@ -256,11 +294,17 @@ class ReporterArticleController extends Controller
             ], 422);
         }
 
+        $isThumbnail = filter_var(
+            $body['is_thumbnail'] ?? ($_POST['is_thumbnail'] ?? false),
+            FILTER_VALIDATE_BOOLEAN
+        );
+
         $mediaId = $this->media->createImage(
             $fileUrl,
             $altText !== '' ? $altText : null,
             $title !== '' ? $title : null,
-            (int)$reporter['id']
+            (int)$reporter['id'],
+            $isThumbnail
         );
 
         $response->json([

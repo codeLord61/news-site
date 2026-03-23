@@ -121,6 +121,7 @@ CREATE TABLE `medias` (
   `media_type` enum('image') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `caption` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `alt_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `is_thumbnail` tinyint(1) NOT NULL DEFAULT '0',
   `uploaded_by` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

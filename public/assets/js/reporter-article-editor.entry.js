@@ -37,6 +37,10 @@ window.addEventListener('load', () => {
   }
 
   const appBaseUrl = window.appBaseUrl || '';
+  const initialArticle =
+    window.reporterArticleInitialData && typeof window.reporterArticleInitialData === 'object'
+      ? window.reporterArticleInitialData
+      : null;
 
   const titleInput = document.getElementById('titleInput');
   const excerptInput = document.getElementById('excerptInput');
@@ -440,6 +444,59 @@ window.addEventListener('load', () => {
     return parsed;
   }
 
+  function hydrateInitialArticle() {
+    if (!initialArticle) {
+      return;
+    }
+
+    const articleId = parseOptionalInt(initialArticle.id);
+    if (articleId !== null && articleIdInput) {
+      articleIdInput.value = String(articleId);
+    }
+
+    if (titleInput && typeof initialArticle.title === 'string') {
+      titleInput.value = initialArticle.title;
+    }
+
+    if (excerptInput && typeof initialArticle.excerpt === 'string') {
+      excerptInput.value = initialArticle.excerpt;
+    }
+
+    const categoryId = parseOptionalInt(initialArticle.category_id);
+    if (categoryId !== null && categorySelect) {
+      categorySelect.value = String(categoryId);
+    }
+
+    const tagId = parseOptionalInt(initialArticle.tag_id);
+    if (tagId !== null && tagSelect) {
+      tagSelect.value = String(tagId);
+    }
+
+    const thumbnailMediaId = parseOptionalInt(initialArticle.thumbnail_media_id);
+    if (thumbnailMediaId !== null && thumbnailMediaIdInput) {
+      thumbnailMediaIdInput.value = String(thumbnailMediaId);
+    }
+
+    if (thumbnailUrlInput && typeof initialArticle.thumbnail_image_url === 'string') {
+      thumbnailUrlInput.value = initialArticle.thumbnail_image_url;
+    }
+
+    if (thumbnailAltInput && typeof initialArticle.thumbnail_alt_text === 'string') {
+      thumbnailAltInput.value = initialArticle.thumbnail_alt_text;
+    }
+
+    if (thumbnailCaptionInput && typeof initialArticle.thumbnail_caption === 'string') {
+      thumbnailCaptionInput.value = initialArticle.thumbnail_caption;
+    }
+
+    if (typeof initialArticle.content === 'string' && initialArticle.content.trim() !== '') {
+      editor.commands.setContent(initialArticle.content);
+      if (contentHtmlInput) {
+        contentHtmlInput.value = initialArticle.content;
+      }
+    }
+  }
+
   function setSavingState(isSaving) {
     saveButtons.forEach((button) => {
       button.disabled = isSaving;
@@ -518,7 +575,7 @@ window.addEventListener('load', () => {
     advancedImageError.classList.remove('hidden');
   }
 
-  async function uploadImage({ file = null, imageUrl = '', altText = '', title = '' }) {
+  async function uploadImage({ file = null, imageUrl = '', altText = '', title = '', isThumbnail = false }) {
     const endpoint = `${appBaseUrl}/api/v1/reporter/media/images`;
     let response;
 
@@ -527,6 +584,7 @@ window.addEventListener('load', () => {
       formData.append('image', file);
       formData.append('alt_text', altText || '');
       formData.append('title', title || '');
+      formData.append('is_thumbnail', isThumbnail ? '1' : '0');
 
       response = await fetch(endpoint, {
         method: 'POST',
@@ -543,6 +601,7 @@ window.addEventListener('load', () => {
           image_url: imageUrl,
           alt_text: altText || '',
           title: title || '',
+          is_thumbnail: isThumbnail,
         }),
       });
     }
@@ -603,6 +662,7 @@ window.addEventListener('load', () => {
           file: thumbnailFile,
           altText: thumbnailAltText,
           title: thumbnailCaption,
+          isThumbnail: true,
         });
 
         thumbnailImageUrl = uploadedThumbnail.file_url || '';
@@ -672,7 +732,12 @@ window.addEventListener('load', () => {
           : '';
       }
       contentHtmlInput.value = contentHtml;
-      showAlert(data.message || 'Article saved successfully.', true);
+      const isExistingArticle = parseOptionalInt(payload.article_id) !== null;
+      const successMessage =
+        isExistingArticle && intent === 'draft'
+          ? 'Article updated successfully.'
+          : data.message || 'Article saved successfully.';
+      showAlert(successMessage, true);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unexpected error while saving article.';
       if (thumbnailFileInput?.files?.length) {
@@ -900,6 +965,8 @@ window.addEventListener('load', () => {
       }
     });
   }
+
+  hydrateInitialArticle();
 
   titleInput.addEventListener('input', () => updateCounter(titleInput, titleCounter));
   excerptInput.addEventListener('input', () => updateCounter(excerptInput, excerptCounter));

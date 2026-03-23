@@ -132,12 +132,12 @@ class Article extends Model
                        u.name AS reporter_name,
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
-                        WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS thumbnail,
+                        WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                        LIMIT 1) AS thumbnail,
                        (SELECT m.alt_text FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
-                        WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS alt_text
+                        WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                        LIMIT 1) AS alt_text
                 FROM articles a
                 LEFT JOIN users u ON a.reporter_id = u.id
                 WHERE a.slug = ? AND a.status = 'published' AND a.deleted_at IS NULL";
@@ -179,12 +179,12 @@ class Article extends Model
                        u.name AS reporter_name,
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
-                        WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS thumbnail,
+                        WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                        LIMIT 1) AS thumbnail,
                        (SELECT m.alt_text FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
-                        WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS alt_text
+                        WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                        LIMIT 1) AS alt_text
                 FROM articles a
                 LEFT JOIN users u ON a.reporter_id = u.id
                 WHERE a.status = 'published' AND a.deleted_at IS NULL
@@ -219,12 +219,12 @@ class Article extends Model
                        u.name AS reporter_name,
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
-                        WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS thumbnail,
+                        WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                        LIMIT 1) AS thumbnail,
                        (SELECT m.alt_text FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
-                        WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS alt_text
+                        WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                        LIMIT 1) AS alt_text
                 FROM articles a
                 INNER JOIN articles_categories ac ON a.id = ac.article_id
                 LEFT JOIN users u ON a.reporter_id = u.id
@@ -263,12 +263,12 @@ class Article extends Model
                        u.name AS reporter_name,
                        (SELECT m.file_url FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
-                        WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS thumbnail,
+                        WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                        LIMIT 1) AS thumbnail,
                        (SELECT m.alt_text FROM medias m
                         INNER JOIN articles_medias am ON m.id = am.media_id
-                        WHERE am.article_id = a.id
-                        ORDER BY m.id ASC LIMIT 1) AS alt_text
+                        WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                        LIMIT 1) AS alt_text
                 FROM articles a
                 INNER JOIN articles_categories ac ON a.id = ac.article_id
                 LEFT JOIN users u ON a.reporter_id = u.id
@@ -310,6 +310,311 @@ class Article extends Model
         );
         $stmt->execute([$articleId, $reporterId]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get all articles created by a reporter.
+     */
+    public function getReporterArticles(int $reporterId): array
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.status, a.created_at, a.updated_at,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             WHERE a.reporter_id = ? AND a.deleted_at IS NULL
+             ORDER BY a.created_at DESC"
+        );
+
+        $stmt->execute([$reporterId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get reporter submissions excluding drafts.
+     */
+    public function getReporterSubmissions(int $reporterId): array
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.status, a.created_at, a.updated_at,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             WHERE a.reporter_id = ?
+               AND a.status IN ('submitted', 'pending', 'approved', 'rejected', 'published')
+               AND a.deleted_at IS NULL
+             ORDER BY a.created_at DESC"
+        );
+
+        $stmt->execute([$reporterId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * List all submitted articles for editor pickup.
+     */
+    public function getSubmittedForEditorQueue(): array
+    {
+        $stmt = $this->db()->query(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.status, a.created_at,
+                    u.name AS reporter_name,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             LEFT JOIN users u ON u.id = a.reporter_id
+             WHERE a.status = 'submitted' AND a.deleted_at IS NULL
+             ORDER BY a.created_at ASC"
+        );
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * List pending articles assigned to a specific editor.
+     */
+    public function getPendingForEditor(int $editorId): array
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.status, a.created_at, a.updated_at,
+                    a.created_at AS submitted_at,
+                    a.updated_at AS pending_since,
+                    u.name AS reporter_name,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             LEFT JOIN users u ON u.id = a.reporter_id
+             WHERE a.status = 'pending'
+               AND a.managed_by = ?
+               AND a.deleted_at IS NULL
+             ORDER BY a.updated_at DESC, a.created_at DESC"
+        );
+
+        $stmt->execute([$editorId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get a single pending article assigned to an editor.
+     */
+    public function getPendingArticleForEditor(int $articleId, int $editorId): array|false
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.content, a.status, a.created_at, a.updated_at,
+                    a.created_at AS submitted_at,
+                    u.name AS reporter_name,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             LEFT JOIN users u ON u.id = a.reporter_id
+             WHERE a.id = ?
+               AND a.managed_by = ?
+               AND a.status = 'pending'
+               AND a.deleted_at IS NULL
+             LIMIT 1"
+        );
+
+        $stmt->execute([$articleId, $editorId]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get an article payload used to prefill the reporter editor form.
+     */
+    public function getReporterArticleForForm(int $articleId, int $reporterId): array|false
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.content, a.status, a.created_at, a.updated_at,
+                    (SELECT ac.category_id
+                     FROM articles_categories ac
+                     WHERE ac.article_id = a.id
+                     LIMIT 1) AS category_id,
+                    (SELECT at2.tag_id
+                     FROM articles_tags at2
+                     WHERE at2.article_id = a.id
+                     LIMIT 1) AS tag_id,
+                    (SELECT m.id
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail_media_id,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail_image_url,
+                    (SELECT m.alt_text
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail_alt_text,
+                    (SELECT m.caption
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail_caption
+             FROM articles a
+             WHERE a.id = ?
+               AND a.reporter_id = ?
+               AND a.deleted_at IS NULL
+             LIMIT 1"
+        );
+
+        $stmt->execute([$articleId, $reporterId]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get reporter-owned article data for dashboard preview page.
+     */
+    public function getReporterArticlePreview(int $articleId, int $reporterId): array|false
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.content, a.status, a.created_at, a.updated_at,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT GROUP_CONCAT(t.name ORDER BY t.name SEPARATOR ', ')
+                     FROM tags t
+                     INNER JOIN articles_tags at2 ON at2.tag_id = t.id
+                     WHERE at2.article_id = a.id) AS tag_names,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             WHERE a.id = ?
+               AND a.reporter_id = ?
+               AND a.deleted_at IS NULL
+             LIMIT 1"
+        );
+
+        $stmt->execute([$articleId, $reporterId]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Soft-delete a reporter-owned article.
+     */
+    public function deleteReporterArticle(int $articleId, int $reporterId): bool
+    {
+        $stmt = $this->db()->prepare(
+            "UPDATE articles
+             SET deleted_at = NOW(), updated_at = NOW()
+             WHERE id = ?
+               AND reporter_id = ?
+               AND deleted_at IS NULL"
+        );
+
+        $stmt->execute([$articleId, $reporterId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Move an article from submitted queue to pending for a specific editor.
+     */
+    public function assignSubmittedToEditor(int $articleId, int $editorId): bool
+    {
+        $stmt = $this->db()->prepare(
+            "UPDATE articles
+             SET status = 'pending',
+                 managed_by = ?,
+                 updated_at = NOW()
+             WHERE id = ?
+               AND status = 'submitted'
+               AND deleted_at IS NULL"
+        );
+
+        $stmt->execute([$editorId, $articleId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Approve an article currently assigned to an editor.
+     */
+    public function approvePendingByEditor(int $articleId, int $editorId): bool
+    {
+        $stmt = $this->db()->prepare(
+            "UPDATE articles
+             SET status = 'approved',
+                 approved_at = NOW(),
+                 updated_at = NOW()
+             WHERE id = ?
+               AND managed_by = ?
+               AND status = 'pending'
+               AND deleted_at IS NULL"
+        );
+
+        $stmt->execute([$articleId, $editorId]);
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Reject an article currently assigned to an editor.
+     */
+    public function rejectPendingByEditor(int $articleId, int $editorId): bool
+    {
+        $stmt = $this->db()->prepare(
+            "UPDATE articles
+             SET status = 'rejected',
+                 approved_at = NULL,
+                 updated_at = NOW()
+             WHERE id = ?
+               AND managed_by = ?
+               AND status = 'pending'
+               AND deleted_at IS NULL"
+        );
+
+        $stmt->execute([$articleId, $editorId]);
+        return $stmt->rowCount() > 0;
     }
 
     /**

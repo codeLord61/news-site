@@ -46,45 +46,7 @@ use app\core\App;
                     class="hidden md:inline md:text-xs md:font-bold">Logout</span>
             </button>
 
-            <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const loginBtn = document.getElementById('headerLoginBtn');
-                const logoutBtn = document.getElementById('headerLogoutBtn');
-                const token = localStorage.getItem('auth_token');
 
-                if (token) {
-                    loginBtn.style.display = 'none';
-                    logoutBtn.style.display = 'block';
-                }
-
-                logoutBtn.addEventListener('click', async () => {
-                    const token = localStorage.getItem('auth_token');
-                    try {
-                        // Use the token fetched at click time to avoid any state issues
-                        const response = await fetch((window.appBaseUrl || "") + "/api/v1/logout", {
-                            method: "POST",
-                            headers: {
-                                "Authorization": "Bearer " + token,
-                                "Accept": "application/json"
-                            },
-                            credentials: "include"
-                        });
-                        
-                        // We check for response status but proceed anyway to ensure local cleanup
-                        if (!response.ok) {
-                            console.error("Logout API returned error:", response.status);
-                        }
-                    } catch (e) {
-                        console.error("Logout network failed:", e);
-                    }
-                    // Clear all potential auth keys
-                    localStorage.removeItem('auth_token');
-                    localStorage.removeItem('user_role');
-
-                    location.reload();
-                });
-            });
-            </script>
 
             <button id="hamburgerMenuBtn" class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
                 <i class="fa-solid fa-bars"></i>

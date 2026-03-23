@@ -7,9 +7,9 @@ use app\core\Model;
 class Media extends Model
 {
     /**
-     * Get the first media (thumbnail) linked to an article.
+     * Get the thumbnail media linked to an article (is_thumbnail = 1).
      *
-     * @return array|null  ['file_url', 'alt_text', 'caption'] or null
+     * @return array|null  ['id', 'file_url', 'alt_text', 'caption'] or null
      */
     public function getFirstForArticle(int $articleId): ?array
     {
@@ -17,8 +17,7 @@ class Media extends Model
             "SELECT m.id, m.file_url, m.alt_text, m.caption
              FROM medias m
              INNER JOIN articles_medias am ON m.id = am.media_id
-             WHERE am.article_id = ?
-             ORDER BY m.id ASC
+             WHERE am.article_id = ? AND m.is_thumbnail = 1
              LIMIT 1"
         );
         $stmt->execute([$articleId]);
@@ -28,16 +27,19 @@ class Media extends Model
 
     /**
      * Create an image media row.
+     *
+     * @param bool $isThumbnail  True when this image is the article thumbnail.
      */
     public function createImage(
         string $fileUrl,
         ?string $altText,
         ?string $title,
-        int $uploadedBy
+        int $uploadedBy,
+        bool $isThumbnail = false
     ): int {
         $stmt = $this->db()->prepare(
-            "INSERT INTO medias (file_url, media_type, alt_text, caption, uploaded_by, created_at)
-             VALUES (?, 'image', ?, ?, ?, NOW())"
+            "INSERT INTO medias (file_url, media_type, alt_text, caption, uploaded_by, is_thumbnail, created_at)
+             VALUES (?, 'image', ?, ?, ?, ?, NOW())"
         );
 
         $stmt->execute([
@@ -45,9 +47,20 @@ class Media extends Model
             $altText,
             $title,
             $uploadedBy,
+            $isThumbnail ? 1 : 0,
         ]);
 
         return (int)$this->db()->lastInsertId();
+    }
+
+    /**
+     * Update the is_thumbnail flag for a specific media row.
+     */
+    public function setIsThumbnail(int $mediaId, bool $flag): void
+    {
+        $this->db()->prepare(
+            "UPDATE medias SET is_thumbnail = ? WHERE id = ?"
+        )->execute([$flag ? 1 : 0, $mediaId]);
     }
 
     /**
@@ -84,7 +97,7 @@ class Media extends Model
     public function findById(int $id): array|false
     {
         $stmt = $this->db()->prepare(
-            "SELECT id, file_url, media_type, caption, alt_text, uploaded_by, created_at
+            "SELECT id, file_url, media_type, caption, alt_text, uploaded_by, is_thumbnail, created_at
              FROM medias
              WHERE id = ?"
         );

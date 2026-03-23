@@ -21,6 +21,7 @@ $this->router->get('/api/v1/articles/{slug}', [ArticleController::class , 'show'
 
 // ---- Reporter Article routes ----
 $this->router->post('/api/v1/reporter/articles', [ReporterArticleController::class, 'save']);
+$this->router->post('/api/v1/reporter/articles/delete', [ReporterArticleController::class, 'delete']);
 $this->router->post('/api/v1/reporter/media/images', [ReporterArticleController::class, 'uploadImage']);
 
 // ---- Public Category routes ----

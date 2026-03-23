@@ -11,7 +11,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
                 <?php foreach ($hero as $article): ?>
                 <a href="<?= $baseUrl ?>/articles/<?= htmlspecialchars($article['slug']) ?>" class="group block space-y-3">
                     <!-- Image -->
-                    <div class="relative w-full h-56 bg-gray-200 rounded-lg overflow-hidden">
+                    <div class="relative w-full h-56 bg-gray-200 overflow-hidden">
                         <?php if (!empty($article['thumbnail'])): ?>
                         <img src="<?= htmlspecialchars($article['thumbnail']) ?>"
                             alt="<?= htmlspecialchars($article['alt_text'] ?? $article['title']) ?>"
@@ -62,7 +62,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
                     <?php foreach ($articles as $article): ?>
                     <a href="<?= $baseUrl ?>/articles/<?= htmlspecialchars($article['slug']) ?>" class="block group">
                         <article class="flex flex-col gap-2">
-                            <div class="w-full aspect-[4/3] bg-gray-200 rounded-md overflow-hidden">
+                            <div class="w-full aspect-[4/3] bg-gray-200 overflow-hidden">
                                 <?php if (!empty($article['thumbnail'])): ?>
                                 <img src="<?= htmlspecialchars($article['thumbnail']) ?>"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"

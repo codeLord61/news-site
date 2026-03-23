@@ -2,11 +2,11 @@
 /**
  * Partial: _sidebar.php
  * Shared sidebar for the dashboard layout.
- * Used by both Editor and Admin roles.
+ * Used by Reporter, Editor, and Admin roles.
  * The $userRole variable (set by the calling view/controller) determines
  * which sections are rendered.
  *
- * Expected: $userRole = 'editor' | 'admin'
+ * Expected: $userRole = 'reporter' | 'editor' | 'admin'
  */
 $userRole = $userRole ?? 'editor';
 $currentPath = $currentPath ?? (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/');
@@ -17,8 +17,18 @@ if ($currentPath === '') {
 
 $activeLinkClass = 'nav-link active relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-[#00B795] bg-[#E5F7F4] mb-0.5';
 $inactiveLinkClass = 'nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150';
-$linkClass = static function (array $paths) use ($currentPath, $activeLinkClass, $inactiveLinkClass): string {
-    return in_array($currentPath, $paths, true) ? $activeLinkClass : $inactiveLinkClass;
+$linkClass = static function (array $paths, array $prefixes = []) use ($currentPath, $activeLinkClass, $inactiveLinkClass): string {
+    if (in_array($currentPath, $paths, true)) {
+        return $activeLinkClass;
+    }
+
+    foreach ($prefixes as $prefix) {
+        if ($prefix !== '' && str_starts_with($currentPath, $prefix)) {
+            return $activeLinkClass;
+        }
+    }
+
+    return $inactiveLinkClass;
 };
 ?>
 
@@ -61,7 +71,7 @@ $linkClass = static function (array $paths) use ($currentPath, $activeLinkClass,
 
     <?php if ($userRole === 'reporter'): ?>
     <a href="<?= url('/my-articles') ?>"
-       class="<?= $linkClass(['/my-articles']) ?>"
+       class="<?= $linkClass(['/my-articles'], ['/my-articles/']) ?>"
        data-tooltip="My Articles">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-newspaper"></i></span>
       <span class="sidebar-nav-text">My Articles</span>
@@ -91,6 +101,22 @@ $linkClass = static function (array $paths) use ($currentPath, $activeLinkClass,
        data-tooltip="Article Analytics">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-chart-line"></i></span>
       <span class="sidebar-nav-text">Article Analytics</span>
+    </a>
+    <?php endif; ?>
+
+    <?php if ($userRole === 'editor'): ?>
+    <a href="<?= url('/editor/articles') ?>"
+       class="<?= $linkClass(['/editor/articles']) ?>"
+       data-tooltip="All Articles">
+      <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-newspaper"></i></span>
+      <span class="sidebar-nav-text">All Articles</span>
+    </a>
+
+    <a href="<?= url('/editor/pending-submissions') ?>"
+       class="<?= $linkClass(['/editor/pending-submissions'], ['/editor/pending-submissions/']) ?>"
+       data-tooltip="Pending Submissions">
+      <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-regular fa-clock"></i></span>
+      <span class="sidebar-nav-text">Pending Submissions</span>
     </a>
     <?php endif; ?>
 

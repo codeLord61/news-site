@@ -12,20 +12,20 @@
         <div></div>
 
         <!-- Close Button -->
-        <button id="closeOverlayBtn" class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full z-10">
+        <button id="closeOverlayBtn" class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 z-10">
             <i class="fa-solid fa-xmark text-xl"></i>
         </button>
     </div>
 
     <!-- Main Content Grid -->
     <!-- Mobile: flex-col with order handling | Desktop: grid 2 cols -->
-    <div class="flex-1 w-full max-w-screen-xl mx-auto px-4 mt-8 flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-4 pb-12">
+    <div class="flex-1 w-full max-w-7xl mx-auto px-4 mt-8 flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-4 pb-12">
         
         <!-- Account / Social (Top on Mobile, Right on Desktop) -->
         <div class="order-1 md:order-2 flex flex-col space-y-8 md:pl-12">
             
             <!-- Auth Section container -->
-            <div id="overlayAuthSection" class="min-h-[80px]">
+            <div id="overlayAuthSection" class="min-h-20">
                 <!-- Logged Out State -->
                 <div id="overlayLoggedOut" class="hidden">
                     <a href="<?= url('/auth') ?>" class="inline-block bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 px-6 rounded-md transition-colors w-full md:w-auto text-center">
@@ -80,8 +80,8 @@
         </div>
 
         <!-- Categories (Bottom on Mobile, Left on Desktop) -->
-        <div class="order-2 md:order-1 flex flex-col space-y-4 md:pr-12 md:border-r border-gray-100">
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Categories</h3>
+        <div class="order-3 md:order-1 flex flex-col space-y-4 md:pr-12 md:border-r border-gray-100">
+            <h3 class="text-3xl font-bold text-gray-900 mb-10">Categories</h3>
             <ul class="flex flex-col space-y-2">
                 <?php 
                 $overlayCategories = get_categories_with_children();
@@ -94,7 +94,7 @@
                                 <?= htmlspecialchars($cat['name']) ?>
                             </a>
                             <?php if ($hasChildren): ?>
-                            <button class="p-2 text-gray-400 hover:text-primary-600 overlay-dropdown-toggle rounded-md" data-target="overlay-child-<?= $cat['id'] ?>">
+                            <button class="p-2 text-gray-400 hover:text-primary-600 overlay-dropdown-toggle" data-target="overlay-child-<?= $cat['id'] ?>">
                                 <i class="fa-solid fa-chevron-down text-sm transition-transform duration-200"></i>
                             </button>
                             <?php endif; ?>

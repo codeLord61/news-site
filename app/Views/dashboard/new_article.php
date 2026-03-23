@@ -3,6 +3,7 @@ use app\core\App;
 
 $categories = $categories ?? [];
 $tags = $tags ?? [];
+$initialArticle = $initialArticle ?? null;
 ?>
 
 <div class="mb-5 flex flex-wrap items-center justify-end gap-2">
@@ -251,5 +252,9 @@ $tags = $tags ?? [];
         </div>
     </div>
 </div>
+
+<script>
+window.reporterArticleInitialData = <?= json_encode($initialArticle, JSON_UNESCAPED_UNICODE) ?>;
+</script>
 
 <script src="<?= App::assetPath('js/reporter-article-editor.js') ?>"></script>

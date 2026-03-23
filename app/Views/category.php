@@ -37,7 +37,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
     ?>
     <a href="<?= $baseUrl ?>/articles/<?= htmlspecialchars($article['slug']) ?>" class="<?= $colClass ?> group block">
         <article class="flex flex-col gap-2">
-            <div class="w-full <?= $aspectClass ?> bg-gray-200 rounded-md overflow-hidden">
+            <div class="w-full <?= $aspectClass ?> bg-gray-200 overflow-hidden">
                 <?php if (!empty($article['thumbnail'])): ?>
                 <img src="<?= htmlspecialchars($article['thumbnail']) ?>"
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -72,7 +72,7 @@ $baseUrl = App::$PROJECT_ROOT_URL;
         <?php foreach ($latestArticles as $article): ?>
         <a href="<?= $baseUrl ?>/articles/<?= htmlspecialchars($article['slug']) ?>" class="block group">
             <article class="flex flex-col gap-2">
-                <div class="w-full aspect-video bg-gray-200 rounded-md overflow-hidden">
+                <div class="w-full aspect-video bg-gray-200 overflow-hidden">
                     <?php if (!empty($article['thumbnail'])): ?>
                     <img src="<?= htmlspecialchars($article['thumbnail']) ?>"
                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -95,16 +95,16 @@ $baseUrl = App::$PROJECT_ROOT_URL;
     </div>
 
     <!-- Pagination -->
-    <?php if ($pagination['total_pages'] > 1): ?>
+    <!-- <?php if ($pagination['total_pages'] > 1): ?>
     <div class="mt-8 flex items-center justify-center space-x-2">
         <?php if ($pagination['has_prev']): ?>
-            <a href="?page=<?= $pagination['current_page'] - 1 ?>" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
+            <a href="?page=<?= $pagination['current_page'] - 1 ?>" class="px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
         <?php endif; ?>
         <span class="px-4 py-2 text-sm text-gray-500">Page <?= $pagination['current_page'] ?> of <?= $pagination['total_pages'] ?></span>
         <?php if ($pagination['has_next']): ?>
-            <a href="?page=<?= $pagination['current_page'] + 1 ?>" class="px-4 py-2 bg-primary-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-700">Next</a>
+            <a href="?page=<?= $pagination['current_page'] + 1 ?>" class="px-4 py-2 bg-primary-600 border border-transparent text-sm font-medium text-white hover:bg-primary-700">Next</a>
         <?php endif; ?>
     </div>
-    <?php endif; ?>
+    <?php endif; ?> -->
 </section>
 <?php endif; ?>

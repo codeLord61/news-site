@@ -40,7 +40,7 @@ if (!empty($article['updated_at'])) {
 
     <!-- Featured Image -->
     <figure class="w-full">
-        <div class="relative aspect-video md:aspect-21/9 bg-gray-100 rounded-xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="relative aspect-video md:aspect-21/9 bg-gray-100 overflow-hidden shadow-sm border border-gray-100">
             <?php if (!empty($article['thumbnail'])): ?>
             <img src="<?= htmlspecialchars($article['thumbnail']) ?>"
                 alt="<?= htmlspecialchars($article['alt_text'] ?? $article['title']) ?>"
@@ -75,11 +75,11 @@ if (!empty($article['updated_at'])) {
         </h3>
     </div>
 
-    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+    <div class="bg-gray-50 p-4 border border-gray-200">
         <div class="flex gap-4">
             <!-- User Avatar -->
             <div class="shrink-0">
-                <div class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden border border-gray-300">
+                <div class="w-10 h-10 bg-gray-300 overflow-hidden border border-gray-300">
                     <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop"
                         alt="User Avatar" class="w-full h-full object-cover opacity-60">
                 </div>
@@ -88,11 +88,11 @@ if (!empty($article['updated_at'])) {
             <!-- Comment Input Area -->
             <div class="flex-1">
                 <textarea
-                    class="w-full bg-white border border-gray-300 rounded-md p-3 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-400 resize-none cursor-not-allowed"
+                    class="w-full bg-white border border-gray-300 p-3 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-400 resize-none cursor-not-allowed"
                     rows="3" placeholder="Sign In to comment" disabled></textarea>
                 <div class="flex justify-end mt-2">
                     <button
-                        class="px-4 py-1.5 bg-primary-600 text-white text-xs font-bold rounded opacity-50 cursor-not-allowed"
+                        class="px-4 py-1.5 bg-primary-600 text-white text-xs font-bold opacity-50 cursor-not-allowed"
                         disabled>
                         Post Comment
                     </button>
