@@ -86,10 +86,11 @@ use app\core\App;
             });
             </script>
 
-            <button class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
+            <button id="hamburgerMenuBtn" class="p-2 hover:bg-gray-100 rounded-full text-gray-600">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
     </div>
-
 </header>
+
+<?php require __DIR__ . '/overlay_menu.php'; ?>

@@ -37,6 +37,16 @@ class Tag extends Model
     }
 
     /**
+     * Find a tag by ID.
+     */
+    public function findById(int $id): array|false
+    {
+        $stmt = $this->db()->prepare("SELECT id, name, slug FROM tags WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Count published articles with a tag.
      */
     public function countArticles(int $tagId): int

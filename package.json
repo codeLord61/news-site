@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css --minify",
-    "watch": "npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css --watch"
+    "build:css": "npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css --minify",
+    "build:editor": "esbuild ./public/assets/js/reporter-article-editor.entry.js --bundle --format=iife --platform=browser --target=es2018 --outfile=./public/assets/js/reporter-article-editor.js --minify",
+    "build": "npm run build:editor && npm run build:css",
+    "watch": "npm run build:editor && npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css --watch"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +16,21 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",
     "@tailwindcss/typography": "^0.5.19",
+    "esbuild": "^0.27.4",
     "tailwindcss": "^4.2.1"
   },
   "dependencies": {
-    "flowbite": "^4.0.1"
+    "@tiptap/core": "^3.20.4",
+    "@tiptap/extension-color": "^3.20.4",
+    "@tiptap/extension-font-family": "^3.20.4",
+    "@tiptap/extension-highlight": "^3.20.4",
+    "@tiptap/extension-image": "^3.20.4",
+    "@tiptap/extension-link": "^3.20.4",
+    "@tiptap/extension-text-align": "^3.20.4",
+    "@tiptap/extension-text-style": "^3.20.4",
+    "@tiptap/pm": "^3.20.4",
+    "@tiptap/starter-kit": "^3.20.4",
+    "flowbite": "^4.0.1",
+    "flowbite-typography": "^1.0.5"
   }
 }

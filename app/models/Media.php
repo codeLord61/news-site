@@ -25,4 +25,70 @@ class Media extends Model
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $row ?: null;
     }
+
+    /**
+     * Create an image media row.
+     */
+    public function createImage(
+        string $fileUrl,
+        ?string $altText,
+        ?string $title,
+        int $uploadedBy
+    ): int {
+        $stmt = $this->db()->prepare(
+            "INSERT INTO medias (file_url, media_type, alt_text, caption, uploaded_by, created_at)
+             VALUES (?, 'image', ?, ?, ?, NOW())"
+        );
+
+        $stmt->execute([
+            $fileUrl,
+            $altText,
+            $title,
+            $uploadedBy,
+        ]);
+
+        return (int)$this->db()->lastInsertId();
+    }
+
+    /**
+     * Returns only media IDs owned by the reporter.
+     *
+     * @return int[]
+     */
+    public function findOwnedIds(array $mediaIds, int $reporterId): array
+    {
+        if (empty($mediaIds)) {
+            return [];
+        }
+
+        $mediaIds = array_values(array_unique(array_map('intval', $mediaIds)));
+        $placeholders = implode(',', array_fill(0, count($mediaIds), '?'));
+
+        $sql = "SELECT id
+                FROM medias
+                WHERE uploaded_by = ?
+                  AND media_type = 'image'
+                  AND id IN ($placeholders)";
+
+        $stmt = $this->db()->prepare($sql);
+        $params = array_merge([$reporterId], $mediaIds);
+        $stmt->execute($params);
+
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return array_map(static fn(array $row): int => (int)$row['id'], $rows);
+    }
+
+    /**
+     * Fetch a media row by id.
+     */
+    public function findById(int $id): array|false
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT id, file_url, media_type, caption, alt_text, uploaded_by, created_at
+             FROM medias
+             WHERE id = ?"
+        );
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 }

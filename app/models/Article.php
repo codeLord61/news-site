@@ -299,6 +299,201 @@ class Article extends Model
     }
 
     /**
+     * Find an article by ID that belongs to a reporter.
+     */
+    public function findByIdForReporter(int $articleId, int $reporterId): array|false
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT id, title, slug, excerpt, content, status, updated_at
+             FROM articles
+             WHERE id = ? AND reporter_id = ? AND deleted_at IS NULL"
+        );
+        $stmt->execute([$articleId, $reporterId]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Create a reporter-owned article with optional category and tag links.
+     */
+    public function createReporterArticle(int $reporterId, array $payload): int
+    {
+        $pdo = $this->db();
+        $pdo->beginTransaction();
+
+        try {
+            $stmt = $pdo->prepare(
+                "INSERT INTO articles (title, excerpt, slug, content, status, reporter_id, updated_at)
+                 VALUES (?, ?, ?, ?, ?, ?, NOW())"
+            );
+
+            $stmt->execute([
+                $payload['title'],
+                $payload['excerpt'],
+                $payload['slug'],
+                $payload['content_html'],
+                $payload['status'],
+                $reporterId,
+            ]);
+
+            $articleId = (int)$pdo->lastInsertId();
+
+            $this->syncArticleCategory($articleId, $payload['category_id'], $pdo);
+            $this->syncArticleTag($articleId, $payload['tag_id'], $pdo);
+            if (array_key_exists('media_ids', $payload)) {
+                $this->syncArticleMedias($articleId, $payload['media_ids'], $pdo);
+            }
+
+            $pdo->commit();
+            return $articleId;
+        } catch (\Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Update an existing reporter-owned article and sync category/tag links.
+     */
+    public function updateReporterArticle(int $articleId, int $reporterId, array $payload): bool
+    {
+        $pdo = $this->db();
+        $pdo->beginTransaction();
+
+        try {
+            $stmt = $pdo->prepare(
+                "UPDATE articles
+                 SET title = ?, excerpt = ?, slug = ?, content = ?, status = ?, updated_at = NOW(), published_at = NULL
+                 WHERE id = ? AND reporter_id = ? AND deleted_at IS NULL"
+            );
+
+            $stmt->execute([
+                $payload['title'],
+                $payload['excerpt'],
+                $payload['slug'],
+                $payload['content_html'],
+                $payload['status'],
+                $articleId,
+                $reporterId,
+            ]);
+
+            $this->syncArticleCategory($articleId, $payload['category_id'], $pdo);
+            $this->syncArticleTag($articleId, $payload['tag_id'], $pdo);
+            if (array_key_exists('media_ids', $payload)) {
+                $this->syncArticleMedias($articleId, $payload['media_ids'], $pdo);
+            }
+
+            $pdo->commit();
+            return true;
+        } catch (\Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Generate a unique slug for an article title.
+     */
+    public function generateUniqueSlug(string $title, ?int $ignoreArticleId = null): string
+    {
+        $slugBase = $this->slugify($title);
+        $slug = $slugBase;
+        $counter = 2;
+
+        while ($this->slugExists($slug, $ignoreArticleId)) {
+            $slug = $slugBase . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Determine whether a slug already exists on another non-deleted article.
+     */
+    public function slugExists(string $slug, ?int $ignoreArticleId = null): bool
+    {
+        if ($ignoreArticleId !== null) {
+            $stmt = $this->db()->prepare(
+                "SELECT COUNT(*) FROM articles
+                 WHERE slug = ? AND deleted_at IS NULL AND id <> ?"
+            );
+            $stmt->execute([$slug, $ignoreArticleId]);
+        } else {
+            $stmt = $this->db()->prepare(
+                "SELECT COUNT(*) FROM articles
+                 WHERE slug = ? AND deleted_at IS NULL"
+            );
+            $stmt->execute([$slug]);
+        }
+
+        return (int)$stmt->fetchColumn() > 0;
+    }
+
+    private function slugify(string $text): string
+    {
+        $text = strtolower(trim($text));
+        $text = preg_replace('/[^a-z0-9]+/i', '-', $text);
+        $text = trim((string)$text, '-');
+
+        return $text !== '' ? $text : 'article';
+    }
+
+    private function syncArticleCategory(int $articleId, ?int $categoryId, ?\PDO $pdo = null): void
+    {
+        $conn = $pdo ?? $this->db();
+        $conn->prepare("DELETE FROM articles_categories WHERE article_id = ?")->execute([$articleId]);
+
+        if ($categoryId !== null) {
+            $conn->prepare(
+                "INSERT INTO articles_categories (article_id, category_id) VALUES (?, ?)"
+            )->execute([$articleId, $categoryId]);
+        }
+    }
+
+    private function syncArticleTag(int $articleId, ?int $tagId, ?\PDO $pdo = null): void
+    {
+        $conn = $pdo ?? $this->db();
+        $conn->prepare("DELETE FROM articles_tags WHERE article_id = ?")->execute([$articleId]);
+
+        if ($tagId !== null) {
+            $conn->prepare(
+                "INSERT INTO articles_tags (article_id, tag_id) VALUES (?, ?)"
+            )->execute([$articleId, $tagId]);
+        }
+    }
+
+    /**
+     * Replace all article-media links with the current editor media set.
+     *
+     * @param int[] $mediaIds
+     */
+    private function syncArticleMedias(int $articleId, array $mediaIds, ?\PDO $pdo = null): void
+    {
+        $conn = $pdo ?? $this->db();
+        $conn->prepare("DELETE FROM articles_medias WHERE article_id = ?")->execute([$articleId]);
+
+        if (empty($mediaIds)) {
+            return;
+        }
+
+        $stmt = $conn->prepare(
+            "INSERT IGNORE INTO articles_medias (article_id, media_id) VALUES (?, ?)"
+        );
+
+        foreach ($mediaIds as $mediaId) {
+            $mediaId = (int)$mediaId;
+            if ($mediaId <= 0) {
+                continue;
+            }
+            $stmt->execute([$articleId, $mediaId]);
+        }
+    }
+
+    /**
      * Get categories associated with an article.
      */
     public function getCategoriesForArticle(int $articleId): array

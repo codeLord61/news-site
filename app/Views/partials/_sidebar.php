@@ -9,6 +9,17 @@
  * Expected: $userRole = 'editor' | 'admin'
  */
 $userRole = $userRole ?? 'editor';
+$currentPath = $currentPath ?? (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/');
+$currentPath = rtrim((string)$currentPath, '/');
+if ($currentPath === '') {
+    $currentPath = '/';
+}
+
+$activeLinkClass = 'nav-link active relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-[#00B795] bg-[#E5F7F4] mb-0.5';
+$inactiveLinkClass = 'nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150';
+$linkClass = static function (array $paths) use ($currentPath, $activeLinkClass, $inactiveLinkClass): string {
+    return in_array($currentPath, $paths, true) ? $activeLinkClass : $inactiveLinkClass;
+};
 ?>
 
 <!-- ════════════════════ SIDEBAR ════════════════════ -->
@@ -42,7 +53,7 @@ $userRole = $userRole ?? 'editor';
     </p>
 
     <a href="<?= url('/dashboard') ?>"
-       class="nav-link active relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-[#00B795] bg-[#E5F7F4] mb-0.5"
+       class="<?= $linkClass(['/dashboard']) ?>"
        data-tooltip="Dashboard">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-gauge-high"></i></span>
       <span class="sidebar-nav-text">Dashboard</span>
@@ -50,21 +61,21 @@ $userRole = $userRole ?? 'editor';
 
     <?php if ($userRole === 'reporter'): ?>
     <a href="<?= url('/my-articles') ?>"
-       class="nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150"
+       class="<?= $linkClass(['/my-articles']) ?>"
        data-tooltip="My Articles">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-newspaper"></i></span>
       <span class="sidebar-nav-text">My Articles</span>
     </a>
 
     <a href="<?= url('/submissions') ?>"
-       class="nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150"
+       class="<?= $linkClass(['/submissions']) ?>"
        data-tooltip="Submissions">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-regular fa-clock"></i></span>
       <span class="sidebar-nav-text">Submissions</span>
     </a>
 
     <a href="<?= url('/articles/new') ?>"
-       class="nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150"
+       class="<?= $linkClass(['/articles/new']) ?>"
        data-tooltip="New Article">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-plus"></i></span>
       <span class="sidebar-nav-text">New Article</span>
@@ -76,7 +87,7 @@ $userRole = $userRole ?? 'editor';
     </p>
 
     <a href="<?= url('/analytics') ?>"
-       class="nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150"
+       class="<?= $linkClass(['/analytics']) ?>"
        data-tooltip="Article Analytics">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-chart-line"></i></span>
       <span class="sidebar-nav-text">Article Analytics</span>
@@ -90,14 +101,14 @@ $userRole = $userRole ?? 'editor';
     </p>
 
     <a href="<?= url('/admin/users') ?>"
-       class="nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150"
+       class="<?= $linkClass(['/admin/users']) ?>"
        data-tooltip="Manage Users">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-users-gear"></i></span>
       <span class="sidebar-nav-text">Manage Users</span>
     </a>
 
     <a href="<?= url('/admin/settings') ?>"
-       class="nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150"
+       class="<?= $linkClass(['/admin/settings']) ?>"
        data-tooltip="Site Settings">
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-sliders"></i></span>
       <span class="sidebar-nav-text">Site Settings</span>

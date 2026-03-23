@@ -35,6 +35,7 @@ use app\core\App;
     </div>
 
     <script src="<?= App::assetPath('js/flowbite.min.js'); ?>"></script>
+    <script src="<?= App::assetPath('js/overlay.js'); ?>"></script>
 </body>
 
 

@@ -24,3 +24,20 @@ function get_header_categories(): array
     $categoryModel = new \app\models\Category();
     return $categoryModel->getParents();
 }
+
+/**
+ * Get categories with their children for the overlay menu.
+ * 
+ * @return array
+ */
+function get_categories_with_children(): array
+{
+    $categoryModel = new \app\models\Category();
+    $parents = $categoryModel->getParents();
+    
+    foreach ($parents as &$parent) {
+        $parent['children'] = $categoryModel->getChildren($parent['id']);
+    }
+    
+    return $parents;
+}

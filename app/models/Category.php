@@ -39,6 +39,18 @@ class Category extends Model
     }
 
     /**
+     * Find a category by ID.
+     */
+    public function findById(int $id): array|false
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT id, name, slug, description, parent_id FROM categories WHERE id = ?"
+        );
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Count published articles in a category.
      */
     public function countArticles(int $categoryId): int

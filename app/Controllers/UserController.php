@@ -72,6 +72,7 @@ class UserController extends Controller
             'userInitials' => $initials,
             'userEmail'    => $userEmail,
             'userRole'     => strtolower($roleName),
+            'currentPath'  => $request->getPath(),
             'users'        => $allUsers
         ]);
     }

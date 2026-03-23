@@ -124,4 +124,32 @@ class AuthController extends Controller
 
         $response->json(['success' => true, 'message' => 'Logged out successfully']);
     }
+
+    public function me(Request $request, Response $response)
+    {
+        $tokenStr = $request->getBearerToken() ?? $_COOKIE['auth_token'] ?? null;
+        if (!$tokenStr) {
+            $response->json(['error' => 'Not authenticated'], 401);
+        }
+
+        $tokenData = $this->token->findValid($tokenStr);
+        if (!$tokenData) {
+            $response->json(['error' => 'Invalid or expired token'], 401);
+        }
+
+        $userInfo = $this->user->findById($tokenData['user_id']);
+        if (!$userInfo) {
+            $response->json(['error' => 'User not found'], 404);
+        }
+
+        $response->json([
+            'success' => true,
+            'user' => [
+                'id' => $userInfo['id'],
+                'name' => $userInfo['name'],
+                'email' => $userInfo['email'],
+                'role' => $userInfo['role_name']
+            ]
+        ]);
+    }
 }
