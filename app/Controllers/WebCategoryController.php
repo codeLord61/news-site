@@ -31,7 +31,7 @@ class WebCategoryController extends Controller
         }
 
         return $this->render('category', [
-            'title' => $data['category']['name'] . ' - The Daily News',
+            'title' => $data['category']['name'] . ' - Packly News',
             'category' => $data['category'],
             'featuredArticles' => $data['featuredArticles'],
             'latestArticles' => $data['latestArticles'],

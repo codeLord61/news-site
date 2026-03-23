@@ -34,7 +34,7 @@ class AuthController extends Controller
 
         $this->setLayout('auth');
         echo $this->render('auth', [
-            'title' => 'The Daily News - Sign In'
+            'title' => 'Packly News - Sign In'
         ]);
     }
 
@@ -45,7 +45,7 @@ class AuthController extends Controller
             $response->json(['error' => 'Missing required fields: fullname, email, password'], 400);
         }
 
-        $roleName = $body['role'] ?? 'Reader';
+        $roleName = 'Reader';
         $roleId = $this->user->getRoleIdByName($roleName);
 
         if (!$roleId) {

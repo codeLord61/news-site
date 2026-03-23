@@ -24,6 +24,9 @@
         <div class="flex justify-center items-center md:p-10 p-6">
             <!-- Form container -->
             <div class="w-full max-w-md">
+                <div class="text-center mb-8">
+                    <a href="<?= url('/') ?>" class="text-3xl font-black text-black hover:opacity-80 transition-opacity">Packly News</a>
+                </div>
 
                 <!-- Signup form -->
                 <!-- Updated form action to map to our api url over HTTP, but frontend usually uses JS fetch. For now just ID is fine. -->
@@ -61,13 +64,7 @@
                                     class="fa-solid fa-eye"></i>
                             </button>
                         </div>
-                        <div>
-                            <label for="role" class="block text-sm font-medium text-neutral-700 mb-1.5">Account Type</label>
-                            <select id="role" name="role" class="border border-neutral-300 w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-primary-200 outline-none transition bg-white">
-                                <option value="Reader">Reader</option>
-                                <option value="Reporter">Reporter</option>
-                            </select>
-                        </div>
+
                     </div>
 
                     <!-- Signup button -->

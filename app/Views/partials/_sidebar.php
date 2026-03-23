@@ -48,6 +48,7 @@ $userRole = $userRole ?? 'editor';
       <span class="sidebar-nav-text">Dashboard</span>
     </a>
 
+    <?php if ($userRole === 'reporter'): ?>
     <a href="<?= url('/my-articles') ?>"
        class="nav-link relative flex items-center gap-3 px-3 py-[10px] rounded-[10px] text-sm font-medium text-neutral-600 hover:bg-[#E5F7F4] hover:text-[#008068] mb-0.5 transition-colors duration-150"
        data-tooltip="My Articles">
@@ -80,6 +81,7 @@ $userRole = $userRole ?? 'editor';
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-chart-line"></i></span>
       <span class="sidebar-nav-text">Article Analytics</span>
     </a>
+    <?php endif; ?>
 
     <?php if ($userRole === 'admin'): ?>
     <!-- ── Administration (admin only) ── -->

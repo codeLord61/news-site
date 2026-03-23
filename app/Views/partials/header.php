@@ -5,10 +5,9 @@ use app\core\App;
 <header class="sticky top-0 z-50 bg-white border-b border-gray-200">
     <!-- Top Bar: Logo & Date -->
     <div class="px-4 py-7 flex flex-col border-b border-gray-100 md:items-center">
-        <a href="<?= url('/') ?>" class="text-2xl font-bold text-gray-900 leading-tight">The
-            Daily
-            News</a>
-        <p class="text-xs text-gray-500 mt-1">Saturday, February 14, 2026</p>
+        <a href="<?= url('/') ?>" class="text-2xl font-bold text-gray-900 leading-tight">Packly News</a>
+        <!-- Thursday, March 19, 2026 -->
+        <p class="text-xs text-gray-500 mt-1"><?= date('l, F j, Y') ?></p>
     </div>
 
     <!-- Navbar: Categories & Icons -->

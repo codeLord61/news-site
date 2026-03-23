@@ -19,7 +19,7 @@ class HomeController extends Controller
         $homeData = $this->homepageService->getHomePageData();
 
         return $this->render('home', [
-            'title' => 'The Daily News - Home',
+            'title' => 'Packly News - Home',
             'hero' => $homeData['hero'],
             'sections' => $homeData['sections'],
         ]);

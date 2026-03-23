@@ -59,13 +59,15 @@ $userRole = $userRole ?? 'reporter';
 <!-- ── Recent Articles ── -->
 <div class="flex items-center justify-between mb-3.5">
   <h2 class="text-[16px] font-bold text-neutral-900">Recent Articles</h2>
+<?php if ($userRole === 'reporter'): ?>
   <a
-    href="#"
+    href="<?= url('/articles/new') ?>"
     class="inline-flex items-center gap-1.5 px-4 py-2 rounded-[9px] text-[13px] font-semibold text-white transition-all duration-150 hover:shadow-lg hover:-translate-y-px"
     style="background:linear-gradient(135deg,#00B795,#008068);"
   >
     <i class="fa-solid fa-plus"></i> New Article
   </a>
+<?php endif; ?>
 </div>
 
 <div class="bg-white rounded-2xl border border-neutral-200 overflow-hidden">

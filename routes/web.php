@@ -22,5 +22,8 @@ $this->router->get('/my-articles', [DashboardController::class, 'index']);
 $this->router->get('/submissions', [DashboardController::class, 'index']);
 $this->router->get('/articles/new', [DashboardController::class, 'index']);
 $this->router->get('/analytics', [DashboardController::class, 'index']);
-$this->router->get('/admin/users', [DashboardController::class, 'index']);
 $this->router->get('/admin/settings', [DashboardController::class, 'index']);
+
+use app\controllers\UserController;
+$this->router->get('/admin/users', [UserController::class, 'index']);
+$this->router->post('/admin/users/change-role', [UserController::class, 'changeRole']);

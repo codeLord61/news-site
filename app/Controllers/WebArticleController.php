@@ -40,7 +40,7 @@ class WebArticleController extends Controller
         $primaryCategorySlug = !empty($article['categories']) ? $article['categories'][0]['slug'] : '';
 
         return $this->render('article', [
-            'title' => $article['title'] . ' - The Daily News',
+            'title' => $article['title'] . ' - Packly News',
             'article' => $article,
             'primaryCategory' => $primaryCategory,
             'primaryCategorySlug' => $primaryCategorySlug
