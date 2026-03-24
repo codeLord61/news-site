@@ -112,6 +112,12 @@ window.addEventListener('load', () => {
   const ICON_BUTTON_CLASS =
     'p-1.5 text-body rounded-sm cursor-pointer hover:text-heading hover:bg-neutral-quaternary';
 
+  /**
+   * Ensure a tooltip element exists next to a toolbar button.
+   *
+   * Input: button element, tooltip id, tooltip text.
+   * Output: no return value; creates/updates tooltip DOM node.
+   */
   function ensureTooltip(button, tooltipId, tooltipText) {
     if (!button || !tooltipId || !tooltipText) {
       return;
@@ -131,6 +137,12 @@ window.addEventListener('load', () => {
     }
   }
 
+  /**
+   * Apply consistent icon-button styling and tooltip wiring.
+   *
+   * Input: config object {id|selector, label, tooltipId?, tooltipText?, svg}.
+   * Output: no return value; mutates button class/attributes/innerHTML.
+   */
   function applyIconButton(config) {
     const button = config.id
       ? document.getElementById(config.id)
@@ -148,6 +160,11 @@ window.addEventListener('load', () => {
     button.innerHTML = `${config.svg}<span class="sr-only">${config.label}</span>`;
   }
 
+  /**
+   * Upgrade default TipTap toolbar buttons with icon-only controls.
+   *
+   * Output: no return value; updates toolbar DOM and initializes Flowbite helpers.
+   */
   function enhanceToolbarUi() {
     const iconConfigs = [
       {
@@ -294,6 +311,11 @@ window.addEventListener('load', () => {
 
   enhanceToolbarUi();
 
+  /**
+   * Add open/close behavior to typography dropdown.
+   *
+   * Output: no return value; binds click/escape/outside-click handlers.
+   */
   function initTypographyDropdown() {
     const button = document.getElementById('typographyDropdownButton');
     const dropdown = document.getElementById('typographyDropdown');
@@ -332,6 +354,9 @@ window.addEventListener('load', () => {
   const advancedImageTitle = document.getElementById('image-title');
   const advancedImageError = document.getElementById('advancedImageError');
 
+  /**
+   * Hide the form-level alert area and clear previous message/classes.
+   */
   function clearAlert() {
     if (!alertBox) {
       return;
@@ -342,6 +367,12 @@ window.addEventListener('load', () => {
     alertBox.className = 'hidden mb-4 rounded-base border px-4 py-3 text-sm';
   }
 
+  /**
+   * Display form-level feedback.
+   *
+   * Input: message string + success boolean.
+   * Output: no return value; updates alert box text/classes.
+   */
   function showAlert(message, isSuccess) {
     if (!alertBox) {
       return;
@@ -359,6 +390,9 @@ window.addEventListener('load', () => {
     alertBox.classList.remove('hidden');
   }
 
+  /**
+   * Clear all per-field validation messages.
+   */
   function clearFieldErrors() {
     Object.values(fieldErrors).forEach((element) => {
       if (element) {
@@ -368,6 +402,11 @@ window.addEventListener('load', () => {
     });
   }
 
+  /**
+   * Set one field-level error message by error key.
+   *
+   * Input example: key="title", message="Title is required."
+   */
   function setFieldError(key, message) {
     const errorEl = fieldErrors[key];
     if (!errorEl) {
@@ -378,6 +417,12 @@ window.addEventListener('load', () => {
     errorEl.classList.remove('hidden');
   }
 
+  /**
+   * Update "N/255" counters and color state.
+   *
+   * Input: text input and counter element.
+   * Output: no return value; updates counter text and warning colors.
+   */
   function updateCounter(input, counter) {
     if (!input || !counter) {
       return;
@@ -396,6 +441,11 @@ window.addEventListener('load', () => {
     }
   }
 
+  /**
+   * Validate form fields before submit.
+   *
+   * Output: true when valid; false when one or more rules fail.
+   */
   function validateForm() {
     clearFieldErrors();
     clearAlert();
@@ -431,6 +481,12 @@ window.addEventListener('load', () => {
     return isValid;
   }
 
+  /**
+   * Parse optional positive integer from string/unknown input.
+   *
+   * Input examples: "12" -> 12, "" -> null, "abc" -> null.
+   * Output: positive integer or null.
+   */
   function parseOptionalInt(value) {
     if (value === null || value === undefined || value === '') {
       return null;
@@ -444,6 +500,12 @@ window.addEventListener('load', () => {
     return parsed;
   }
 
+  /**
+   * Fill form fields from server-provided initial article object (edit mode).
+   *
+   * Input source: window.reporterArticleInitialData.
+   * Output: no return value; populates inputs and editor HTML.
+   */
   function hydrateInitialArticle() {
     if (!initialArticle) {
       return;
@@ -497,6 +559,11 @@ window.addEventListener('load', () => {
     }
   }
 
+  /**
+   * Toggle disabled/loading state for save buttons.
+   *
+   * Input: boolean isSaving.
+   */
   function setSavingState(isSaving) {
     saveButtons.forEach((button) => {
       button.disabled = isSaving;
@@ -508,6 +575,12 @@ window.addEventListener('load', () => {
     });
   }
 
+  /**
+   * Extract unique media IDs from editor HTML image nodes.
+   *
+   * Input: HTML string.
+   * Output: array of integer media ids from `data-media-id`.
+   */
   function collectMediaIds(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -529,6 +602,9 @@ window.addEventListener('load', () => {
     return ids;
   }
 
+  /**
+   * Hide Flowbite dropdown by id (instance API first, class fallback).
+   */
   function hideDropdown(id) {
     if (window.FlowbiteInstances && typeof window.FlowbiteInstances.getInstance === 'function') {
       const instance = window.FlowbiteInstances.getInstance('Dropdown', id);
@@ -544,6 +620,9 @@ window.addEventListener('load', () => {
     }
   }
 
+  /**
+   * Hide advanced image modal using Flowbite instance or DOM fallback.
+   */
   function hideAdvancedImageModal() {
     if (window.FlowbiteInstances && typeof window.FlowbiteInstances.getInstance === 'function') {
       const instance = window.FlowbiteInstances.getInstance('Modal', 'advanced-image-modal');
@@ -560,6 +639,11 @@ window.addEventListener('load', () => {
     }
   }
 
+  /**
+   * Show/hide advanced image modal validation message.
+   *
+   * Input: error text or empty/falsey to clear.
+   */
   function setAdvancedImageError(message) {
     if (!advancedImageError) {
       return;
@@ -575,6 +659,14 @@ window.addEventListener('load', () => {
     advancedImageError.classList.remove('hidden');
   }
 
+  /**
+   * Upload image to reporter media endpoint.
+   *
+   * Input:
+   * - either a local File object OR a remote image URL
+   * - optional metadata (alt/title/isThumbnail)
+   * Output: uploaded media object from API (`data.data` payload).
+   */
   async function uploadImage({ file = null, imageUrl = '', altText = '', title = '', isThumbnail = false }) {
     const endpoint = `${appBaseUrl}/api/v1/reporter/media/images`;
     let response;
@@ -620,6 +712,12 @@ window.addEventListener('load', () => {
     return data.data;
   }
 
+  /**
+   * Insert image node into editor document.
+   *
+   * Input: media object + optional position.
+   * Output: no return value; editor content is mutated.
+   */
   function insertImageAt(media, position = null) {
     const attrs = {
       src: media.file_url,
@@ -643,6 +741,12 @@ window.addEventListener('load', () => {
     editor.chain().focus().setImage(attrs).run();
   }
 
+  /**
+   * Save article as draft or submit for editorial review.
+   *
+   * Input: intent string ("draft" or "submit").
+   * Output: no return value; sends API request and updates form UI state.
+   */
   async function submitArticle(intent) {
     if (!validateForm()) {
       return;
@@ -698,6 +802,11 @@ window.addEventListener('load', () => {
         media_ids: collectMediaIds(contentHtml),
         intent,
       };
+      // Data conversion summary:
+      // - input strings are trimmed
+      // - optional IDs become int|null
+      // - editor HTML goes to `content_html`
+      // - embedded image references become `media_ids`
 
       const response = await fetch(`${appBaseUrl}/api/v1/reporter/articles`, {
         method: 'POST',
@@ -749,6 +858,9 @@ window.addEventListener('load', () => {
     }
   }
 
+  /**
+   * Utility: bind click callback only if target button exists.
+   */
   function attachClick(id, callback) {
     const button = document.getElementById(id);
     if (!button) {
@@ -885,6 +997,11 @@ window.addEventListener('load', () => {
   }
 
   const dropHint = document.getElementById('editorDropHint');
+  /**
+   * Toggle drag/drop highlight styles on editor area.
+   *
+   * Input: boolean active.
+   */
   function setDragActive(active) {
     if (!editorElement) {
       return;
@@ -933,6 +1050,7 @@ window.addEventListener('load', () => {
       top: event.clientY,
     });
 
+    // Convert screen drop coordinates into editor document position.
     let insertionPos = dropPosition?.pos ?? null;
 
     for (const file of files) {

@@ -15,6 +15,9 @@ class AccountController extends Controller
     private Token $token;
     private Comment $comment;
 
+    /**
+     * Initialize model dependencies for account page and profile updates.
+     */
     public function __construct()
     {
         $this->user = new User();
@@ -22,6 +25,12 @@ class AccountController extends Controller
         $this->comment = new Comment();
     }
 
+    /**
+     * Render logged-in user's account page.
+     *
+     * Input: authenticated request via cookie/bearer token.
+     * Output: HTML response containing user profile + their comments.
+     */
     public function index(Request $request, Response $response)
     {
         $userInfo = $this->resolveWebUser($request);
@@ -38,6 +47,14 @@ class AccountController extends Controller
         ]);
     }
 
+    /**
+     * Handle profile form submission (name + optional avatar upload).
+     *
+     * Input:
+     * - POST fields: name
+     * - file field: avatar
+     * Output: redirects back to /my-account after update.
+     */
     public function updateProfile(Request $request, Response $response)
     {
         if ($request->getMethod() !== 'post') {
@@ -63,6 +80,7 @@ class AccountController extends Controller
             $destination = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
+                // Persist web path (not filesystem path) in DB.
                 $avatarPath = '/uploads/avatars/' . $fileName;
             }
         }
@@ -76,6 +94,13 @@ class AccountController extends Controller
         exit;
     }
 
+    /**
+     * Resolve current web user from auth token.
+     *
+     * Input: auth_token cookie or bearer token.
+     * Output: user row array from users table.
+     * Side effects: clears invalid cookie and redirects to /auth if token/user is invalid.
+     */
     private function resolveWebUser(Request $request): array
     {
         $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();

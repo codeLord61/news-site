@@ -14,6 +14,9 @@ class UserController extends Controller
     private User $user;
     private Token $token;
 
+    /**
+     * Initialize user/token models and protect all actions with web auth middleware.
+     */
     public function __construct()
     {
         $this->user = new User();
@@ -23,6 +26,13 @@ class UserController extends Controller
         $this->registerMiddleware(new WebAuthMiddleware());
     }
 
+    /**
+     * Ensure current user is an Admin.
+     *
+     * Input: auth token from cookie/header.
+     * Output: admin user array when valid.
+     * Side effects: redirects to /auth or /dashboard when unauthorized.
+     */
     private function ensureAdmin(Request $request)
     {
         $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();
@@ -42,6 +52,11 @@ class UserController extends Controller
         return $userInfo;
     }
 
+    /**
+     * Render dashboard user-management page for admins.
+     *
+     * Output: HTML page with current admin info + all user rows.
+     */
     public function index(Request $request, Response $response)
     {
         $userInfo = $this->ensureAdmin($request);
@@ -77,6 +92,12 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Change a user's role from admin panel API call.
+     *
+     * Input body: user_id, role (admin/editor/reporter/reader).
+     * Output JSON: success/error.
+     */
     public function changeRole(Request $request, Response $response)
     {
         $this->ensureAdmin($request);
@@ -98,6 +119,7 @@ class UserController extends Controller
         }
 
         $roleId = $this->user->getRoleIdByName(ucfirst($roleName));
+        // Map role text to roles.id before updating users.role_id.
         if (!$roleId) {
             $response->setStatusCode(400);
             echo json_encode(['error' => 'Invalid role']);

@@ -45,6 +45,9 @@ class ReporterArticleController extends Controller
     private Token $token;
     private User $user;
 
+    /**
+     * Initialize reporter article dependencies and enforce API auth middleware.
+     */
     public function __construct()
     {
         $this->article = new Article();
@@ -68,6 +71,7 @@ class ReporterArticleController extends Controller
 
         $errors = [];
 
+        // Parse optional numeric IDs from payload ("12" -> 12, invalid -> null + error).
         $articleId = $this->parseOptionalPositiveInt($body, 'article_id', $errors);
         $title = trim((string)($body['title'] ?? ''));
         $excerpt = trim((string)($body['excerpt'] ?? ''));
@@ -83,6 +87,7 @@ class ReporterArticleController extends Controller
 
         $thumbnailMediaId = $this->parseOptionalPositiveInt($body, 'thumbnail_media_id', $errors);
         if ($thumbnailMediaId !== null) {
+            // Ensure thumbnail media is always included in linked media list.
             $mediaIds[] = $thumbnailMediaId;
             $mediaIdsProvided = true;
         }
@@ -129,8 +134,11 @@ class ReporterArticleController extends Controller
             ], 422);
         }
 
+        // Convert UI intent into stored article status.
+        // Example: "submit" -> "submitted", "draft" -> "draft".
         $status = $intent === 'submit' ? 'submitted' : 'draft';
         $rawContentHtml = (string)($body['content_html'] ?? ($body['content'] ?? ''));
+        // Sanitize rich HTML before persisting to prevent unsafe markup/scripts.
         $safeContentHtml = $this->sanitizeContentHtml($rawContentHtml);
         if ($safeContentHtml === '' && trim(strip_tags($rawContentHtml)) !== '') {
             $plain = htmlspecialchars(
@@ -140,6 +148,7 @@ class ReporterArticleController extends Controller
             );
             $safeContentHtml = '<p>' . nl2br($plain, false) . '</p>';
         }
+        // Store empty excerpt as NULL (database-friendly semantic "no excerpt").
         $normalizedExcerpt = $excerpt === '' ? null : $excerpt;
 
         $payload = [
@@ -166,6 +175,7 @@ class ReporterArticleController extends Controller
 
             $slug = $existing['slug'];
             if ($existing['title'] !== $title) {
+                // Regenerate slug only when title changed.
                 $slug = $this->article->generateUniqueSlug($title, $articleId);
             }
 
@@ -275,6 +285,7 @@ class ReporterArticleController extends Controller
                     $response->json(['error' => 'Failed to store uploaded image.'], 500);
                 }
 
+                // Public URL stored in DB and used by frontend editor.
                 $fileUrl = url('/assets/uploads/articles/' . $fileName);
             }
         } else {
@@ -299,6 +310,7 @@ class ReporterArticleController extends Controller
             FILTER_VALIDATE_BOOLEAN
         );
 
+        // Create media row and return normalized media payload.
         $mediaId = $this->media->createImage(
             $fileUrl,
             $altText !== '' ? $altText : null,
@@ -319,6 +331,13 @@ class ReporterArticleController extends Controller
         ]);
     }
 
+    /**
+     * Resolve authenticated reporter user from token.
+     *
+     * Input: cookie/bearer token.
+     * Output: user row for reporter role.
+     * On failure: returns 401/403 JSON and exits.
+     */
     private function resolveReporter(Request $request, Response $response): array
     {
         $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();
@@ -339,6 +358,12 @@ class ReporterArticleController extends Controller
         return $user;
     }
 
+    /**
+     * Parse optional positive integer field from payload.
+     *
+     * Input: request body array + field name.
+     * Output: positive int or null. Adds validation error when invalid.
+     */
     private function parseOptionalPositiveInt(array $body, string $field, array &$errors): ?int
     {
         $rawValue = $body[$field] ?? null;
@@ -423,6 +448,12 @@ class ReporterArticleController extends Controller
         return self::ALLOWED_IMAGE_MIME_EXT[$mimeType];
     }
 
+    /**
+     * Validate remote image URL input from editor.
+     *
+     * Input: URL string.
+     * Output: none. Adds field errors when URL/suffix is invalid.
+     */
     private function validateImageUrl(string $imageUrl, array &$errors): void
     {
         if (!$this->isSafeUrl($imageUrl)) {
@@ -437,6 +468,12 @@ class ReporterArticleController extends Controller
         }
     }
 
+    /**
+     * Multi-byte safe length helper (falls back to strlen).
+     *
+     * Input: UTF-8 string.
+     * Output: character count.
+     */
     private function strLength(string $value): int
     {
         return function_exists('mb_strlen') ? mb_strlen($value) : strlen($value);
@@ -498,6 +535,7 @@ class ReporterArticleController extends Controller
 
         for ($child = $root->firstChild; $child !== null;) {
             $next = $child->nextSibling;
+            // Recursively remove unsafe tags/attributes in-place.
             $this->sanitizeNodeRecursive($child, $allowedTags, $allowedAttributesByTag);
             $child = $next;
         }
@@ -524,6 +562,7 @@ class ReporterArticleController extends Controller
             $tag = strtolower($element->tagName);
 
             if (!in_array($tag, $allowedTags, true)) {
+                // Unknown tags are unwrapped (children are kept, wrapper is removed).
                 for ($child = $element->firstChild; $child !== null;) {
                     $nextChild = $child->nextSibling;
                     $this->sanitizeNodeRecursive($child, $allowedTags, $allowedAttributesByTag);
@@ -566,6 +605,7 @@ class ReporterArticleController extends Controller
                 }
 
                 if ($attributeName === 'style') {
+                    // Keep only approved inline style declarations.
                     $safeStyle = $this->sanitizeInlineStyle($attributeValue);
                     if ($safeStyle === '') {
                         $element->removeAttributeNode($attribute);
@@ -584,6 +624,7 @@ class ReporterArticleController extends Controller
             }
 
             if ($tag === 'a' && $element->getAttribute('target') === '_blank') {
+                // Enforce safe external-link behavior.
                 $element->setAttribute('rel', 'noopener noreferrer');
             }
         }
@@ -595,6 +636,12 @@ class ReporterArticleController extends Controller
         }
     }
 
+    /**
+     * Strip unsafe CSS declarations from inline style text.
+     *
+     * Input example: "color:red; position:absolute".
+     * Output example: "color: red" (unsafe properties dropped).
+     */
     private function sanitizeInlineStyle(string $style): string
     {
         $safeDeclarations = [];
@@ -631,6 +678,12 @@ class ReporterArticleController extends Controller
         return implode('; ', $safeDeclarations);
     }
 
+    /**
+     * Validate URL safety for editor content links/images.
+     *
+     * Allowed: relative URLs, http, https.
+     * Blocked: javascript:, data:, vbscript:, malformed URLs.
+     */
     private function isSafeUrl(string $url): bool
     {
         $url = trim(html_entity_decode($url, ENT_QUOTES | ENT_HTML5, 'UTF-8'));

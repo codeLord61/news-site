@@ -8,6 +8,9 @@ class Token extends Model
 {
     /**
      * Create a new personal access token.
+     *
+     * Input: user id, raw token string, expiration datetime string.
+     * Output: true when insert succeeds.
      */
     public function create(int $userId, string $token, string $expiresAt): bool
     {
@@ -19,6 +22,9 @@ class Token extends Model
 
     /**
      * Delete a token (logout / revoke).
+     *
+     * Input: raw token string.
+     * Output: true when delete query executes successfully.
      */
     public function deleteByToken(string $token): bool
     {
@@ -28,6 +34,9 @@ class Token extends Model
 
     /**
      * Find a valid (non-expired) token.
+     *
+     * Input: raw token string.
+     * Output: ['user_id' => ...] or false.
      */
     public function findValid(string $token): array|false
     {

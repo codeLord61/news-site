@@ -11,6 +11,9 @@ class ArticleController extends Controller
 {
     private Article $article;
 
+    /**
+     * Prepare article model dependency for API endpoints.
+     */
     public function __construct()
     {
         $this->article = new Article();
@@ -24,8 +27,10 @@ class ArticleController extends Controller
     {
         $params = $request->getQueryParams();
 
+        // Convert raw query text into safe integers for pagination math.
         $page = max(1, (int)($params['page'] ?? 1));
         $limit = min(50, max(1, (int)($params['limit'] ?? 15)));
+        // Example: page=3, limit=15 -> offset=30
         $offset = ($page - 1) * $limit;
         $sort = $params['sort'] ?? 'latest';
 
@@ -68,6 +73,7 @@ class ArticleController extends Controller
             default:
                 $interval = '7 DAY';
         }
+        // Example mapping: "month" -> SQL interval "30 DAY".
 
         $articles = $this->article->getTrending($interval, $limit);
 
@@ -98,6 +104,7 @@ class ArticleController extends Controller
 
         // Increment view count
         $this->article->incrementViewCount($article['id']);
+        // Keep API response consistent with increment just performed in DB.
         $article['view_count']++;
 
         $response->json(['data' => $article]);

@@ -25,8 +25,13 @@
   const notifDropdown = document.getElementById('notif-dropdown');
 
   /* ── Helpers ── */
+  // Returns true on small screens where sidebar should behave as overlay.
   const isMobile = () => window.innerWidth < 768;
 
+  /**
+   * Close profile/notification dropdowns and reset accessibility flags.
+   * Output: no return value; updates dropdown visibility in DOM.
+   */
   function closeAllDropdowns() {
     [profileDropdown, notifDropdown].forEach(dd => {
       if (dd) dd.classList.add('hidden');
@@ -36,6 +41,12 @@
   }
 
   /* ── Sidebar ── */
+  /**
+   * Toggle sidebar state.
+   *
+   * Mobile: opens/closes overlay drawer.
+   * Desktop: toggles collapsed class and stores preference in localStorage.
+   */
   function toggleSidebar() {
     if (isMobile()) {
       const open = sidebar.classList.toggle('mobile-open');
@@ -49,10 +60,14 @@
         : 'fa-solid fa-bars';
       hamburgerBtn.setAttribute('aria-expanded', (!collapsed).toString());
 
+      // Persist sidebar state so it remains after page refresh.
       localStorage.setItem('sidebarCollapsed', collapsed ? '1' : '0');
     }
   }
 
+  /**
+   * Force-close mobile sidebar and overlay backdrop.
+   */
   function closeMobileSidebar() {
     sidebar.classList.remove('mobile-open');
     overlay.classList.add('hidden');
@@ -78,6 +93,12 @@
   if (overlay)      overlay.addEventListener('click', closeMobileSidebar);
 
   /* ── Dropdown toggles ── */
+  /**
+   * Wire one trigger element to one dropdown panel.
+   *
+   * Input: trigger button + dropdown element.
+   * Output: no return value; click handlers are attached.
+   */
   function setupDropdown(triggerEl, dropdownEl) {
     if (!triggerEl || !dropdownEl) return;
 
@@ -108,6 +129,7 @@
   /* ── Active nav highlight ── */
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function () {
+      // UI state update: exactly one nav link should remain active.
       document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
       this.classList.add('active');
 
@@ -121,7 +143,14 @@
     });
   });
 
-    // Global logout handler for portability
+    /**
+     * Logout function exposed globally for dashboard buttons.
+     *
+     * Output flow:
+     * 1) attempt server logout
+     * 2) clear client-side auth cache
+     * 3) redirect to /auth
+     */
     window.handleLogout = async function() {
       if (!confirm('Are you sure you want to sign out?')) return;
       

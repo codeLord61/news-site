@@ -8,6 +8,9 @@ class Category extends Model
 {
     /**
      * Get all categories with their published article counts.
+     *
+     * Input: none.
+     * Output: list of category rows, each with article_count.
      */
     public function getAllWithArticleCount(): array
     {
@@ -28,6 +31,9 @@ class Category extends Model
 
     /**
      * Find a single category by slug.
+     *
+     * Input example: "sports".
+     * Output: category row array or false when not found.
      */
     public function findBySlug(string $slug): array|false
     {
@@ -40,6 +46,9 @@ class Category extends Model
 
     /**
      * Find a category by ID.
+     *
+     * Input: category id.
+     * Output: category row array or false.
      */
     public function findById(int $id): array|false
     {
@@ -52,6 +61,9 @@ class Category extends Model
 
     /**
      * Count published articles in a category.
+     *
+     * Input: category id.
+     * Output: integer total published articles in that category.
      */
     public function countArticles(int $categoryId): int
     {
@@ -68,6 +80,9 @@ class Category extends Model
 
     /**
      * Get paginated published articles for a category.
+     *
+     * Input: category id, limit, offset.
+     * Output: list of article rows with nested reporter.name.
      */
     public function getArticles(int $categoryId, int $limit, int $offset): array
     {
@@ -91,6 +106,7 @@ class Category extends Model
 
         $articles = [];
         foreach ($rows as $row) {
+            // Reshape flat SQL columns into API-friendly nested object.
             $row['reporter'] = [
                 'name' => $row['reporter_name'],
             ];
@@ -103,6 +119,9 @@ class Category extends Model
 
     /**
      * Get child categories for a parent category.
+     *
+     * Input: parent category id.
+     * Output: list of child categories.
      */
     public function getChildren(int $categoryId): array
     {
@@ -115,6 +134,9 @@ class Category extends Model
 
     /**
      * Get all parent categories (where parent_id is NULL).
+     *
+     * Input: none.
+     * Output: top-level category list.
      */
     public function getParents(): array
     {

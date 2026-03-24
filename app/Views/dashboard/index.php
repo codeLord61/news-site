@@ -9,6 +9,8 @@
 $userRole = $userRole ?? 'reporter';
 ?>
 
+<?php
+/*
 <!-- ── Stats Grid ── -->
 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-7">
 
@@ -164,3 +166,11 @@ $userRole = $userRole ?? 'reporter';
   </div>
 
 </div>
+*/
+?>
+
+<div>
+  <h1>To do later</h1>
+</div>
+
+

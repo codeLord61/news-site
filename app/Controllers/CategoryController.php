@@ -11,6 +11,9 @@ class CategoryController extends Controller
 {
     private Category $category;
 
+    /**
+     * Initialize category model for category API routes.
+     */
     public function __construct()
     {
         $this->category = new Category();
@@ -46,12 +49,14 @@ class CategoryController extends Controller
 
         // Pagination
         $params = $request->getQueryParams();
+        // Convert query strings into integer paging values.
         $page = max(1, (int)($params['page'] ?? 1));
         $limit = min(50, max(1, (int)($params['limit'] ?? 15)));
         $offset = ($page - 1) * $limit;
 
         $total = $this->category->countArticles($category['id']);
         $articles = $this->category->getArticles($category['id'], $limit, $offset);
+        // Enrich category payload with nested children categories.
         $category['children'] = $this->category->getChildren($category['id']);
 
         $response->json([

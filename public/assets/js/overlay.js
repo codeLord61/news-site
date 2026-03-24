@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const headerLogoutBtn = document.getElementById('headerLogoutBtn');
 
     // UI state toggles
+    /**
+     * Open mobile overlay menu.
+     * Output: no return value; toggles classes and refreshes auth-dependent UI.
+     */
     function openOverlay() {
         overlayMenu.classList.remove('hidden');
         overlayMenu.classList.add('flex');
@@ -23,6 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
         checkAuthState(); // fetch user state every time we open
     }
 
+    /**
+     * Close mobile overlay menu and restore body scroll.
+     */
     function closeOverlay() {
         overlayMenu.classList.add('hidden');
         overlayMenu.classList.remove('flex');
@@ -38,6 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Logout function shared between header and overlay
+    /**
+     * Logout current user from both server + client states.
+     *
+     * Input: auth token from localStorage.
+     * Output: page reload after local auth data is cleared.
+     */
     async function performLogout() {
         const token = localStorage.getItem('auth_token');
         try {
@@ -53,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Logout network failed:", e);
         }
         
-        // Clear locals
+        // Clear locally cached auth so UI immediately becomes guest mode.
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_role');
         
@@ -84,6 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Check Auth and update UI (Used for overlay AND header initialization)
+    /**
+     * Resolve current auth state and update header/overlay UI sections.
+     *
+     * Output:
+     * - shows logged-in block when token is valid
+     * - shows logged-out block otherwise
+     */
     async function checkAuthState() {
         const token = localStorage.getItem('auth_token');
         
@@ -116,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.user) {
+                    // API user object drives overlay name/avatar state.
                     showLoggedInState(data.user);
                 } else {
                     showLoggedOutState();
@@ -138,6 +159,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    /**
+     * Switch overlay UI to guest state.
+     */
     function showLoggedOutState() {
         if (overlayLoggedIn && overlayLoggedOut) {
             overlayLoggedIn.classList.add('hidden');
@@ -147,6 +171,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    /**
+     * Switch overlay UI to authenticated state.
+     *
+     * Input: user object from /api/v1/auth/me.
+     */
     function showLoggedInState(user) {
         if (overlayLoggedOut && overlayLoggedIn) {
             overlayLoggedOut.classList.add('hidden');
@@ -154,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
             overlayLoggedIn.classList.remove('hidden');
             overlayLoggedIn.classList.add('flex');
             
+            // Data mapping: API user.name -> visible overlay display name.
             overlayUserName.textContent = user.name || "User";
             overlayUserDefaultIcon.classList.remove('hidden');
             overlayUserAvatar.classList.add('hidden');

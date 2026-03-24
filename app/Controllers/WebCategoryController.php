@@ -11,11 +11,20 @@ class WebCategoryController extends Controller
 {
     private CategoryService $categoryService;
 
+    /**
+     * Initialize category page service.
+     */
     public function __construct()
     {
         $this->categoryService = new CategoryService();
     }
 
+    /**
+     * Render category page with featured/latest article blocks.
+     *
+     * Input: route slug + optional query page.
+     * Output: HTML category page or 404 page.
+     */
     public function show(Request $request, Response $response)
     {
         $slug = $request->getRouteParam('slug');

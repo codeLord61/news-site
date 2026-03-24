@@ -9,6 +9,10 @@ class Article extends Model
     /**
      * Get paginated published articles with optional category, tag, and search filters.
      *
+     * Input:
+     * - $filters: ['category' => slug|null, 'tag' => slug|null, 'search' => string|null]
+     * - $sort: latest|popular|oldest
+     * - $limit/$offset: pagination values
      * @return array{articles: array, total: int}
      */
     public function getPublished(array $filters, string $sort, int $limit, int $offset): array
@@ -76,6 +80,7 @@ class Article extends Model
         // Enrich with categories, tags, and nested reporter
         $articles = [];
         foreach ($rows as $row) {
+            // Attach related data and reshape flat SQL output for API.
             $row['categories'] = $this->getCategoriesForArticle($row['id']);
             $row['tags'] = $this->getTagsForArticle($row['id']);
             $row['reporter'] = [
@@ -90,6 +95,9 @@ class Article extends Model
 
     /**
      * Get trending articles within a time interval.
+     *
+     * Input: SQL interval string like "7 DAY", result limit.
+     * Output: list of published articles sorted by view_count descending.
      */
     public function getTrending(string $interval, int $limit): array
     {
@@ -110,6 +118,7 @@ class Article extends Model
 
         $articles = [];
         foreach ($rows as $row) {
+            // Enrich each row with nested categories/tags/reporter object.
             $row['categories'] = $this->getCategoriesForArticle($row['id']);
             $row['tags'] = $this->getTagsForArticle($row['id']);
             $row['reporter'] = [
@@ -124,6 +133,9 @@ class Article extends Model
 
     /**
      * Find a single published article by slug.
+     *
+     * Input example: "cool-title".
+     * Output: article array with categories/tags/reporter or false.
      */
     public function findBySlug(string $slug): array|false
     {
@@ -152,6 +164,7 @@ class Article extends Model
 
         $article['categories'] = $this->getCategoriesForArticle($article['id']);
         $article['tags'] = $this->getTagsForArticle($article['id']);
+        // Convert flat reporter_name column into nested reporter object.
         $article['reporter'] = [
             'name' => $article['reporter_name'],
         ];
@@ -162,6 +175,9 @@ class Article extends Model
 
     /**
      * Increment the view count for an article.
+     *
+     * Input: article id.
+     * Output: none (updates DB counter).
      */
     public function incrementViewCount(int $id): void
     {
@@ -172,6 +188,9 @@ class Article extends Model
     /**
      * Get the latest N published articles (regardless of category).
      * Used for the hero section on the homepage.
+     *
+     * Input: integer limit.
+     * Output: newest published articles with thumbnail/category/reporter fields.
      */
     public function getLatest(int $limit): array
     {
@@ -212,6 +231,9 @@ class Article extends Model
     /**
      * Get published articles for a specific category.
      * Used for category sections on the homepage.
+     *
+     * Input: category id + row limit.
+     * Output: list of published articles in that category.
      */
     public function getPublishedByCategory(int $categoryId, int $limit): array
     {
@@ -256,6 +278,9 @@ class Article extends Model
     /**
      * Get paginated published articles for a specific category.
      * Used for the dynamic category page.
+     *
+     * Input: category id + pagination values.
+     * Output: list of articles for page slice.
      */
     public function getPaginatedByCategory(int $categoryId, int $limit, int $offset): array
     {
@@ -300,6 +325,9 @@ class Article extends Model
 
     /**
      * Find an article by ID that belongs to a reporter.
+     *
+     * Input: article id + reporter id.
+     * Output: owned article row or false.
      */
     public function findByIdForReporter(int $articleId, int $reporterId): array|false
     {
@@ -314,6 +342,9 @@ class Article extends Model
 
     /**
      * Get all articles created by a reporter.
+     *
+     * Input: reporter user id.
+     * Output: reporter article list including category name + thumbnail URL.
      */
     public function getReporterArticles(int $reporterId): array
     {
@@ -341,6 +372,9 @@ class Article extends Model
 
     /**
      * Get reporter submissions excluding drafts.
+     *
+     * Input: reporter user id.
+     * Output: non-draft articles created by reporter.
      */
     public function getReporterSubmissions(int $reporterId): array
     {
@@ -370,6 +404,9 @@ class Article extends Model
 
     /**
      * List all submitted articles for editor pickup.
+     *
+     * Input: none.
+     * Output: submitted queue rows.
      */
     public function getSubmittedForEditorQueue(): array
     {
@@ -398,6 +435,9 @@ class Article extends Model
 
     /**
      * List pending articles assigned to a specific editor.
+     *
+     * Input: editor user id.
+     * Output: pending rows assigned to that editor.
      */
     public function getPendingForEditor(int $editorId): array
     {
@@ -431,6 +471,9 @@ class Article extends Model
 
     /**
      * Get a single pending article assigned to an editor.
+     *
+     * Input: article id + editor id.
+     * Output: pending article row or false.
      */
     public function getPendingArticleForEditor(int $articleId, int $editorId): array|false
     {
@@ -464,6 +507,9 @@ class Article extends Model
 
     /**
      * List approved articles assigned to a specific editor.
+     *
+     * Input: editor user id.
+     * Output: approved rows assigned to that editor.
      */
     public function getApprovedForEditor(int $editorId): array
     {
@@ -495,6 +541,9 @@ class Article extends Model
 
     /**
      * Get a single approved article assigned to an editor.
+     *
+     * Input: article id + editor id.
+     * Output: approved article row or false.
      */
     public function getApprovedArticleForEditor(int $articleId, int $editorId): array|false
     {
@@ -527,6 +576,9 @@ class Article extends Model
 
     /**
      * Get an article payload used to prefill the reporter editor form.
+     *
+     * Input: article id + reporter id.
+     * Output: article/edit-form payload or false.
      */
     public function getReporterArticleForForm(int $articleId, int $reporterId): array|false
     {
@@ -573,6 +625,9 @@ class Article extends Model
 
     /**
      * Get reporter-owned article data for dashboard preview page.
+     *
+     * Input: article id + reporter id.
+     * Output: preview-friendly article row or false.
      */
     public function getReporterArticlePreview(int $articleId, int $reporterId): array|false
     {
@@ -606,6 +661,9 @@ class Article extends Model
 
     /**
      * Soft-delete a reporter-owned article.
+     *
+     * Input: article id + reporter id.
+     * Output: true when one row was soft-deleted.
      */
     public function deleteReporterArticle(int $articleId, int $reporterId): bool
     {
@@ -623,6 +681,9 @@ class Article extends Model
 
     /**
      * Move an article from submitted queue to pending for a specific editor.
+     *
+     * Input: article id + editor id.
+     * Output: true when state transition succeeds.
      */
     public function assignSubmittedToEditor(int $articleId, int $editorId): bool
     {
@@ -642,6 +703,9 @@ class Article extends Model
 
     /**
      * Approve an article currently assigned to an editor.
+     *
+     * Input: article id + editor id.
+     * Output: true when row moved from pending -> approved.
      */
     public function approvePendingByEditor(int $articleId, int $editorId): bool
     {
@@ -662,6 +726,9 @@ class Article extends Model
 
     /**
      * Reject an article currently assigned to an editor.
+     *
+     * Input: article id + editor id.
+     * Output: true when row moved from pending -> rejected.
      */
     public function rejectPendingByEditor(int $articleId, int $editorId): bool
     {
@@ -682,6 +749,9 @@ class Article extends Model
 
     /**
      * Publish an approved article currently assigned to an editor.
+     *
+     * Input: article id + editor id.
+     * Output: true when row moved from approved -> published.
      */
     public function publishApprovedByEditor(int $articleId, int $editorId): bool
     {
@@ -702,6 +772,9 @@ class Article extends Model
 
     /**
      * Reject an approved article currently assigned to an editor.
+     *
+     * Input: article id + editor id.
+     * Output: true when row moved from approved -> rejected.
      */
     public function rejectApprovedByEditor(int $articleId, int $editorId): bool
     {
@@ -722,6 +795,11 @@ class Article extends Model
 
     /**
      * Create a reporter-owned article with optional category and tag links.
+     *
+     * Input:
+     * - reporter id
+     * - payload keys: title, excerpt|null, slug, content_html, status, category_id|null, tag_id|null, media_ids?
+     * Output: newly created article id.
      */
     public function createReporterArticle(int $reporterId, array $payload): int
     {
@@ -743,6 +821,7 @@ class Article extends Model
                 $reporterId,
             ]);
 
+            // Convert DB auto-increment id into integer for caller.
             $articleId = (int)$pdo->lastInsertId();
 
             $this->syncArticleCategory($articleId, $payload['category_id'], $pdo);
@@ -763,6 +842,9 @@ class Article extends Model
 
     /**
      * Update an existing reporter-owned article and sync category/tag links.
+     *
+     * Input: article id, reporter id, payload structure same as createReporterArticle().
+     * Output: true on successful update/commit.
      */
     public function updateReporterArticle(int $articleId, int $reporterId, array $payload): bool
     {
@@ -804,6 +886,9 @@ class Article extends Model
 
     /**
      * Generate a unique slug for an article title.
+     *
+     * Input: title text and optional article id to ignore (for updates).
+     * Output: unique slug string (example: "cool-title-2").
      */
     public function generateUniqueSlug(string $title, ?int $ignoreArticleId = null): string
     {
@@ -811,6 +896,7 @@ class Article extends Model
         $slug = $slugBase;
         $counter = 2;
 
+        // Keep appending "-2", "-3", ... until unused slug is found.
         while ($this->slugExists($slug, $ignoreArticleId)) {
             $slug = $slugBase . '-' . $counter;
             $counter++;
@@ -821,6 +907,9 @@ class Article extends Model
 
     /**
      * Determine whether a slug already exists on another non-deleted article.
+     *
+     * Input: slug string + optional ignored article id.
+     * Output: true when duplicate exists.
      */
     public function slugExists(string $slug, ?int $ignoreArticleId = null): bool
     {
@@ -841,18 +930,36 @@ class Article extends Model
         return (int)$stmt->fetchColumn() > 0;
     }
 
+    /**
+     * Convert title text into URL-safe slug.
+     *
+     * Input example: "Cool Title".
+     * Output example: "cool-title".
+     * Fallback output: "article" when input has no usable characters.
+     */
     private function slugify(string $text): string
     {
+        // Step 1: normalize case + remove leading/trailing spaces.
         $text = strtolower(trim($text));
+        // Step 2: replace any non-alphanumeric run with one hyphen.
+        // Example: "cool   title!!!" -> "cool-title-"
         $text = preg_replace('/[^a-z0-9]+/i', '-', $text);
+        // Step 3: remove extra hyphens from edges.
         $text = trim((string)$text, '-');
 
         return $text !== '' ? $text : 'article';
     }
 
+    /**
+     * Sync article-category pivot to match selected category.
+     *
+     * Input: article id + optional category id.
+     * Output: none (replaces pivot rows in DB).
+     */
     private function syncArticleCategory(int $articleId, ?int $categoryId, ?\PDO $pdo = null): void
     {
         $conn = $pdo ?? $this->db();
+        // Clear existing links first so state mirrors current form selection.
         $conn->prepare("DELETE FROM articles_categories WHERE article_id = ?")->execute([$articleId]);
 
         if ($categoryId !== null) {
@@ -862,6 +969,12 @@ class Article extends Model
         }
     }
 
+    /**
+     * Sync article-tag pivot to match selected tag.
+     *
+     * Input: article id + optional tag id.
+     * Output: none (replaces pivot rows in DB).
+     */
     private function syncArticleTag(int $articleId, ?int $tagId, ?\PDO $pdo = null): void
     {
         $conn = $pdo ?? $this->db();
@@ -877,6 +990,7 @@ class Article extends Model
     /**
      * Replace all article-media links with the current editor media set.
      *
+     * Input: article id + list of media ids.
      * @param int[] $mediaIds
      */
     private function syncArticleMedias(int $articleId, array $mediaIds, ?\PDO $pdo = null): void
@@ -893,6 +1007,7 @@ class Article extends Model
         );
 
         foreach ($mediaIds as $mediaId) {
+            // Coerce values from request payload (string/int) into validated positive ints.
             $mediaId = (int)$mediaId;
             if ($mediaId <= 0) {
                 continue;
@@ -903,6 +1018,9 @@ class Article extends Model
 
     /**
      * Get categories associated with an article.
+     *
+     * Input: article id.
+     * Output: list of category rows.
      */
     public function getCategoriesForArticle(int $articleId): array
     {
@@ -918,6 +1036,9 @@ class Article extends Model
 
     /**
      * Get tags associated with an article.
+     *
+     * Input: article id.
+     * Output: list of tag rows.
      */
     public function getTagsForArticle(int $articleId): array
     {

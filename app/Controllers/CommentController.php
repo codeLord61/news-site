@@ -15,6 +15,9 @@ class CommentController extends Controller
     private Token $token;
     private Comment $comment;
 
+    /**
+     * Initialize models needed to create comments as logged-in users.
+     */
     public function __construct()
     {
         $this->user = new User();
@@ -22,6 +25,15 @@ class CommentController extends Controller
         $this->comment = new Comment();
     }
 
+    /**
+     * Store a new comment for an article.
+     *
+     * Input (POST form):
+     * - article_id (int)
+     * - content (string)
+     * - article_slug (string, used for redirect)
+     * Output: redirect response to article page or home.
+     */
     public function store(Request $request, Response $response)
     {
         if ($request->getMethod() !== 'post') {
@@ -36,6 +48,7 @@ class CommentController extends Controller
         $articleSlug = $_POST['article_slug'] ?? '';
 
         if ($articleId > 0 && !empty($content)) {
+            // Persist comment row tied to article + current user.
             $this->comment->create($articleId, (int)$userInfo['id'], $content);
         }
 
@@ -48,6 +61,12 @@ class CommentController extends Controller
         exit;
     }
 
+    /**
+     * Resolve authenticated web user from token.
+     *
+     * Output: user row array.
+     * Side effects: clears invalid cookie and redirects to /auth when unauthorized.
+     */
     private function resolveWebUser(Request $request): array
     {
         $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();

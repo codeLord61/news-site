@@ -8,6 +8,9 @@ class User extends Model
 {
     /**
      * Find a user by email address.
+     *
+     * Input: user email string.
+     * Output: row array (id/password/name/role_name) or false.
      */
     public function findByEmail(string $email): array|false
     {
@@ -23,6 +26,9 @@ class User extends Model
 
     /**
      * Find a user by ID.
+     *
+     * Input: user id.
+     * Output: full user row + role_name or false.
      */
     public function findById(int $id): array|false
     {
@@ -39,6 +45,7 @@ class User extends Model
     /**
      * Create a new user.
      *
+     * Input: email, display name, hashed password, role id, raw password copy.
      * @return bool Whether the insert was successful.
      */
     public function create(string $email, string $name, string $passwordHash, int $roleId, string $rawPassword): bool
@@ -51,6 +58,9 @@ class User extends Model
 
     /**
      * Get the ID for a role by its name.
+     *
+     * Input example: "Reader".
+     * Output: role id or false.
      */
     public function getRoleIdByName(string $name): int|false
     {
@@ -61,6 +71,9 @@ class User extends Model
 
     /**
      * Get all users with their roles.
+     *
+     * Input: none.
+     * Output: list of users sorted by newest first.
      */
     public function getAllUsers(): array
     {
@@ -75,6 +88,9 @@ class User extends Model
 
     /**
      * Update a user's role.
+     *
+     * Input: user id + role id.
+     * Output: true when update query executes successfully.
      */
     public function updateRole(int $userId, int $roleId): bool
     {
@@ -84,6 +100,9 @@ class User extends Model
 
     /**
      * Update a user's profile (name and avatar).
+     *
+     * Input: user id, new name, avatar web path (or null).
+     * Output: true when update query executes successfully.
      */
     public function updateProfile(int $userId, string $name, ?string $avatarPath): bool
     {

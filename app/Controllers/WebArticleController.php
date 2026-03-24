@@ -17,6 +17,9 @@ class WebArticleController extends Controller
     private User $user;
     private Comment $comment;
 
+    /**
+     * Initialize models needed to render article detail pages.
+     */
     public function __construct()
     {
         $this->article = new Article();
@@ -25,6 +28,12 @@ class WebArticleController extends Controller
         $this->comment = new Comment();
     }
 
+    /**
+     * Render one article page by slug.
+     *
+     * Input: route param {slug}.
+     * Output: HTML article page or 404 page.
+     */
     public function show(Request $request, Response $response)
     {
         $slug = $request->getRouteParam('slug');
@@ -50,6 +59,7 @@ class WebArticleController extends Controller
 
         $currentUser = null;
         if (isset($_COOKIE['auth_token'])) {
+            // If cookie is valid, include current user so view can show auth-aware UI.
             $tokenData = $this->token->findValid($_COOKIE['auth_token']);
             if ($tokenData) {
                 $currentUser = $this->user->findById((int)$tokenData['user_id']);

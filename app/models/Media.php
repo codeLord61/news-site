@@ -9,6 +9,7 @@ class Media extends Model
     /**
      * Get the thumbnail media linked to an article (is_thumbnail = 1).
      *
+     * Input: article id.
      * @return array|null  ['id', 'file_url', 'alt_text', 'caption'] or null
      */
     public function getFirstForArticle(int $articleId): ?array
@@ -28,7 +29,13 @@ class Media extends Model
     /**
      * Create an image media row.
      *
+     * Input:
+     * - $fileUrl: stored/remote image URL
+     * - $altText: optional alt text
+     * - $title: optional caption/title text
+     * - $uploadedBy: reporter user id
      * @param bool $isThumbnail  True when this image is the article thumbnail.
+     * Output: created media id.
      */
     public function createImage(
         string $fileUrl,
@@ -55,6 +62,9 @@ class Media extends Model
 
     /**
      * Update the is_thumbnail flag for a specific media row.
+     *
+     * Input: media id + bool flag.
+     * Output: none (updates DB row).
      */
     public function setIsThumbnail(int $mediaId, bool $flag): void
     {
@@ -66,6 +76,7 @@ class Media extends Model
     /**
      * Returns only media IDs owned by the reporter.
      *
+     * Input: candidate media ids + reporter id.
      * @return int[]
      */
     public function findOwnedIds(array $mediaIds, int $reporterId): array
@@ -74,6 +85,7 @@ class Media extends Model
             return [];
         }
 
+        // Normalize to unique positive integers before SQL IN query.
         $mediaIds = array_values(array_unique(array_map('intval', $mediaIds)));
         $placeholders = implode(',', array_fill(0, count($mediaIds), '?'));
 
@@ -93,6 +105,9 @@ class Media extends Model
 
     /**
      * Fetch a media row by id.
+     *
+     * Input: media id.
+     * Output: media row array or false.
      */
     public function findById(int $id): array|false
     {

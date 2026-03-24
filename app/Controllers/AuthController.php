@@ -15,6 +15,9 @@ class AuthController extends Controller
     private User $user;
     private Token $token;
 
+    /**
+     * Initialize auth-related models.
+     */
     public function __construct()
     {
         $this->user = new User();
@@ -38,6 +41,12 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Register a new reader account.
+     *
+     * Input body: fullname, email, password.
+     * Output JSON: success/error message.
+     */
     public function register(Request $request, Response $response)
     {
         $body = $request->getBody();
@@ -46,6 +55,7 @@ class AuthController extends Controller
         }
 
         $roleName = 'Reader';
+        // Convert role name to foreign key role_id for users table.
         $roleId = $this->user->getRoleIdByName($roleName);
 
         if (!$roleId) {
@@ -67,6 +77,12 @@ class AuthController extends Controller
         $response->json(['error' => 'Registration failed due to server error'], 500);
     }
 
+    /**
+     * Authenticate user and issue token.
+     *
+     * Input body: email, password.
+     * Output JSON: token + role + message, and sets auth_token cookie.
+     */
     public function login(Request $request, Response $response)
     {
         $body = $request->getBody();
@@ -77,6 +93,7 @@ class AuthController extends Controller
         $user = $this->user->findByEmail($body['email']);
 
         if ($user && password_verify($body['password'], $user['password'])) {
+            // Random token string used for API auth and cookie-based web auth.
             $tokenStr = TokenService::generateToken();
             $expiresAt = date('Y-m-d H:i:s', strtotime('+30 days'));
 
@@ -104,6 +121,12 @@ class AuthController extends Controller
         $response->json(['error' => 'Invalid credentials'], 401);
     }
 
+    /**
+     * Logout current user by revoking token and clearing cookie.
+     *
+     * Input: bearer token or auth_token cookie.
+     * Output JSON: logout result.
+     */
     public function logout(Request $request, Response $response)
     {
         $bearerToken = $request->getBearerToken() ?? $_COOKIE['auth_token'] ?? null;
@@ -125,6 +148,12 @@ class AuthController extends Controller
         $response->json(['success' => true, 'message' => 'Logged out successfully']);
     }
 
+    /**
+     * Return authenticated user's profile summary.
+     *
+     * Input: bearer token or auth_token cookie.
+     * Output JSON: id, name, email, role.
+     */
     public function me(Request $request, Response $response)
     {
         $tokenStr = $request->getBearerToken() ?? $_COOKIE['auth_token'] ?? null;

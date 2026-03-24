@@ -1,3 +1,9 @@
+/**
+ * Switch between login and signup panels.
+ *
+ * Input example: "login" or "signup".
+ * Output: no return value; updates DOM classes so one form is visible.
+ */
 function switchForm(target) {
   // Get all elements with class .auth-form (basically signup and form)
   // Add hidden class to both of them
@@ -9,6 +15,14 @@ function switchForm(target) {
   document.getElementById(target + "Form").classList.remove("hidden");
 }
 
+/**
+ * Toggle password input visibility.
+ *
+ * Input:
+ * - inputId: password input element id
+ * - eyeId: eye icon element id (currently unused in this implementation)
+ * Output: no return value; changes <input type> and icon classes.
+ */
 function togglePassword(inputId, eyeId) {
   let password = document.getElementById(inputId);
 
@@ -36,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault(); // Stop default form POST
 
       const formData = new FormData(loginForm);
+      // Transform FormData entries into plain object for JSON body.
       const data = Object.fromEntries(formData.entries());
 
       try {
@@ -79,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       const formData = new FormData(signupForm);
+      // Convert browser form fields into API-ready JSON object.
       const data = Object.fromEntries(formData.entries());
 
       try {

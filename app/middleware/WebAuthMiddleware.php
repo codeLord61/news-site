@@ -13,11 +13,23 @@ use app\models\Token;
  */
 class WebAuthMiddleware extends Middleware
 {
+    /**
+     * Input: optional list of action names that require web auth.
+     * Output: none (stores action list).
+     */
     public function __construct(array $actions = [])
     {
         $this->actions = $actions;
     }
 
+    /**
+     * Validate auth for HTML routes.
+     *
+     * Input: request token (cookie/header) + action name.
+     * Output:
+     * - allows request when token is valid
+     * - redirects to /auth and exits when unauthorized
+     */
     public function execute(Request $request, Response $response, string $action)
     {
         if (empty($this->actions) || in_array($action, $this->actions)) {

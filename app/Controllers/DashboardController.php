@@ -20,6 +20,9 @@ class DashboardController extends Controller
     private Tag $tag;
     private Article $article;
 
+    /**
+     * Initialize dashboard dependencies and protect routes with web auth.
+     */
     public function __construct()
     {
         $this->user = new User();
@@ -32,6 +35,12 @@ class DashboardController extends Controller
         $this->registerMiddleware(new WebAuthMiddleware());
     }
 
+    /**
+     * Main dashboard router for HTML pages under dashboard URLs.
+     *
+     * Input: authenticated request + current path.
+     * Output: rendered HTML for role-specific dashboard pages.
+     */
     public function index(Request $request, Response $response)
     {
         $userInfo = $this->resolveWebUser($request);
@@ -42,6 +51,7 @@ class DashboardController extends Controller
         $initials = $this->buildInitials($userName);
         
         $roleName = $userInfo['role_name'] ?? 'User';
+        // Normalize role once so downstream checks can compare lowercase text.
         $normalizedRole = strtolower((string)$roleName);
         $currentPath = $request->getPath();
         
@@ -152,6 +162,12 @@ class DashboardController extends Controller
         ]));
     }
 
+    /**
+     * Render reporter's article preview page for one owned article.
+     *
+     * Input: route param {id} (article id).
+     * Output: HTML preview page or redirect to /my-articles.
+     */
     public function previewMyArticle(Request $request, Response $response): void
     {
         $userInfo = $this->resolveWebUser($request);
@@ -184,6 +200,12 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * Render editor review page for a pending article assigned to this editor.
+     *
+     * Input: route param {id}.
+     * Output: HTML review page or redirect to pending list.
+     */
     public function reviewSubmission(Request $request, Response $response): void
     {
         $userInfo = $this->resolveWebUser($request);
@@ -219,6 +241,12 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * Render editor review page for an already-approved article.
+     *
+     * Input: route param {id}.
+     * Output: HTML review page or redirect to approved list.
+     */
     public function reviewApprovedSubmission(Request $request, Response $response): void
     {
         $userInfo = $this->resolveWebUser($request);
@@ -254,6 +282,12 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * API endpoint: editor picks one submitted article and moves it to pending.
+     *
+     * Input body: article_id.
+     * Output JSON: success/error.
+     */
     public function selectSubmission(Request $request, Response $response): void
     {
         if ($request->getMethod() !== 'post') {
@@ -281,6 +315,12 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * API endpoint: approve a pending article managed by this editor.
+     *
+     * Input body: article_id.
+     * Output JSON: success/error.
+     */
     public function approveSubmission(Request $request, Response $response): void
     {
         if ($request->getMethod() !== 'post') {
@@ -308,6 +348,12 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * API endpoint: reject a pending article managed by this editor.
+     *
+     * Input body: article_id.
+     * Output JSON: success/error.
+     */
     public function rejectSubmission(Request $request, Response $response): void
     {
         if ($request->getMethod() !== 'post') {
@@ -335,6 +381,12 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * API endpoint: publish an approved article managed by this editor.
+     *
+     * Input body: article_id.
+     * Output JSON: success/error.
+     */
     public function publishApprovedSubmission(Request $request, Response $response): void
     {
         if ($request->getMethod() !== 'post') {
@@ -362,6 +414,12 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * API endpoint: reject an already-approved article.
+     *
+     * Input body: article_id.
+     * Output JSON: success/error.
+     */
     public function rejectApprovedSubmission(Request $request, Response $response): void
     {
         if ($request->getMethod() !== 'post') {
@@ -389,6 +447,12 @@ class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * Build initials from full name for avatar badges.
+     *
+     * Input example: "Jane Doe".
+     * Output example: "JD" (or "U" fallback).
+     */
     private function buildInitials(string $name): string
     {
         $words = explode(' ', trim($name));
@@ -407,6 +471,12 @@ class DashboardController extends Controller
         return $initials !== '' ? $initials : 'U';
     }
 
+    /**
+     * Resolve authenticated web user and redirect to auth when invalid.
+     *
+     * Input: cookie/bearer token.
+     * Output: user row array.
+     */
     private function resolveWebUser(Request $request): array
     {
         $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();
@@ -428,6 +498,12 @@ class DashboardController extends Controller
         return $userInfo;
     }
 
+    /**
+     * Resolve API user for JSON actions; returns 401 JSON on failure.
+     *
+     * Input: cookie/bearer token.
+     * Output: user row array.
+     */
     private function resolveApiUser(Request $request, Response $response): array
     {
         $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();
@@ -448,6 +524,12 @@ class DashboardController extends Controller
         return $userInfo;
     }
 
+    /**
+     * Enforce role on HTML routes.
+     *
+     * Input: normalized current role + required role.
+     * Output: none (redirects when role mismatches).
+     */
     private function ensureWebRole(string $currentRole, string $requiredRole): void
     {
         if ($currentRole !== $requiredRole) {
@@ -456,6 +538,12 @@ class DashboardController extends Controller
         }
     }
 
+    /**
+     * Enforce role on API routes.
+     *
+     * Input: user array from DB + required role.
+     * Output: none (returns 403 JSON on mismatch).
+     */
     private function ensureApiRole(array $userInfo, string $requiredRole, Response $response): void
     {
         $roleName = strtolower((string)($userInfo['role_name'] ?? ''));
@@ -464,6 +552,12 @@ class DashboardController extends Controller
         }
     }
 
+    /**
+     * Parse and validate article_id from request payload.
+     *
+     * Input: payload array that may include article_id.
+     * Output: positive int article id, or 0 when invalid.
+     */
     private function extractArticleId(array $payload): int
     {
         $rawArticleId = $payload['article_id'] ?? null;

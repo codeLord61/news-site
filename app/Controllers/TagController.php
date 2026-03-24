@@ -11,6 +11,9 @@ class TagController extends Controller
 {
     private Tag $tag;
 
+    /**
+     * Initialize tag model for tag API endpoints.
+     */
     public function __construct()
     {
         $this->tag = new Tag();
@@ -46,6 +49,7 @@ class TagController extends Controller
 
         // Pagination
         $params = $request->getQueryParams();
+        // Convert query strings into numeric pagination values.
         $page = max(1, (int)($params['page'] ?? 1));
         $limit = min(50, max(1, (int)($params['limit'] ?? 15)));
         $offset = ($page - 1) * $limit;
