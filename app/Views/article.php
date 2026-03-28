@@ -59,7 +59,7 @@ if (!empty($article['updated_at'])) {
     </figure>
 
     <!-- Article Body -->
-    <div class="prose max-w-none text-gray-800 leading-relaxed font-serif space-y-4">
+    <div class="prose max-w-none text-gray-800 leading-relaxed font-serif">
         <?= $article['content'] // Raw HTML from DB/Editor ?>
     </div>
 

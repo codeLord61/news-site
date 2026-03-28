@@ -125,6 +125,13 @@ $linkClass = static function (array $paths, array $prefixes = []) use ($currentP
       <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-circle-check"></i></span>
       <span class="sidebar-nav-text">Approved Articles</span>
     </a>
+
+    <a href="<?= url('/editor/published-articles') ?>"
+       class="<?= $linkClass(['/editor/published-articles'], ['/editor/published-articles/']) ?>"
+       data-tooltip="Published Articles">
+      <span class="flex-shrink-0 w-5 text-center text-[15px]"><i class="fa-solid fa-globe"></i></span>
+      <span class="sidebar-nav-text">Published Articles</span>
+    </a>
     <?php endif; ?>
 
     <?php if ($userRole === 'admin'): ?>

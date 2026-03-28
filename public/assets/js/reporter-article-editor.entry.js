@@ -845,7 +845,7 @@ window.addEventListener('load', () => {
       const successMessage =
         isExistingArticle && intent === 'draft'
           ? 'Article updated successfully.'
-          : data.message || 'Article saved successfully.';
+          : data.message || 'Article saved & published successfully.';
       showAlert(successMessage, true);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unexpected error while saving article.';

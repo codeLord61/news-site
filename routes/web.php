@@ -26,6 +26,7 @@ $this->router->get('/editor/pending-submissions', [DashboardController::class, '
 $this->router->get('/editor/pending-submissions/{id}/review', [DashboardController::class, 'reviewSubmission']);
 $this->router->get('/editor/approved-articles', [DashboardController::class, 'index']);
 $this->router->get('/editor/approved-articles/{id}/review', [DashboardController::class, 'reviewApprovedSubmission']);
+$this->router->get('/editor/published-articles', [DashboardController::class, 'index']);
 $this->router->get('/articles/new', [DashboardController::class, 'index']);
 $this->router->get('/analytics', [DashboardController::class, 'index']);
 $this->router->get('/admin/settings', [DashboardController::class, 'index']);

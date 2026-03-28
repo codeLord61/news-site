@@ -156,6 +156,17 @@ class DashboardController extends Controller
             return;
         }
 
+        if ($currentPath === '/editor/published-articles') {
+            $this->ensureWebRole($normalizedRole, 'editor');
+
+            echo $this->render('dashboard/editor_published_articles', array_merge($baseViewData, [
+                'pageTitle'    => 'Published Articles',
+                'pageSubtitle' => 'Published stories handled by you.',
+                'articles'     => $this->article->getPublishedForEditor((int)$userInfo['id']),
+            ]));
+            return;
+        }
+
         echo $this->render('dashboard/index', array_merge($baseViewData, [
             'pageTitle'    => 'Dashboard',
             'pageSubtitle' => "Welcome back, $userName! Here's what's happening.",

@@ -575,6 +575,37 @@ class Article extends Model
     }
 
     /**
+     * List published articles assigned to a specific editor.
+     */
+    public function getPublishedForEditor(int $editorId): array
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT a.id, a.title, a.excerpt, a.slug, a.status, a.created_at, a.updated_at, a.published_at,
+                    u.name AS reporter_name,
+                    (SELECT c.name
+                     FROM categories c
+                     INNER JOIN articles_categories ac ON ac.category_id = c.id
+                     WHERE ac.article_id = a.id
+                     ORDER BY c.name ASC
+                     LIMIT 1) AS category_name,
+                    (SELECT m.file_url
+                     FROM medias m
+                     INNER JOIN articles_medias am ON am.media_id = m.id
+                     WHERE am.article_id = a.id AND m.is_thumbnail = 1
+                     LIMIT 1) AS thumbnail
+             FROM articles a
+             LEFT JOIN users u ON u.id = a.reporter_id
+             WHERE a.status = 'published'
+               AND a.managed_by = ?
+               AND a.deleted_at IS NULL
+             ORDER BY a.published_at DESC, a.updated_at DESC, a.created_at DESC"
+        );
+
+        $stmt->execute([$editorId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Get an article payload used to prefill the reporter editor form.
      *
      * Input: article id + reporter id.
