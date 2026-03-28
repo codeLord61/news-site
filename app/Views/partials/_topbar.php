@@ -157,10 +157,18 @@ $pageSubtitle = $pageSubtitle ?? '';
           <p class="text-[11px] text-neutral-400 mt-0.5"><?= htmlspecialchars($userEmail) ?></p>
         </div>
 
-        <!-- Edit Profile -->
-        <a href="<?= url('/profile/edit') ?>" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13.5px] font-medium text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors">
+        <!-- View Profile -->
+        <a href="<?= url('/dashboard/profile') ?>" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13.5px] font-medium text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors">
           <span class="w-7 h-7 rounded-[7px] bg-[#E5F7F4] text-[#00A486] flex items-center justify-center text-[13px] flex-shrink-0">
             <i class="fa-regular fa-user"></i>
+          </span>
+          View Profile
+        </a>
+
+        <!-- Edit Profile -->
+        <a href="<?= url('/dashboard/profile/edit') ?>" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13.5px] font-medium text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors">
+          <span class="w-7 h-7 rounded-[7px] bg-[#E5F7F4] text-[#00A486] flex items-center justify-center text-[13px] flex-shrink-0">
+            <i class="fa-solid fa-user-pen"></i>
           </span>
           Edit Profile
         </a>

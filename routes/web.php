@@ -49,3 +49,7 @@ $this->router->post('/comments/store', [CommentController::class, 'store']);
 
 use app\controllers\BookmarkController;
 $this->router->post('/bookmarks/toggle', [BookmarkController::class, 'toggle']);
+
+$this->router->get('/dashboard/profile', [DashboardController::class, 'profileView']);
+$this->router->get('/dashboard/profile/edit', [DashboardController::class, 'profileEdit']);
+$this->router->post('/dashboard/profile/update', [DashboardController::class, 'updateProfile']);

@@ -459,6 +459,91 @@ class DashboardController extends Controller
     }
 
     /**
+     * Render the visual dashboard user profile page.
+     */
+    public function profileView(Request $request, Response $response): void
+    {
+        $userInfo = $this->resolveWebUser($request);
+
+        $this->setLayout('dashboard');
+        
+        $roleName = $userInfo['role_name'] ?? 'User';
+
+        echo $this->render('dashboard/profile_view', [
+            'pageTitle'    => 'My Dashboard Profile',
+            'userName'     => $userInfo['name'],
+            'userInitials' => $this->buildInitials($userInfo['name']),
+            'userEmail'    => $userInfo['email'],
+            'userRole'     => strtolower((string)$roleName),
+            'currentPath'  => '/dashboard/profile',
+            'user'         => $userInfo
+        ]);
+    }
+
+    /**
+     * Render the editor for the dashboard user profile page.
+     */
+    public function profileEdit(Request $request, Response $response): void
+    {
+        $userInfo = $this->resolveWebUser($request);
+
+        $this->setLayout('dashboard');
+        
+        $roleName = $userInfo['role_name'] ?? 'User';
+
+        echo $this->render('dashboard/profile_edit', [
+            'pageTitle'    => 'Edit Dashboard Profile',
+            'userName'     => $userInfo['name'],
+            'userInitials' => $this->buildInitials($userInfo['name']),
+            'userEmail'    => $userInfo['email'],
+            'userRole'     => strtolower((string)$roleName),
+            'currentPath'  => '/dashboard/profile/edit',
+            'user'         => $userInfo
+        ]);
+    }
+
+    /**
+     * Parse profile form submission and save data safely.
+     */
+    public function updateProfile(Request $request, Response $response): void
+    {
+        if ($request->getMethod() !== 'post') {
+            header("Location: " . url('/dashboard/profile'));
+            exit;
+        }
+
+        $userInfo = $this->resolveWebUser($request);
+        $userId = (int)$userInfo['id'];
+
+        $name = trim($_POST['name'] ?? '');
+        
+        // Handle avatar upload if present
+        $avatarPath = $userInfo['avatar_path'];
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . '/../../public/uploads/avatars/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            
+            $fileExtension = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
+            $fileName = 'avatar_' . $userId . '_' . time() . '.' . $fileExtension;
+            $destination = $uploadDir . $fileName;
+
+            if (move_uploaded_file($_FILES['avatar']['tmp_name'], $destination)) {
+                $avatarPath = '/uploads/avatars/' . $fileName;
+            }
+        }
+
+        if (!empty($name)) {
+            // Update user in DB
+            $this->user->updateProfile($userId, $name, $avatarPath);
+        }
+
+        header("Location: " . url('/dashboard/profile'));
+        exit;
+    }
+
+    /**
      * Build initials from full name for avatar badges.
      *
      * Input example: "Jane Doe".
