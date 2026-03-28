@@ -46,3 +46,6 @@ $this->router->post('/my-account/update', [AccountController::class, 'updateProf
 
 use app\controllers\CommentController;
 $this->router->post('/comments/store', [CommentController::class, 'store']);
+
+use app\controllers\BookmarkController;
+$this->router->post('/bookmarks/toggle', [BookmarkController::class, 'toggle']);

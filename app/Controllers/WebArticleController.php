@@ -9,6 +9,7 @@ use app\models\Article;
 use app\models\Token;
 use app\models\User;
 use app\models\Comment;
+use app\models\Bookmark;
 
 class WebArticleController extends Controller
 {
@@ -16,6 +17,7 @@ class WebArticleController extends Controller
     private Token $token;
     private User $user;
     private Comment $comment;
+    private Bookmark $bookmark;
 
     /**
      * Initialize models needed to render article detail pages.
@@ -26,6 +28,7 @@ class WebArticleController extends Controller
         $this->token = new Token();
         $this->user = new User();
         $this->comment = new Comment();
+        $this->bookmark = new Bookmark();
     }
 
     /**
@@ -58,11 +61,18 @@ class WebArticleController extends Controller
         $primaryCategorySlug = !empty($article['categories']) ? $article['categories'][0]['slug'] : '';
 
         $currentUser = null;
+        $isBookmarked = false;
+        
         if (isset($_COOKIE['auth_token'])) {
             // If cookie is valid, include current user so view can show auth-aware UI.
             $tokenData = $this->token->findValid($_COOKIE['auth_token']);
             if ($tokenData) {
                 $currentUser = $this->user->findById((int)$tokenData['user_id']);
+                // Current state: $currentUser contains user details if logged in
+                if ($currentUser) {
+                    $isBookmarked = $this->bookmark->isBookmarked((int)$currentUser['id'], (int)$article['id']);
+                    // Current state: $isBookmarked is boolean true if user bookmarked this article
+                }
             }
         }
 
@@ -74,7 +84,8 @@ class WebArticleController extends Controller
             'primaryCategory' => $primaryCategory,
             'primaryCategorySlug' => $primaryCategorySlug,
             'currentUser' => $currentUser,
-            'comments' => $comments
+            'comments' => $comments,
+            'isBookmarked' => $isBookmarked
         ]);
     }
 }

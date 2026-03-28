@@ -29,12 +29,19 @@ if (!empty($article['updated_at'])) {
             <span class="text-gray-300">|</span>
             <span class="font-medium text-gray-700">By <?= htmlspecialchars($article['reporter']['name'] ?? 'Staff Correspondent') ?></span>
         </div>
-        <div class="flex flex-col md:flex-row gap-1 md:gap-4 text-xs">
+        <div class="flex flex-col md:flex-row gap-1 md:gap-4 text-xs flex-1">
             <span><i class="far fa-clock mr-1"></i> Published: <?= htmlspecialchars($formattedPublished) ?></span>
             <?php if ($formattedUpdated): ?>
                 <span class="hidden md:inline text-gray-300">|</span>
                 <span><i class="fas fa-sync-alt mr-1"></i> Updated: <?= htmlspecialchars($formattedUpdated) ?></span>
             <?php endif; ?>
+        </div>
+        
+        <!-- Bookmark Icon -->
+        <div class="flex items-center mt-2 md:mt-0">
+            <button onclick="toggleBookmark(<?= $article['id'] ?>)" class="text-primary-600 hover:text-primary-700 transition" title="Bookmark this article">
+                <i id="bookmarkIcon" class="<?= (!empty($isBookmarked)) ? 'fas' : 'far' ?> fa-bookmark text-xl"></i>
+            </button>
         </div>
     </div>
 
@@ -161,3 +168,39 @@ $commentsCount = count($comments ?? []);
     </div>
 
 </section>
+
+<script>
+function toggleBookmark(articleId) {
+    <?php if (empty($currentUser)): ?>
+    alert('Please sign in to bookmark articles.');
+    return;
+    <?php endif; ?>
+
+    fetch('<?= url('/bookmarks/toggle') ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ article_id: articleId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const icon = document.getElementById('bookmarkIcon');
+            if (data.bookmarked) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+            }
+        } else {
+            alert(data.message || 'Error toggling bookmark.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred.');
+    });
+}
+</script>

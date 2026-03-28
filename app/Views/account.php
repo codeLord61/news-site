@@ -14,6 +14,9 @@
                 <button onclick="switchTab('comments')" id="nav-comments" class="text-left px-4 py-2 font-medium text-gray-600 hover:bg-gray-50 rounded-md transition-colors relative">
                     <i class="fa-solid fa-comments mr-2"></i> My Comments
                 </button>
+                <button onclick="switchTab('bookmarks')" id="nav-bookmarks" class="text-left px-4 py-2 font-medium text-gray-600 hover:bg-gray-50 rounded-md transition-colors relative">
+                    <i class="fa-solid fa-bookmark mr-2"></i> My bookmarks
+                </button>
             </nav>
         </aside>
 
@@ -121,6 +124,48 @@
                 <?php endif; ?>
             </section>
 
+            <!-- My Bookmarks Section -->
+            <section id="tab-bookmarks" class="hidden">
+                <h3 class="text-xl font-bold text-gray-900 mb-6">My bookmarks</h3>
+                
+                <p id="no-bookmarks-msg" class="text-gray-500 italic <?= !empty($bookmarks) ? 'hidden' : '' ?>">You haven't bookmarked any articles yet.</p>
+
+                <div id="bookmarks-list-container" class="space-y-6 <?= empty($bookmarks) ? 'hidden' : '' ?>">
+                    <?php foreach(($bookmarks ?? []) as $bookmark): ?>
+                    <div class="bookmark-card border border-gray-100 bg-gray-50 p-4 flex flex-col md:flex-row gap-4 relative pr-10">
+                        <button onclick="removeBookmarkCard(<?= $bookmark['article_id'] ?>, this)" class="absolute top-4 right-4 text-primary-600 hover:text-primary-700 transition" title="Remove Bookmark">
+                            <i class="fa-solid fa-bookmark text-xl"></i>
+                        </button>
+                        <div class="shrink-0">
+                            <?php if(!empty($bookmark['article_thumbnail'])): ?>
+                                <img src="<?= htmlspecialchars(resolve_media_url($bookmark['article_thumbnail'])) ?>" alt="Thumbnail" class="w-32 h-20 object-cover border border-gray-200 bg-white">
+                            <?php else: ?>
+                                <div class="w-32 h-20 bg-gray-200 border border-gray-200 flex items-center justify-center text-gray-400">
+                                    <i class="fa-solid fa-image"></i>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-900 mb-2">
+                                <a href="<?= url('/articles/' . $bookmark['article_slug']) ?>" class="hover:text-primary-600 transition-colors">
+                                    <?= htmlspecialchars($bookmark['article_title']) ?>
+                                </a>
+                            </h4>
+                            <p class="text-gray-700 text-sm mb-3">
+                                <?= htmlspecialchars(mb_substr(strip_tags($bookmark['article_excerpt'] ?? ''), 0, 150)) . '...' ?>
+                            </p>
+                            <div class="flex items-center justify-between text-xs text-gray-500 mt-auto pt-2 border-t border-gray-200 border-dashed">
+                                <span>Published: <?= date('M j, Y g:i A', strtotime($bookmark['published_at'])) ?></span>
+                                <a href="<?= url('/articles/' . $bookmark['article_slug']) ?>" class="text-primary-600 hover:underline font-bold">
+                                    View article &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </section>
+
         </div>
     </div>
 </main>
@@ -131,9 +176,10 @@
         document.getElementById('tab-profile').classList.add('hidden');
         document.getElementById('tab-edit').classList.add('hidden');
         document.getElementById('tab-comments').classList.add('hidden');
+        document.getElementById('tab-bookmarks').classList.add('hidden');
         
         // Remove active styles from nav
-        const navs = ['profile', 'edit', 'comments'];
+        const navs = ['profile', 'edit', 'comments', 'bookmarks'];
         navs.forEach(nav => {
             const el = document.getElementById('nav-' + nav);
             el.classList.remove('bg-primary-50', 'text-primary-600');
@@ -162,5 +208,40 @@
             }
             reader.readAsDataURL(event.target.files[0]);
         }
+    }
+
+    function removeBookmarkCard(articleId, buttonEl) {
+        if (!confirm("Remove this bookmark?")) return;
+        
+        fetch('<?= url('/bookmarks/toggle') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ article_id: articleId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && !data.bookmarked) {
+                // remove the card
+                const card = buttonEl.closest('.bookmark-card');
+                if (card) {
+                    card.remove();
+                    // if no cards left, show empty message
+                    const container = document.getElementById('bookmarks-list-container');
+                    if (container && container.children.length === 0) {
+                        const noBookmarksMsg = document.getElementById('no-bookmarks-msg');
+                        if(noBookmarksMsg) noBookmarksMsg.classList.remove('hidden');
+                        container.classList.add('hidden');
+                    }
+                }
+            } else {
+                alert(data.message || 'Error removing bookmark.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred.');
+        });
     }
 </script>

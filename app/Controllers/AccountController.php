@@ -8,12 +8,14 @@ use app\core\Response;
 use app\models\User;
 use app\models\Token;
 use app\models\Comment;
+use app\models\Bookmark;
 
 class AccountController extends Controller
 {
     private User $user;
     private Token $token;
     private Comment $comment;
+    private Bookmark $bookmark;
 
     /**
      * Initialize model dependencies for account page and profile updates.
@@ -23,6 +25,7 @@ class AccountController extends Controller
         $this->user = new User();
         $this->token = new Token();
         $this->comment = new Comment();
+        $this->bookmark = new Bookmark();
     }
 
     /**
@@ -37,13 +40,19 @@ class AccountController extends Controller
 
         // Fetch user's comments
         $comments = $this->comment->getByUserId((int)$userInfo['id']);
+        // Current state: $comments contains user's comments array
+
+        // Fetch user's bookmarks
+        $bookmarks = $this->bookmark->getUserBookmarks((int)$userInfo['id']);
+        // Current state: $bookmarks contains user's bookmarked articles array
 
         $this->setLayout('main');
 
         echo $this->render('account', [
             'pageTitle' => 'My Account - Packly News',
             'user' => $userInfo,
-            'comments' => $comments
+            'comments' => $comments,
+            'bookmarks' => $bookmarks
         ]);
     }
 
