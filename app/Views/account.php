@@ -66,7 +66,11 @@
                                     <img src="" alt="Avatar" class="w-full h-full object-cover hidden" id="avatarPreview">
                                 <?php endif; ?>
                             </div>
-                            <input type="file" name="avatar" id="avatar" accept="image/*" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 transition-colors cursor-pointer" onchange="previewAvatar(event)">
+                            <label class="inline-flex items-center justify-center bg-primary-50 hover:bg-primary-100 text-primary-600 font-semibold py-2 px-4 rounded-md cursor-pointer transition-colors text-sm">
+                                <i class="fa-solid fa-upload mr-2"></i>
+                                Change image
+                                <input type="file" name="avatar" id="avatar" accept="image/*" class="hidden" onchange="previewAvatar(event)">
+                            </label>
                         </div>
                     </div>
                     
