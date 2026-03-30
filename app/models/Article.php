@@ -1082,4 +1082,22 @@ class Article extends Model
         $stmt->execute([$articleId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * TODO(notification): Fetch minimum article data needed for notifications.
+     *
+     * Input:
+     * - $articleId: int
+     *
+     * Output:
+     * - array{
+     *     id:int,
+     *     title:string,
+     *     reporter_id:int
+     *   }|false
+     */
+    public function getNotificationMetaById(int $articleId): array|false
+    {
+        throw new \RuntimeException('TODO: implement Article::getNotificationMetaById');
+    }
 }

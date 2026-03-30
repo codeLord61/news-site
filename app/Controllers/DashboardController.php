@@ -11,6 +11,7 @@ use app\models\Category;
 use app\models\Tag;
 use app\models\User;
 use app\models\Token;
+use app\services\NotificationService;
 
 class DashboardController extends Controller
 {
@@ -19,6 +20,7 @@ class DashboardController extends Controller
     private Category $category;
     private Tag $tag;
     private Article $article;
+    private NotificationService $notificationService;
 
     /**
      * Initialize dashboard dependencies and protect routes with web auth.
@@ -30,6 +32,7 @@ class DashboardController extends Controller
         $this->category = new Category();
         $this->tag = new Tag();
         $this->article = new Article();
+        $this->notificationService = new NotificationService();
         
         // Protect all actions in this controller
         $this->registerMiddleware(new WebAuthMiddleware());
@@ -320,6 +323,39 @@ class DashboardController extends Controller
             ], 409);
         }
 
+        /**
+         * TODO(notification):
+         * 1) First create an Article model helper to read reporter + title by article id.
+         *    Suggested method to add in Article model:
+         *    - getNotificationMetaById(int $articleId): array|false
+         *    - Output shape:
+         *      array{
+         *        id:int,
+         *        title:string,
+         *        reporter_id:int
+         *      }
+         *
+         * 2) Then notify reporter that this editor selected the article.
+         * Input:
+         * - reporter_user_id: int
+         * - article_title: string
+         * - editor_name: string ((string)$userInfo['name'])
+         * Output:
+         * - int notification id
+         *
+         * How it should look:
+         * - message: "Your article \"{title}\" was selected by {editorName}."
+         * - link: "/my-articles"
+         */
+        // $meta = $this->article->getNotificationMetaById($articleId);
+        // if ($meta) {
+        //     $this->notificationService->notifyReporterArticleSelected(
+        //         (int)$meta['reporter_id'],
+        //         (string)$meta['title'],
+        //         (string)$userInfo['name']
+        //     );
+        // }
+
         $response->json([
             'success' => true,
             'message' => 'Article selected and moved to pending queue.',
@@ -352,6 +388,30 @@ class DashboardController extends Controller
                 'error' => 'Unable to approve. The article may not be assigned to you anymore.',
             ], 409);
         }
+
+        /**
+         * TODO(notification):
+         * Input:
+         * - reporter_user_id: int
+         * - article_title: string
+         * - editor_name: string
+         * - status: "approved"
+         * Output:
+         * - int notification id
+         *
+         * How it should look:
+         * - message: "Your article \"{title}\" was approved by {editorName}."
+         * - link: "/my-articles"
+         */
+        // $meta = $this->article->getNotificationMetaById($articleId);
+        // if ($meta) {
+        //     $this->notificationService->notifyReporterReviewResult(
+        //         (int)$meta['reporter_id'],
+        //         (string)$meta['title'],
+        //         (string)$userInfo['name'],
+        //         'approved'
+        //     );
+        // }
 
         $response->json([
             'success' => true,
@@ -386,6 +446,30 @@ class DashboardController extends Controller
             ], 409);
         }
 
+        /**
+         * TODO(notification):
+         * Input:
+         * - reporter_user_id: int
+         * - article_title: string
+         * - editor_name: string
+         * - status: "rejected"
+         * Output:
+         * - int notification id
+         *
+         * How it should look:
+         * - message: "Your article \"{title}\" was rejected by {editorName}."
+         * - link: "/my-articles"
+         */
+        // $meta = $this->article->getNotificationMetaById($articleId);
+        // if ($meta) {
+        //     $this->notificationService->notifyReporterReviewResult(
+        //         (int)$meta['reporter_id'],
+        //         (string)$meta['title'],
+        //         (string)$userInfo['name'],
+        //         'rejected'
+        //     );
+        // }
+
         $response->json([
             'success' => true,
             'message' => 'Submission rejected successfully.',
@@ -419,6 +503,28 @@ class DashboardController extends Controller
             ], 409);
         }
 
+        /**
+         * TODO(notification):
+         * Input:
+         * - reporter_user_id: int
+         * - article_title: string
+         * - editor_name: string
+         * Output:
+         * - int notification id
+         *
+         * How it should look:
+         * - message: "Your article \"{title}\" was published by {editorName}."
+         * - link: "/my-articles"
+         */
+        // $meta = $this->article->getNotificationMetaById($articleId);
+        // if ($meta) {
+        //     $this->notificationService->notifyReporterPublished(
+        //         (int)$meta['reporter_id'],
+        //         (string)$meta['title'],
+        //         (string)$userInfo['name']
+        //     );
+        // }
+
         $response->json([
             'success' => true,
             'message' => 'Article published successfully.',
@@ -451,6 +557,12 @@ class DashboardController extends Controller
                 'error' => 'Unable to reject. The article may not be approved for you anymore.',
             ], 409);
         }
+
+        /**
+         * TODO(notification) optional:
+         * If you want "rejected after approval" to notify reporter, use same review-result method with status "rejected".
+         * Input/Output format is identical to rejectSubmission().
+         */
 
         $response->json([
             'success' => true,

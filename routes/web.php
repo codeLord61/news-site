@@ -53,3 +53,10 @@ $this->router->post('/bookmarks/toggle', [BookmarkController::class, 'toggle']);
 $this->router->get('/dashboard/profile', [DashboardController::class, 'profileView']);
 $this->router->get('/dashboard/profile/edit', [DashboardController::class, 'profileEdit']);
 $this->router->post('/dashboard/profile/update', [DashboardController::class, 'updateProfile']);
+
+// TODO(notification web links in topbar):
+// If you keep "/notifications" and "/notifications/mark-read" links in _topbar.php,
+// add their handlers here (can be in NotificationController or DashboardController).
+// Example:
+// $this->router->get('/notifications', [NotificationController::class, 'indexPage']);
+// $this->router->get('/notifications/mark-read', [NotificationController::class, 'markAllReadAndBack']);

@@ -13,6 +13,7 @@ use app\models\Media;
 use app\models\Tag;
 use app\models\Token;
 use app\models\User;
+use app\services\NotificationService;
 
 class ReporterArticleController extends Controller
 {
@@ -44,6 +45,7 @@ class ReporterArticleController extends Controller
     private Tag $tag;
     private Token $token;
     private User $user;
+    private NotificationService $notificationService;
 
     /**
      * Initialize reporter article dependencies and enforce API auth middleware.
@@ -56,6 +58,7 @@ class ReporterArticleController extends Controller
         $this->tag = new Tag();
         $this->token = new Token();
         $this->user = new User();
+        $this->notificationService = new NotificationService();
 
         $this->registerMiddleware(new AuthMiddleware());
     }
@@ -192,6 +195,29 @@ class ReporterArticleController extends Controller
         $message = $intent === 'submit'
             ? ($isUpdate ? 'Article updated and submitted for review.' : 'Article saved and submitted for review.')
             : ($isUpdate ? 'Article updated successfully.' : 'Draft saved successfully.');
+
+        /**
+         * TODO(notification):
+         * Trigger only when $intent === 'submit'.
+         *
+         * Input:
+         * - article_id: int ((int)$savedArticleId)
+         * - article_title: string ($title)
+         * - reporter_name: string ((string)$reporter['name'])
+         * Output:
+         * - int number of inserted notifications for editor users.
+         *
+         * How it should look:
+         * - message: "New article \"{title}\" has been submitted by {reporterName}."
+         * - link: "/editor/articles"
+         */
+        // if ($intent === 'submit') {
+        //     $this->notificationService->notifyEditorsArticleSubmitted(
+        //         (int)$savedArticleId,
+        //         $title,
+        //         (string)$reporter['name']
+        //     );
+        // }
 
         $response->json([
             'success' => true,

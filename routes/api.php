@@ -5,6 +5,7 @@ use app\controllers\ArticleController;
 use app\controllers\CategoryController;
 use app\controllers\ReporterArticleController;
 use app\controllers\TagController;
+use app\controllers\NotificationController;
 
 /** @var \app\core\App $this */
 
@@ -31,3 +32,8 @@ $this->router->get('/api/v1/categories/{slug}', [CategoryController::class , 'sh
 // ---- Public Tag routes ----
 $this->router->get('/api/v1/tags', [TagController::class , 'index']);
 $this->router->get('/api/v1/tags/{slug}', [TagController::class , 'show']);
+
+// ---- Notification routes (TODO wire after implementing controller methods) ----
+// $this->router->get('/api/v1/notifications', [NotificationController::class, 'index']);
+// $this->router->post('/api/v1/notifications/read', [NotificationController::class, 'markOneRead']);
+// $this->router->post('/api/v1/notifications/read-all', [NotificationController::class, 'markAllRead']);

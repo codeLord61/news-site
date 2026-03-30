@@ -9,11 +9,13 @@ use app\services\TokenService;
 use app\middleware\AuthMiddleware;
 use app\models\User;
 use app\models\Token;
+use app\services\NotificationService;
 
 class AuthController extends Controller
 {
     private User $user;
     private Token $token;
+    private NotificationService $notificationService;
 
     /**
      * Initialize auth-related models.
@@ -22,6 +24,7 @@ class AuthController extends Controller
     {
         $this->user = new User();
         $this->token = new Token();
+        $this->notificationService = new NotificationService();
         // Middleware was only applied to logout, but we want logout to always be reachable 
         // to ensure cookies are cleared even if the token is expired.
     }
@@ -71,6 +74,20 @@ class AuthController extends Controller
         $passwordHash = password_hash($body['password'], PASSWORD_DEFAULT);
 
         if ($this->user->create($body['email'], $body['fullname'], $passwordHash, $roleId, $body['password'])) {
+            /**
+             * TODO(notification):
+             * Input:
+             * - fullname: string ($body['fullname'])
+             * - email: string ($body['email'])
+             * Output:
+             * - int inserted notification count for admin users.
+             *
+             * How it should look:
+             * - message: "New user {fullname} ({email}) signed up."
+             * - link: "/admin/users"
+             */
+            // $this->notificationService->notifyAdminsNewSignup((string)$body['fullname'], (string)$body['email']);
+
             $response->json(['success' => true, 'message' => 'Registration successful! You may now log in.']);
         }
 
