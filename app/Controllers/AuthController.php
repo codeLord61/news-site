@@ -86,7 +86,7 @@ class AuthController extends Controller
              * - message: "New user {fullname} ({email}) signed up."
              * - link: "/admin/users"
              */
-            // $this->notificationService->notifyAdminsNewSignup((string)$body['fullname'], (string)$body['email']);
+            $this->notificationService->notifyAdminsNewSignup((string)$body['fullname']);
 
             $response->json(['success' => true, 'message' => 'Registration successful! You may now log in.']);
         }

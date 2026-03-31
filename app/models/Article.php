@@ -1084,7 +1084,7 @@ class Article extends Model
     }
 
     /**
-     * TODO(notification): Fetch minimum article data needed for notifications.
+     * TODO(notification): Fetch article data needed for notifications.
      *
      * Input:
      * - $articleId: int
@@ -1095,9 +1095,19 @@ class Article extends Model
      *     title:string,
      *     reporter_id:int
      *   }|false
+     * 
+     * example: Your article <title> was approved, New article <title> was published by <reporter_name>
      */
     public function getNotificationMetaById(int $articleId): array|false
     {
-        throw new \RuntimeException('TODO: implement Article::getNotificationMetaById');
+        $sql = "SELECT id, title, reporter_id
+                FROM articles
+                WHERE id = ? AND deleted_at IS NULL
+                LIMIT 1";
+        $stmt = $this->db()->prepare($sql);
+        $stmt->execute([$articleId]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        return $row ?: false;
     }
 }

@@ -57,11 +57,34 @@ class NotificationController extends Controller
      *   }
      * - 401 when unauthorized.
      */
+    
+    /**
+     * GET /api/v1/notifications
+     * Return notification list + unread count for the current user.
+     */
     public function index(Request $request, Response $response): void
-    {
+    {   
+        $user = $this->resolveAuthUser($request, $response);
+
+        $limit = (int)($request->getQueryParams()['limit'] ?? 10);
+        if($limit < 1 || $limit > 50) {
+            $limit = 10;
+        }
+
+        $unreadOnly = filter_var(
+            $request->getQueryParams()['unread_only'] ?? false, 
+            FILTER_VALIDATE_BOOLEAN);
+        
+        $items = $this->notification->getForUser($user['id'], $limit, $unreadOnly);
+        $unreadCount = $this->notification->countUnreadForUser((int)$user['id']);
+        
         $response->json([
-            'error' => 'TODO: implement NotificationController::index',
-        ], 501);
+            'success' => true,
+            'data' => [
+                'items' => $items,
+                'unread_count' => $unreadCount
+            ]
+        ]);
     }
 
     /**
@@ -76,11 +99,35 @@ class NotificationController extends Controller
      * - 404 when notification does not belong to current user.
      * - 422 when notification_id is invalid.
      */
+    /**
+     * POST /api/v1/notifications/read
+     * Mark one specific notification as read.
+     */
     public function markOneRead(Request $request, Response $response): void
-    {
+    {   
+        if ($request->getMethod() !== 'post') {
+            $response->json(['error' => 'Method not allowed.'], 405);
+        }
+        
+        $user = $this->resolveAuthUser($request, $response);
+        $body = $request->getBody();
+
+        $notificationId = filter_var($body['notification_id'] ?? null, FILTER_VALIDATE_INT);
+        
+        if ($notificationId === false || $notificationId < 0) {
+            $response->json(['error' => 'notification_id is required and must be a positive integer.'], 422);
+        }
+
+        $marked = $this->notification->markOneRead((int)$notificationId, (int)$user['id']);
+
+        if (!$marked) {
+            $response->json(['error' => 'Notification not found or already read'], 404);
+        } 
+
         $response->json([
-            'error' => 'TODO: implement NotificationController::markOneRead',
-        ], 501);
+            'success' => true,
+            'message' => 'Notification marked as read.'
+        ]);
     }
 
     /**
@@ -92,11 +139,25 @@ class NotificationController extends Controller
      * Output (JSON):
      * - 200: { "success": true, "affected": int }
      */
+    /**
+     * POST /api/v1/notifications/read-all
+     * Mark all notifications as read for the current user.
+     */
     public function markAllRead(Request $request, Response $response): void
-    {
+    {   
+        if ($request->getMethod() !== 'post'){
+            $response->json(['error' => 'Method not allowed'], 405);
+        }
+
+        $user = $this->resolveAuthUser($request, $response);
+
+        $affectedCount = $this->notification->markAllRead((int)$user['id']);
+        
         $response->json([
-            'error' => 'TODO: implement NotificationController::markAllRead',
-        ], 501);
+            'success' => true,
+            'affected' => $affectedCount,
+            'message' => $affectedCount > 0 ? 'All notifications marked as read.' : 'No unread notifications found.'
+        ]);
     }
 
     /**
@@ -114,11 +175,28 @@ class NotificationController extends Controller
      *   }
      * - On failure: send 401 JSON and terminate request flow.
      */
+    /**
+     * Resolve authenticated user from token.
+     */
     private function resolveAuthUser(Request $request, Response $response): array
-    {
+    {   
+        $tokenStr = $_COOKIE['auth_token'] ?? $request->getBearerToken();
+        if (!$tokenStr) {
+            $response->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $tokenData = $this->token->findValid((string)$tokenStr);
+        if (!$tokenData) {
+            $response->json(['error' => 'Unauthorized'], 401);
+        }
+        
+        $userInfo = $this->user->findById((int)$tokenData['user_id']);
+        if (!$userInfo) {
+            $response->json(['error' => 'Unauthorized'], 401)
+        }
+
         $response->json([
             'error' => 'TODO: implement NotificationController::resolveAuthUser',
         ], 501);
     }
 }
-

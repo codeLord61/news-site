@@ -36,7 +36,11 @@ class NotificationService
      */
     public function notifyEditorsArticleSubmitted(int $articleId, string $articleTitle, string $reporterName): int
     {
-        throw new \RuntimeException('TODO: implement NotificationService::notifyEditorsArticleSubmitted');
+        $message = "New article \"{$articleTitle}\" has been submitted by {$reporterName}.";
+        $link = "/editor/articles";
+
+        $editorIds = $this->notification->getEditorUserIds();
+        return $this->notification->bulkCreate($editorIds, $message, $link);
     }
 
     /**
@@ -58,7 +62,10 @@ class NotificationService
      */
     public function notifyReporterArticleSelected(int $reporterUserId, string $articleTitle, string $editorName): int
     {
-        throw new \RuntimeException('TODO: implement NotificationService::notifyReporterArticleSelected');
+        $message = "You article \"{$articleTitle}\" was selected by {$editorName}";
+        $link = "/my-articles";
+
+        return $this->notification->create($reporterUserId, $message, $link);
     }
 
     /**
@@ -76,7 +83,7 @@ class NotificationService
      * Message format:
      * - "Your article \"{title}\" was approved by {editorName}."
      * - "Your article \"{title}\" was rejected by {editorName}."
-     *
+     * - "Your article \"{title}\" was published by {editorName}."
      * Link:
      * - "/my-articles"
      */
@@ -86,31 +93,12 @@ class NotificationService
         string $editorName,
         string $status
     ): int {
-        throw new \RuntimeException('TODO: implement NotificationService::notifyReporterReviewResult');
+        $message = "Your article \"{$articleTitle}\" was {$status} by {$editorName}.";
+        $link = "/my-articles";
+        return $this->notification->create($reporterUserId, $message, $link);
     }
 
-    /**
-     * TODO: Notify reporter when editor publishes article.
-     *
-     * Input:
-     * - $reporterUserId: int
-     * - $articleTitle: string
-     * - $editorName: string
-     *
-     * Output:
-     * - int notification id.
-     *
-     * Message format:
-     * - "Your article \"{title}\" was published by {editorName}."
-     *
-     * Link:
-     * - "/my-articles"
-     */
-    public function notifyReporterPublished(int $reporterUserId, string $articleTitle, string $editorName): int
-    {
-        throw new \RuntimeException('TODO: implement NotificationService::notifyReporterPublished');
-    }
-
+  
     /**
      * TODO: Notify all admins when a new user registers.
      *
@@ -127,9 +115,12 @@ class NotificationService
      * Link:
      * - "/admin/users"
      */
-    public function notifyAdminsNewSignup(string $newUserName, string $newUserEmail): int
+    public function notifyAdminsNewSignup(string $newUserName): int
     {
-        throw new \RuntimeException('TODO: implement NotificationService::notifyAdminsNewSignup');
+        $message = "New user \"{$newUserName}\" signed up.";
+        $link = "/admin/users";
+        
+        $adminIds = $this->notification->getAdminUserIds();
+        return $this->notification->bulkCreate($adminIds, $message, $link);
     }
 }
-

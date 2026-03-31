@@ -211,13 +211,14 @@ class ReporterArticleController extends Controller
          * - message: "New article \"{title}\" has been submitted by {reporterName}."
          * - link: "/editor/articles"
          */
-        // if ($intent === 'submit') {
-        //     $this->notificationService->notifyEditorsArticleSubmitted(
-        //         (int)$savedArticleId,
-        //         $title,
-        //         (string)$reporter['name']
-        //     );
-        // }
+        // Send notification to editors
+        if ($intent === 'submit') {
+            $this->notificationService->notifyEditorsArticleSubmitted(
+                (int)$savedArticleId,
+                $title,
+                (string)$reporter['name']
+            );
+        }
 
         $response->json([
             'success' => true,

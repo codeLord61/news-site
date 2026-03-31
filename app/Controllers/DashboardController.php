@@ -347,14 +347,15 @@ class DashboardController extends Controller
          * - message: "Your article \"{title}\" was selected by {editorName}."
          * - link: "/my-articles"
          */
-        // $meta = $this->article->getNotificationMetaById($articleId);
-        // if ($meta) {
-        //     $this->notificationService->notifyReporterArticleSelected(
-        //         (int)$meta['reporter_id'],
-        //         (string)$meta['title'],
-        //         (string)$userInfo['name']
-        //     );
-        // }
+        // Notify reporter when an editor selected the article
+        $meta = $this->article->getNotificationMetaById($articleId);
+        if ($meta) {
+            $this->notificationService->notifyReporterArticleSelected(
+                (int)$meta['reporter_id'],
+                (string)$meta['title'],
+                (string)$userInfo['name']
+            );
+        }
 
         $response->json([
             'success' => true,
@@ -403,15 +404,16 @@ class DashboardController extends Controller
          * - message: "Your article \"{title}\" was approved by {editorName}."
          * - link: "/my-articles"
          */
-        // $meta = $this->article->getNotificationMetaById($articleId);
-        // if ($meta) {
-        //     $this->notificationService->notifyReporterReviewResult(
-        //         (int)$meta['reporter_id'],
-        //         (string)$meta['title'],
-        //         (string)$userInfo['name'],
-        //         'approved'
-        //     );
-        // }
+        // Notify reporter when an editor approved an article
+        $meta = $this->article->getNotificationMetaById($articleId);
+        if ($meta) {
+            $this->notificationService->notifyReporterReviewResult(
+                (int)$meta['reporter_id'],
+                (string)$meta['title'],
+                (string)$userInfo['name'],
+                'approved'
+            );
+        }
 
         $response->json([
             'success' => true,
@@ -460,15 +462,15 @@ class DashboardController extends Controller
          * - message: "Your article \"{title}\" was rejected by {editorName}."
          * - link: "/my-articles"
          */
-        // $meta = $this->article->getNotificationMetaById($articleId);
-        // if ($meta) {
-        //     $this->notificationService->notifyReporterReviewResult(
-        //         (int)$meta['reporter_id'],
-        //         (string)$meta['title'],
-        //         (string)$userInfo['name'],
-        //         'rejected'
-        //     );
-        // }
+        $meta = $this->article->getNotificationMetaById($articleId);
+        if ($meta) {
+            $this->notificationService->notifyReporterReviewResult(
+                (int)$meta['reporter_id'],
+                (string)$meta['title'],
+                (string)$userInfo['name'],
+                'rejected'
+            );
+        }
 
         $response->json([
             'success' => true,
@@ -516,14 +518,15 @@ class DashboardController extends Controller
          * - message: "Your article \"{title}\" was published by {editorName}."
          * - link: "/my-articles"
          */
-        // $meta = $this->article->getNotificationMetaById($articleId);
-        // if ($meta) {
-        //     $this->notificationService->notifyReporterPublished(
-        //         (int)$meta['reporter_id'],
-        //         (string)$meta['title'],
-        //         (string)$userInfo['name']
-        //     );
-        // }
+        $meta = $this->article->getNotificationMetaById($articleId);
+        if ($meta) {
+            $this->notificationService->notifyReporterReviewResult(
+                (int)$meta['reporter_id'],
+                (string)$meta['title'],
+                (string)$userInfo['name'],
+                'published'
+            );
+        }
 
         $response->json([
             'success' => true,
@@ -563,6 +566,16 @@ class DashboardController extends Controller
          * If you want "rejected after approval" to notify reporter, use same review-result method with status "rejected".
          * Input/Output format is identical to rejectSubmission().
          */
+
+        $meta = $this->article->getNotificationMetaById($articleId);
+        if ($meta) {
+            $this->notificationService->notifyReporterReviewResult(
+                (int)$meta['reporter_id'],
+                (string)$meta['title'],
+                (string)$userInfo['name'],
+                'rejected'
+            );
+        }
 
         $response->json([
             'success' => true,

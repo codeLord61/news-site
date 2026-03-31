@@ -19,7 +19,13 @@ class Notification extends Model
      */
     public function create(int $userId, string $message, string $link): int
     {
-        throw new \RuntimeException('TODO: implement Notification::create');
+        $sql = "INSERT INTO notifications (user_id, message, link, is_read, created_at) 
+                VALUES (?, ?, ?, 0, NOW())";
+                
+        $stmt = $this->db()->prepare($sql);
+        $stmt->execute([$userId, $message, $link]);
+
+        return (int) $this->db()->lastInsertId();
     }
 
     /**
@@ -35,7 +41,20 @@ class Notification extends Model
      */
     public function bulkCreate(array $userIds, string $message, string $link): int
     {
-        throw new \RuntimeException('TODO: implement Notification::bulkCreate');
+        if (empty($userIds)) {
+            return 0;
+        }
+
+        $stmt = $this->db()->prepare("INSERT INTO notifications (user_id, message, link, is_read, created_at)
+                                    VALUES (?, ?, ?, 0, NOW());");
+        
+        $count = 0;
+        foreach ($userIds as $userId) {
+            $stmt->execute([(int) $userId, $message, $link]);
+            $count++;
+        }
+
+        return $count;
     }
 
     /**
@@ -58,7 +77,19 @@ class Notification extends Model
      */
     public function getForUser(int $userId, int $limit = 10, bool $unreadOnly = false): array
     {
-        throw new \RuntimeException('TODO: implement Notification::getForUser');
+        $sql = "SELECT id, message, link, created_at
+                FROM notifications
+                WHERE user_id = ?";
+        
+        if ($unreadOnly) {
+            $sql .= " AND is_read = 0";
+        }
+
+        $sql .= " ORDER BY created_at DESC LIMIT ?";
+
+        $stmt = $this->db()->prepare($sql);
+        $stmt->execute([$userId, $limit]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -72,7 +103,13 @@ class Notification extends Model
      */
     public function countUnreadForUser(int $userId): int
     {
-        throw new \RuntimeException('TODO: implement Notification::countUnreadForUser');
+        $sql = "SELECT COUNT(*) FROM notifications 
+                WHERE user_id = ? AND is_read = 0";
+
+        $stmt = $this->db()->prepare($sql);
+        $stmt->execute([$userId]);
+        
+        return (int) $stmt->fetchColumn();
     }
 
     /**
@@ -87,7 +124,14 @@ class Notification extends Model
      */
     public function markOneRead(int $notificationId, int $userId): bool
     {
-        throw new \RuntimeException('TODO: implement Notification::markOneRead');
+        $sql = "UPDATE notifications
+                SET is_read = 1 
+                WHERE user_id = ? AND id = ? AND is_read = 0";
+        
+        $stmt = $this->db()->prepare($sql);
+        $stmt->execute([$userId, $notificationId]);
+        
+        return $stmt->rowCount() > 0;
     }
 
     /**
@@ -101,7 +145,13 @@ class Notification extends Model
      */
     public function markAllRead(int $userId): int
     {
-        throw new \RuntimeException('TODO: implement Notification::markAllRead');
+        $sql = "UPDATE notifications
+                SET is_read = 1
+                WHERE user_id = ? AND is_read = 0";
+        $stmt = $this->db()->prepare($sql);
+        $stmt->execute([$userId]);
+
+        return $stmt->rowCount();
     }
 
     /**
@@ -113,7 +163,15 @@ class Notification extends Model
      */
     public function getEditorUserIds(): array
     {
-        throw new \RuntimeException('TODO: implement Notification::getEditorUserIds');
+        $sql = "SELECT u.id 
+                FROM users u
+                JOIN roles r ON r.id = u.role_id
+                WHERE r.name = 'Editor'
+                ";
+        $stmt = $this->db()->prepare($sql);
+        $stmt->execute();
+        
+        return array_column($stmt->fetchAll(\PDO::FETCH_ASSOC), 'id');
     }
 
     /**
@@ -125,7 +183,14 @@ class Notification extends Model
      */
     public function getAdminUserIds(): array
     {
-        throw new \RuntimeException('TODO: implement Notification::getAdminUserIds');
+        $sql = "SELECT u.id 
+                FROM users u
+                JOIN roles r ON r.id = u.role_id
+                WHERE r.name = 'Admin'
+                ";
+        $stmt = $this->db()->prepare($sql);
+        $stmt->execute();
+        
+        return array_column($stmt->fetchAll(\PDO::FETCH_ASSOC), 'id');
     }
 }
-
