@@ -192,11 +192,9 @@ class NotificationController extends Controller
         
         $userInfo = $this->user->findById((int)$tokenData['user_id']);
         if (!$userInfo) {
-            $response->json(['error' => 'Unauthorized'], 401)
+            $response->json(['error' => 'Unauthorized'], 401);
         }
 
-        $response->json([
-            'error' => 'TODO: implement NotificationController::resolveAuthUser',
-        ], 501);
+        return $userInfo;
     }
 }

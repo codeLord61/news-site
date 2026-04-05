@@ -23,7 +23,10 @@ class Notification extends Model
                 VALUES (?, ?, ?, 0, NOW())";
                 
         $stmt = $this->db()->prepare($sql);
-        $stmt->execute([$userId, $message, $link]);
+        $stmt->bindValue(1, $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(2, $message, \PDO::PARAM_STR);
+        $stmt->bindValue(3, $link, \PDO::PARAM_STR);
+        $stmt->execute();
 
         return (int) $this->db()->lastInsertId();
     }
@@ -88,7 +91,10 @@ class Notification extends Model
         $sql .= " ORDER BY created_at DESC LIMIT ?";
 
         $stmt = $this->db()->prepare($sql);
-        $stmt->execute([$userId, $limit]);
+        $stmt->bindValue(1, $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(2, $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+        
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
@@ -107,7 +113,8 @@ class Notification extends Model
                 WHERE user_id = ? AND is_read = 0";
 
         $stmt = $this->db()->prepare($sql);
-        $stmt->execute([$userId]);
+        $stmt->bindValue(1, $userId, \PDO::PARAM_INT);
+        $stmt->execute();
         
         return (int) $stmt->fetchColumn();
     }
@@ -129,8 +136,10 @@ class Notification extends Model
                 WHERE user_id = ? AND id = ? AND is_read = 0";
         
         $stmt = $this->db()->prepare($sql);
-        $stmt->execute([$userId, $notificationId]);
-        
+        $stmt->bindValue(1, $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(2, $notificationId, \PDO::PARAM_INT);
+        $stmt->execute();
+
         return $stmt->rowCount() > 0;
     }
 
@@ -149,7 +158,8 @@ class Notification extends Model
                 SET is_read = 1
                 WHERE user_id = ? AND is_read = 0";
         $stmt = $this->db()->prepare($sql);
-        $stmt->execute([$userId]);
+        $stmt->bindValue(1, $userId, \PDO::PARAM_INT);
+        $stmt->execute();
 
         return $stmt->rowCount();
     }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:css": "npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css --minify",
+    "build:css": "npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css",
     "build:editor": "esbuild ./public/assets/js/reporter-article-editor.entry.js --bundle --format=iife --platform=browser --target=es2018 --outfile=./public/assets/js/reporter-article-editor.js --minify",
     "build": "npm run build:editor && npm run build:css",
     "watch": "npm run build:editor && npx tailwindcss -i ./public/assets/css/input.css -o ./public/assets/css/styles.css --watch"

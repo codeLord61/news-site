@@ -1,5 +1,5 @@
 /* Tailwind CSS v4 Input File
-   Run: npm run build  (generates minified styles.css)
+   Run: npm run build  (generates styles.css)
    Run: npm run watch  (rebuilds on file change while developing)
    Output: public/assets/css/styles.css
 */
@@ -7,7 +7,7 @@
 @import "flowbite/src/themes/default";
 @plugin "@tailwindcss/typography";
 @plugin "flowbite/plugin";
-/* Removes flowbite-typography as it conflicts with @tailwindcss/typography in v4 */
+@plugin "flowbite-typography";
 @source "../../../node_modules/flowbite";
 
 

@@ -37,7 +37,7 @@ class NotificationService
     public function notifyEditorsArticleSubmitted(int $articleId, string $articleTitle, string $reporterName): int
     {
         $message = "New article \"{$articleTitle}\" has been submitted by {$reporterName}.";
-        $link = "/editor/articles";
+        $link = url("/editor/articles");
 
         $editorIds = $this->notification->getEditorUserIds();
         return $this->notification->bulkCreate($editorIds, $message, $link);
@@ -63,7 +63,7 @@ class NotificationService
     public function notifyReporterArticleSelected(int $reporterUserId, string $articleTitle, string $editorName): int
     {
         $message = "You article \"{$articleTitle}\" was selected by {$editorName}";
-        $link = "/my-articles";
+        $link = url("/my-articles");
 
         return $this->notification->create($reporterUserId, $message, $link);
     }
@@ -94,7 +94,7 @@ class NotificationService
         string $status
     ): int {
         $message = "Your article \"{$articleTitle}\" was {$status} by {$editorName}.";
-        $link = "/my-articles";
+        $link = url("/my-articles");
         return $this->notification->create($reporterUserId, $message, $link);
     }
 
@@ -118,7 +118,7 @@ class NotificationService
     public function notifyAdminsNewSignup(string $newUserName): int
     {
         $message = "New user \"{$newUserName}\" signed up.";
-        $link = "/admin/users";
+        $link = url("/admin/users");
         
         $adminIds = $this->notification->getAdminUserIds();
         return $this->notification->bulkCreate($adminIds, $message, $link);

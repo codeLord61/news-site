@@ -34,6 +34,6 @@ $this->router->get('/api/v1/tags', [TagController::class , 'index']);
 $this->router->get('/api/v1/tags/{slug}', [TagController::class , 'show']);
 
 // ---- Notification routes (TODO wire after implementing controller methods) ----
-// $this->router->get('/api/v1/notifications', [NotificationController::class, 'index']);
-// $this->router->post('/api/v1/notifications/read', [NotificationController::class, 'markOneRead']);
-// $this->router->post('/api/v1/notifications/read-all', [NotificationController::class, 'markAllRead']);
+$this->router->get('/api/v1/notifications', [NotificationController::class, 'index']);
+$this->router->post('/api/v1/notifications/read', [NotificationController::class, 'markOneRead']);
+$this->router->post('/api/v1/notifications/read-all', [NotificationController::class, 'markAllRead']);
